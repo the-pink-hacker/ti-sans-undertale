@@ -1,0 +1,19 @@
+[env]
+BIN_DIR = "bin"
+OUT = "${BIN_DIR}/sans.8xp"
+
+[tasks.bin]
+command = "mkdir"
+args = ["-p", "${BIN_DIR}"]
+
+[tasks.sans]
+dependencies = ["bin"]
+command = "fasmg"
+args = ["src/main.asm", "${OUT}"]
+
+[tasks.default]
+alias = "sans"
+
+[tasks.clean]
+command = "rm"
+args = ["-f", "${BIN_DIR}/*"]
