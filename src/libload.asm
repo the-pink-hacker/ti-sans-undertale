@@ -54,10 +54,9 @@ gfx:
     
     libload_func .Begin, 0
     libload_func .End, 1
-    libload_func .SetColor, 2
     libload_func .SetDraw, 9
     libload_func .SwapDraw, 10
-    libload_func .FillCircle, 40
+    libload_func .Sprite_NoClip, 60
     libload_func .ZeroScreen, 76
 
     xor a, a      ; return z (loaded)

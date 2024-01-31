@@ -14,23 +14,33 @@ game:
     .draw:
 	call gfx.ZeroScreen
 
-        ld hl, color
+	; Player heart
+        ld hl, player_heart.location_y
+	ld e, (hl)
+	push de ; y
+	inc hl
 	ld de, (hl)
-	inc (hl)
-	push de ; color
-	call gfx.SetColor
-	pop hl
-
-        ld hl, ti.lcdHeight / 2 - 8
-	push hl ; radius
-	ld hl, ti.lcdHeight / 2
-	push hl ; y
-	ld hl, ti.lcdWidth / 2
-	push hl ; x
-	call gfx.FillCircle
+	push de ; x
+	ld hl, sprite_heart
+	push hl
+	call gfx.Sprite_NoClip
 	pop hl, hl, hl
 
         jp .loop
 
-color:
-    db 0
+player_heart:
+    .location_y:
+        db ti.lcdHeight / 2
+    .location_x:
+        dl ti.lcdWidth / 2
+
+sprite_heart:
+    .width:
+        db 8
+    .height:
+        db 8
+    data:
+	; Placeholder data
+        repeat 8 * 8
+	    db $F0
+	end repeat
