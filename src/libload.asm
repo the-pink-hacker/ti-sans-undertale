@@ -42,8 +42,7 @@ failed_to_load_libs:
 
 relocations:
 libload_libload:
-    db $C0, "LibLoad", 0, $1F
-
+    libload_header "LibLoad", 31
 
 ; -----------------------------------------------------
 ; put the libraries here
@@ -51,20 +50,19 @@ libload_libload:
 ; -----------------------------------------------------
 
 gfx:
-    db $C0, "GRAPHX", 0, 1
+    libload_header "GRAPHX", 1
     
-    .Begin:
-        jp 3 * 0
-    .End:
-        jp 3 * 1
-    .SetDraw:
-        jp 3 * 9
-    .SwapDraw:
-        jp 3 * 10
-    
-        xor a, a      ; return z (loaded)
-        pop hl      ; pop error return
-        ret
+    libload_func .Begin, 0
+    libload_func .End, 1
+    libload_func .SetColor, 2
+    libload_func .SetDraw, 9
+    libload_func .SwapDraw, 10
+    libload_func .FillCircle, 40
+    libload_func .ZeroScreen, 76
+
+    xor a, a      ; return z (loaded)
+    pop hl      ; pop error return
+    ret
 
 libload_name:
     db ti.AppVarObj, "LibLoad", 0
