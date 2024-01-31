@@ -14,7 +14,7 @@ sans_undertale:
 
         call gfx.Begin
 
-        call ti.GetKey
+	call game.start
     .exit:
 	call gfx.End
     .exit_safe:
@@ -24,3 +24,4 @@ sans_undertale:
         ret
 
 include "src/libload.asm"
+include "src/game.asm"

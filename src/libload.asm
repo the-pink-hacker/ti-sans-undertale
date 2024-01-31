@@ -57,6 +57,10 @@ gfx:
         jp 3 * 0
     .End:
         jp 3 * 1
+    .SetDraw:
+        jp 3 * 9
+    .SwapDraw:
+        jp 3 * 10
     
         xor a, a      ; return z (loaded)
         pop hl      ; pop error return
