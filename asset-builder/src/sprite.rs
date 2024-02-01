@@ -64,10 +64,10 @@ pub fn generate_sprite(
 
         let sprite_png = image::io::Reader::open(source_image_path.clone())?.decode()?;
 
-        let height = sprite_png.height();
         let width = sprite_png.width();
+        let height = sprite_png.height();
 
-        output += &format!("\n{}:\ndb {}, {}", sprite_suffix, height, width);
+        output += &format!("\n{}:\ndb {}, {}", sprite_suffix, width, height);
 
         let pixels = sprite_png
             .to_rgb8()

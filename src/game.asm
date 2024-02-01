@@ -75,7 +75,17 @@ game:
 	ld de, (hl)
 	push de ; x
 	ld hl, heart_red
-	push hl
+	push hl ; sprite
+	call gfx.Sprite_NoClip
+	pop hl, hl, hl
+
+	; Sans
+	ld l, 45
+	push hl ; y
+	ld hl, 134
+	push hl ; x
+	ld hl, sans
+	push hl ; sprite
 	call gfx.Sprite_NoClip
 	pop hl, hl, hl
 
@@ -92,6 +102,6 @@ flags:
 
 player_heart:
     .location_y:
-        db ti.lcdHeight / 2
+        db ti.lcdHeight - 64
     .location_x:
         dl ti.lcdWidth / 2
