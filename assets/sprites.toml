@@ -1,0 +1,3 @@
+[player.sprites]
+heart_blue = "sprites/player/heart_blue.png"
+heart_red = "sprites/player/heart_red.png"

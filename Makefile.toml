@@ -1,19 +1,45 @@
 [env]
-BIN_DIR = "bin"
-OUT = "${BIN_DIR}/sans.8xp"
-
-[tasks.bin]
-command = "mkdir"
-args = ["-p", "${BIN_DIR}"]
-
-[tasks.sans]
-dependencies = ["bin"]
-command = "fasmg"
-args = ["src/main.asm", "${OUT}"]
+BIN_PATH = "bin"
+OUT = "${BIN_PATH}/sans.8xp"
+SPRITE_TABLE = "assets/sprites.toml"
+SPRITE_OUT_PATH = "src/generated/sprites/"
+ASSET_BUILDER_MANIFEST = "asset-builder/Cargo.toml"
 
 [tasks.default]
 alias = "sans"
 
+[tasks.bin]
+command = "mkdir"
+args = ["-p", "${BIN_PATH}"]
+
+[tasks.sprites]
+command = "cargo"
+args = [
+  "run",
+  "--manifest-path",
+  "${ASSET_BUILDER_MANIFEST}",
+  "-r",
+  "--",
+  "sprites",
+  "${SPRITE_TABLE}",
+  "${SPRITE_OUT_PATH}",
+]
+
+[tasks.sans]
+dependencies = ["bin", "sprites"]
+command = "fasmg"
+args = ["src/main.asm", "${OUT}"]
+
+
+[tasks.clean_asset_builder]
+command = "cargo"
+args = [
+  "clean",
+  "--manifest-path",
+  "${ASSET_BUILDER_MANIFEST}",
+]
+
 [tasks.clean]
+dependencies = ["clean_asset_builder"]
 command = "rm"
-args = ["-f", "${BIN_DIR}/*"]
+args = ["-f", "${BIN_PATH}/*"]

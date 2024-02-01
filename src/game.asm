@@ -74,7 +74,7 @@ game:
 	inc hl
 	ld de, (hl)
 	push de ; x
-	ld hl, sprite_heart
+	ld hl, heart_red
 	push hl
 	call gfx.Sprite_NoClip
 	pop hl, hl, hl
@@ -95,14 +95,3 @@ player_heart:
         db ti.lcdHeight / 2
     .location_x:
         dl ti.lcdWidth / 2
-
-sprite_heart:
-    .width:
-        db 8
-    .height:
-        db 8
-    data:
-	; Placeholder data
-        repeat 8 * 8
-	    db $F0
-	end repeat
