@@ -59,6 +59,11 @@ gfx:
     libload_func .Sprite_NoClip, 60
     libload_func .ZeroScreen, 76
 
+kb:
+    libload_header "KEYPADC", 2
+
+    libload_func .ScanGroup, 1
+
     xor a, a      ; return z (loaded)
     pop hl      ; pop error return
     ret
