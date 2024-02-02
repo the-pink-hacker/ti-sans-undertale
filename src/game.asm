@@ -1,93 +1,83 @@
 game:
     .start:
+        ld ix, flags
     .loop:
     .input:
         ld l, 6
-        push hl
-        call kb.ScanGroup
+        push hl ; group
+            call kb.ScanGroup
         pop hl
         bit ti.kbitClear, a
         ret nz
 
         inc l ; l = 7
-        push hl
-        call kb.ScanGroup
+        push hl ; group
+            call kb.ScanGroup
         pop hl
         ld b, $0F ; Get d-pad values only.
         and a, b
-        ld ix, flags.input
-        ld (ix), a
+        ld (ix + flags.input.offset), a
 
+    .input.group_1:
         ld l, 1
-        push hl
-        call kb.ScanGroup
+        push hl ; group
+            call kb.ScanGroup
         pop hl
         bit ti.kbit2nd, a
-        jp z, .input_end
-        set ti.kbit2nd, (ix)
-    .input_end:
+        jp z, .input.group_1_end
+
+        set flags.input.use_bit, (ix + flags.input.offset)
+        ld (ix + flags.player_control.offset), flags.player_control.red
+    .input.group_1_end:
+
+    .input.group_2:
+        inc l ; l = 2
+        push hl ; group
+            call kb.ScanGroup
+        pop hl
+        bit ti.kbitAlpha, a
+        jp z, .input.group_2_end
+
+        set flags.input.back_bit, (ix + flags.input.offset)
+        ld (ix + flags.player_control.offset), flags.player_control.blue
+    .input.group_2_end:
 
     .pre_draw:
         call gfx.SwapDraw
 
     .update:
-        ld hl, angle
-        inc (hl)
+        ;ld ix, flags
 
-        ld a, (flags.input)
-        ld hl, player_heart.location_y
-        ld b, (hl)
+        ; Blue heart
+        ld a, flags.player_control.blue
+        cp a, (ix + flags.player_control.offset)
+        call z, player.blue.update
 
-    .update_player_heart_down:
-        bit flags.input_down_bit, a
-        jp z, .update_player_heart_down_end
-        inc b
-    .update_player_heart_down_end:
-
-    .update_player_heart_up:
-        bit flags.input_up_bit, a
-        jp z, .update_player_heart_up_end
-        dec b
-    .update_player_heart_up_end:
-        ld (hl), b
-
-        inc hl ; hl = player_heart.location_x
-        ld de, (hl)
-
-    .update_player_heart_left:
-        bit flags.input_left_bit, a
-        jp z, .update_player_heart_left_end
-        dec de
-    .update_player_heart_left_end:
-
-    .update_player_heart_right:
-        bit flags.input_right_bit, a
-        jp z, .update_player_heart_right_end
-        inc de
-    .update_player_heart_right_end:
-        ld (hl), de
+        ; Red heart
+        ld a, flags.player_control.red
+        cp a, (ix + flags.player_control.offset)
+        call z, player.red.update
 
     .draw:
         call gfx.ZeroScreen
 
-        ; Player heart
-        ld hl, player_heart.location_y
-        ld e, (hl)
-        push de ; y
-        inc hl
-        ld de, (hl)
-        push de ; x
-        ld hl, heart_red
-        push hl ; sprite
-        call gfx.Sprite_NoClip
-        pop hl, hl, hl
+        ; Already is set to flags
+        ;ld ix, flags
+
+        ld a, flags.player_control.red
+        cp a, (ix + flags.player_control.offset)
+        call z, player.red.draw
+
+        ld a, flags.player_control.blue
+        cp a, (ix + flags.player_control.offset)
+        call z, player.blue.draw
 
         ; Sans
         ld l, 45
         push hl ; y
             ld hl, 134
             push hl ; x
-                ld hl, sans
+                ld hl, sprites.sans
                 push hl ; sprite
                     call gfx.Sprite_NoClip
                 pop hl
@@ -103,7 +93,7 @@ game:
                 push hl ; y
                     ld hl, ti.lcdWidth - 128
                     push hl ; x
-                        ld hl, gaster_blaster
+                        ld hl, sprites.gaster_blaster
                         push hl ; 
                             call gfx.RotatedScaledTransparentSprite_NoClip
                         pop hl
@@ -118,16 +108,20 @@ angle:
     db 0
 
 flags:
-    .input_left_bit := ti.kbitLeft
-    .input_down_bit := ti.kbitDown
-    .input_right_bit := ti.kbitRight
-    .input_up_bit := ti.kbitUp
-    .input_use_bit := ti.kbit2nd
+    .input.left_bit  := ti.kbitLeft
+    .input.down_bit  := ti.kbitDown
+    .input.right_bit := ti.kbitRight
+    .input.up_bit    := ti.kbitUp
+    .input.use_bit   := 4
+    .input.back_bit  := 5
+    .input.offset    := $ - .
     .input:
         db 0
 
-player_heart:
-    .location_y:
-        db ti.lcdHeight - 64
-    .location_x:
-        dl ti.lcdWidth / 2
+    .player_control.dialog := 0
+    .player_control.menu   := 1
+    .player_control.red    := 2
+    .player_control.blue   := 3
+    .player_control.offset := $ - .
+    .player_control:
+        db .player_control.blue

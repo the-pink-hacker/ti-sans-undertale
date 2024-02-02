@@ -25,4 +25,5 @@ sans_undertale:
 
 include "src/libload.asm"
 include "src/game.asm"
+include "src/player.asm"
 include "src/sprites.asm"
