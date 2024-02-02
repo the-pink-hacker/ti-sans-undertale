@@ -3,4 +3,5 @@ heart_blue = "sprites/player/heart_blue.png"
 heart_red = "sprites/player/heart_red.png"
 
 [sans.sprites]
-sans = "sprites/sans.png"
+sans = "sprites/sans/sans.png"
+gaster_blaster = "sprites/sans/gaster_blaster.png"

@@ -56,11 +56,12 @@ gfx:
     libload_func .End, 1
     libload_func .SetDraw, 9
     libload_func .SwapDraw, 10
-    libload_func .Sprite_NoClip, 60
+    libload_func .Sprite_NoClip, 59
     libload_func .ZeroScreen, 76
+    libload_func .RotatedScaledTransparentSprite_NoClip, 90
 
 kb:
-    libload_header "KEYPADC", 2
+    libload_header "KEYPADC", 1
 
     libload_func .ScanGroup, 1
 
