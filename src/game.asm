@@ -6,6 +6,12 @@ box_thickness := 1 ; TODO: Make 3
 sans_x := 134
 sans_y := 31
 
+button_y := 214
+button_fight_x := 15
+button_act_x := 92
+button_item_x := 172
+button_mercy_x := 249
+
 game:
     .start:
         ld ix, flags
@@ -102,6 +108,47 @@ game:
                 pop hl
             pop hl
         pop hl, hl
+
+        ld l, button_y
+        push hl
+            ld bc, button_fight_x
+            push bc
+                ld de, sprites.button_fight
+                push de
+                    call gfx.Sprite_NoClip
+                pop de
+            pop bc
+        pop hl
+
+        push hl
+            ld bc, button_act_x
+            push bc
+                ld de, sprites.button_act
+                push de
+                    call gfx.Sprite_NoClip
+                pop de
+            pop bc
+        pop hl
+
+        push hl
+            ld bc, button_item_x
+            push bc
+                ld de, sprites.button_item
+                push de
+                    call gfx.Sprite_NoClip
+                pop de
+            pop bc
+        pop hl
+
+        push hl
+            ld bc, button_mercy_x
+            push bc
+                ld de, sprites.button_mercy
+                push de
+                    call gfx.Sprite_NoClip
+                pop de
+            pop bc
+        pop hl
 
         jp .loop
 

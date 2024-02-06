@@ -5,3 +5,9 @@ heart_red = "sprites/player/heart_red.png"
 [sans.sprites]
 sans = "sprites/sans/sans.png"
 gaster_blaster = "sprites/sans/gaster_blaster.png"
+
+[ui.sprites]
+button_fight = "sprites/ui/button_fight.png"
+button_act = "sprites/ui/button_act.png"
+button_item = "sprites/ui/button_item.png"
+button_mercy = "sprites/ui/button_mercy.png"
