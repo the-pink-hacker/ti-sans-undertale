@@ -46,8 +46,6 @@ game:
         call gfx.SwapDraw
 
     .update:
-        ;ld ix, flags
-
         ; Blue heart
         ld a, flags.player_control.blue
         cp a, (ix + flags.player_control.offset)
@@ -61,16 +59,13 @@ game:
     .draw:
         call gfx.ZeroScreen
 
-        ; Already is set to flags
-        ;ld ix, flags
+        ld a, flags.player_control.blue
+        cp a, (ix + flags.player_control.offset)
+        call z, player.blue.draw
 
         ld a, flags.player_control.red
         cp a, (ix + flags.player_control.offset)
         call z, player.red.draw
-
-        ld a, flags.player_control.blue
-        cp a, (ix + flags.player_control.offset)
-        call z, player.blue.draw
 
         ; Sans
         ld l, 45
@@ -84,23 +79,23 @@ game:
             pop hl
         pop hl
 
-        ld hl, 64
-        push hl ; scale
-            ld hl, angle
-            ld l, (hl)
-            push hl ; angle
-                ld l, 64
-                push hl ; y
-                    ld hl, ti.lcdWidth - 128
-                    push hl ; x
-                        ld hl, sprites.gaster_blaster
-                        push hl ; 
-                            call gfx.RotatedScaledTransparentSprite_NoClip
-                        pop hl
-                    pop hl
-                pop hl
-            pop hl
-        pop hl
+        ;ld hl, 64
+        ;push hl ; scale
+        ;    ld hl, angle
+        ;    ld l, (hl)
+        ;    push hl ; angle
+        ;        ld l, 64
+        ;        push hl ; y
+        ;            ld hl, ti.lcdWidth - 128
+        ;            push hl ; x
+        ;                ld hl, sprites.gaster_blaster
+        ;                push hl ; 
+        ;                    call gfx.RotatedScaledTransparentSprite_NoClip
+        ;                pop hl
+        ;            pop hl
+        ;        pop hl
+        ;    pop hl
+        ;pop hl
 
         jp .loop
 
@@ -108,6 +103,7 @@ angle:
     db 0
 
 flags:
+    ; Current keys being pressed
     .input.left_bit  := ti.kbitLeft
     .input.down_bit  := ti.kbitDown
     .input.right_bit := ti.kbitRight
@@ -118,10 +114,20 @@ flags:
     .input:
         db 0
 
+    ; The current input controller
     .player_control.dialog := 0
     .player_control.menu   := 1
     .player_control.red    := 2
     .player_control.blue   := 3
     .player_control.offset := $ - .
     .player_control:
-        db .player_control.blue
+        db .player_control.red
+
+    ; Which side of the player is being collided
+    .collision.left_bit  := 0
+    .collision.down_bit  := 1
+    .collision.right_bit := 2
+    .collision.up_bit    := 3
+    .collision.offset := $ - .
+    .collision:
+        db 0
