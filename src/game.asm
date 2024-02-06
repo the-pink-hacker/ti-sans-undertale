@@ -1,6 +1,19 @@
+box_x := 118
+box_y := 109
+box_size := 85
+box_thickness := 1 ; TODO: Make 3
+
+sans_x := 134
+sans_y := 31
+
 game:
     .start:
         ld ix, flags
+
+        ld l, $FF ; White
+        push hl ; color
+            call gfx.SetColor
+        pop hl
     .loop:
     .input:
         ld l, 6
@@ -68,9 +81,9 @@ game:
         call z, player.red.draw
 
         ; Sans
-        ld l, 45
+        ld l, sans_y
         push hl ; y
-            ld hl, 134
+            ld hl, sans_x
             push hl ; x
                 ld hl, sprites.sans
                 push hl ; sprite
@@ -79,28 +92,18 @@ game:
             pop hl
         pop hl
 
-        ;ld hl, 64
-        ;push hl ; scale
-        ;    ld hl, angle
-        ;    ld l, (hl)
-        ;    push hl ; angle
-        ;        ld l, 64
-        ;        push hl ; y
-        ;            ld hl, ti.lcdWidth - 128
-        ;            push hl ; x
-        ;                ld hl, sprites.gaster_blaster
-        ;                push hl ; 
-        ;                    call gfx.RotatedScaledTransparentSprite_NoClip
-        ;                pop hl
-        ;            pop hl
-        ;        pop hl
-        ;    pop hl
-        ;pop hl
+        ld hl, box_size
+        push hl, hl
+            ld l, box_y
+            push hl
+                ld hl, box_x
+                push hl
+                    call gfx.Rectangle_NoClip
+                pop hl
+            pop hl
+        pop hl, hl
 
         jp .loop
-
-angle:
-    db 0
 
 flags:
     ; Current keys being pressed

@@ -4,12 +4,12 @@ player.red.update:
 
     ld hl, player.heart.location_y
     push hl ; player
-        ld hl, $4040 ; 64, 64
+        ld hl, (box_size - (2 * box_thickness)) or ((box_size - (2 * box_thickness)) shl 8)
         push hl ; box_size
-            ld l, ti.lcdHeight - 64 - 32
+            ld l, box_y + box_thickness
             push hl ; box_y
-                ld hl, (ti.lcdWidth / 2) - (64 / 2)
-                push hl
+                ld hl, box_x + box_thickness
+                push hl ; box_x
                     call check_collision_inner_box
                 pop hl
             pop hl
