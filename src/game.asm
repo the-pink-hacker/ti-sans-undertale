@@ -160,8 +160,7 @@ flags:
     .input.up_bit    := ti.kbitUp
     .input.use_bit   := 4
     .input.back_bit  := 5
-    .input.offset    := $ - .
-    .input:
+    label_with_offset .input
         db 0
 
     ; The current input controller
@@ -169,8 +168,7 @@ flags:
     .player_control.menu   := 1
     .player_control.red    := 2
     .player_control.blue   := 3
-    .player_control.offset := $ - .
-    .player_control:
+    label_with_offset .player_control
         db .player_control.red
 
     ; Which side of the player is being collided
@@ -178,6 +176,5 @@ flags:
     .collision.down_bit  := 1
     .collision.right_bit := 2
     .collision.up_bit    := 3
-    .collision.offset := $ - .
-    .collision:
+    label_with_offset .collision
         db 0
