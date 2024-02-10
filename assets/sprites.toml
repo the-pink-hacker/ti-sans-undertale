@@ -4,7 +4,12 @@ heart_red = "sprites/player/heart_red.png"
 
 [sans.sprites]
 sans = "sprites/sans/sans.png"
-gaster_blaster = "sprites/sans/gaster_blaster.png"
+gaster_blaster_0 = "sprites/sans/gaster_blaster_0.png"
+gaster_blaster_1 = "sprites/sans/gaster_blaster_1.png"
+gaster_blaster_2 = "sprites/sans/gaster_blaster_2.png"
+gaster_blaster_3 = "sprites/sans/gaster_blaster_3.png"
+gaster_blaster_4 = "sprites/sans/gaster_blaster_4.png"
+gaster_blaster_5 = "sprites/sans/gaster_blaster_5.png"
 
 [ui.sprites]
 button_fight = "sprites/ui/button_fight.png"
