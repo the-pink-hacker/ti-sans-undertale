@@ -178,3 +178,7 @@ flags:
     .collision.up_bit    := 3
     label_with_offset .collision
         db 0
+
+    ; How many frames should a jump force be applied
+    label_with_offset .player_jump_counter
+        db 0

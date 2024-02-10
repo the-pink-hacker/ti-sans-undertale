@@ -38,7 +38,7 @@ player.red.update:
     
     ld (hl), b
 
-    inc hl ; hl = player.heart.location_x
+    inc hl ; *player.heart.location_x
     ld de, (hl)
 
     .input_left:

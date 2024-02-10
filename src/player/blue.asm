@@ -1,11 +1,11 @@
-jump_force := 16
+jump_amount := 32
 
 player.blue.update:
 ; ix = flags
     call reset_collision_flags
 
-    ld iy, player.heart
-    push iy ; player
+    ld hl, player.heart.location_y
+    push hl ; player
         ld hl, (box_size - (2 * box_thickness)) or ((box_size - (2 * box_thickness)) shl 8)
         push hl ; box_size
             ld l, box_y + box_thickness
@@ -16,52 +16,42 @@ player.blue.update:
                 pop hl
             pop hl
         pop hl
-    pop iy
+    pop hl
 
+    ld b, (hl) ; player.heart_location_y
 
-    .grounded:
+    .jump_trigger:
+        bit flags.input.up_bit, (ix + flags.input.offset)
+        jq z, .jump_trigger_end
         bit flags.collision.down_bit, (ix + flags.collision.offset)
-        jq z, .grounded_end
+        jq z, .jump_trigger_end
 
-        ld (iy + player.heart.velocity_y.offset), 0
+        ld (ix + flags.player_jump_counter.offset), jump_amount
+        jp .jump_force_condition_skip
+    .jump_trigger_end:
+
+    .jump_force:
+        ld a, (ix + flags.player_jump_counter.offset)
+        or a, a
+        jq z, .jump_force_end
+    .jump_force_condition_skip:
+        dec b
+        dec (ix + flags.player_jump_counter.offset)
         jp .gravity_end
-    .grounded_end:
+    .jump_force_end:
 
     .gravity:
-        ld a, 1
-        cp a, (iy + player.heart.velocity_y.offset)
-        jq c, .gravity_end
+        bit flags.collision.down_bit, (ix + flags.collision.offset)
+        jq nz, .gravity_end
 
-        inc (iy + player.heart.velocity_y.offset) ; Apply down velocity
+        inc b
     .gravity_end:
 
-    .input_up:
-        bit flags.input.up_bit, (ix + flags.input.offset)
-        jq z, .input_up_end
-        ld a, (ix + flags.collision.offset)
-        bit flags.collision.up_bit, a
-        jq z, .input_up_end
-        bit flags.collision.down_bit, a
-        jq nz, .input_up_end
 
-        ld (iy + player.heart.jump.offset), jump_force
-    .input_up_end:
-    
-    
-    .apply_jump_force:
-        ld a, (iy + player.heart.jump.offset)
-        or a, a
-        ld a, (iy + player.heart.location_y.offset)
-        jq z, .apply_jump_force_end
+    ld (hl), b
 
-        sub a, 5
-        dec (iy + player.heart.jump.offset)
-    .apply_jump_force_end:
-
-    add a, (iy + player.heart.velocity_y.offset)
-    ld (iy + player.heart.location_y.offset), a
-
-    ld hl, (iy + player.heart.location_x.offset)
+    inc hl ; *player.heart.location_x
+    ld de, (hl)
 
     .input_left:
         bit flags.input.left_bit, (ix + flags.input.offset)
@@ -69,7 +59,7 @@ player.blue.update:
         bit flags.collision.left_bit, (ix + flags.collision.offset)
         jq nz, .input_left_end
 
-        dec hl
+        dec de
     .input_left_end:
 
     .input_right:
@@ -78,10 +68,10 @@ player.blue.update:
         bit flags.collision.right_bit, (ix + flags.collision.offset)
         jq nz, .input_right_end
 
-        inc hl
+        inc de
     .input_right_end:
 
-    ld (iy + player.heart.location_x.offset), hl
+    ld (hl), de
 
     ret
 
