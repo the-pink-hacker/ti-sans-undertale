@@ -13,11 +13,14 @@ sans_undertale:
         call load_libload_libraries
         jq nz, failed_to_load_libs
 
+        call gaster_blaster.init
+
         call gfx.Begin
 
         call game.start
     .exit:
         call gfx.End
+        call gaster_blaster.exit
     .exit_safe:
         call ti.ClrScrnFull
         call ti.HomeUp
@@ -27,4 +30,5 @@ include "src/libload.asm"
 include "src/game.asm"
 include "src/player.asm"
 include "src/collisions.asm"
+include "src/attacks.asm"
 include "src/sprites.asm"

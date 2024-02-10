@@ -67,6 +67,13 @@ kb:
 
     libload_func .ScanGroup, 1
 
+io:
+    libload_header "FILEIOC", 2
+
+    libload_func .Open, 1
+    libload_func .Close, 3
+    libload_func .GetDataPtr, 18
+
     xor a, a      ; return z (loaded)
     pop hl      ; pop error return
     ret

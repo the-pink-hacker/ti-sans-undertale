@@ -1,6 +1,7 @@
 [env]
 BIN_PATH = "bin"
 OUT = "${BIN_PATH}/sans.8xp"
+OUT_GB = "${BIN_PATH}/sansgb.8xv"
 SPRITE_TABLE = "assets/sprites.toml"
 SPRITE_OUT_PATH = "src/generated/sprites/"
 ASSET_BUILDER_MANIFEST = "asset-builder/Cargo.toml"
@@ -26,10 +27,13 @@ args = [
 ]
 
 [tasks.sans]
-dependencies = ["bin", "sprites"]
+dependencies = ["bin", "sprites", "sans-gb"]
 command = "fasmg"
 args = ["src/main.asm", "${OUT}"]
 
+[tasks.sans-gb]
+command = "fasmg"
+args = ["src/gaster_blaster.asm", "${OUT_GB}"]
 
 [tasks.clean_asset_builder]
 command = "cargo"
