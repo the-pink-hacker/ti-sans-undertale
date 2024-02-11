@@ -22,12 +22,14 @@ player.blue.update:
 
     .jump_trigger:
         bit flags.input.up_bit, (ix + flags.input.offset)
-        jq z, .jump_trigger_end
+        jq z, .jump_trigger_cancel
         bit flags.collision.down_bit, (ix + flags.collision.offset)
         jq z, .jump_trigger_end
 
         ld (ix + flags.player_jump_counter.offset), jump_amount
         jp .jump_force_condition_skip
+    .jump_trigger_cancel:
+        ld (ix + flags.player_jump_counter.offset), 0
     .jump_trigger_end:
 
     .jump_force:
