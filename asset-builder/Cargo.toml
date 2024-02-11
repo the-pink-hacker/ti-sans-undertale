@@ -9,6 +9,8 @@ edition = "2021"
 anyhow = "1.0.75"
 clap = { version = "4.4.4", features = ["derive"] }
 image = { version = "0.24.7", default-features = false, features = ["png"] }
+imageproc = { version = "0.23.0", default-features = false }
 linked-hash-map = { version = "0.5.6", features = ["serde", "serde_impl"] }
 serde = { version = "1.0.188", features = ["derive"] }
+serde_valid = { version = "0.18.0", features = ["serde_toml", "toml"] }
 toml = "0.8.1"
