@@ -99,7 +99,7 @@ game:
         pop hl
 
     .draw.box:
-        ld b, 3
+        ld b, box_thickness
         ld hl, box_size
         ld e, box_y
         ld iy, box_x
