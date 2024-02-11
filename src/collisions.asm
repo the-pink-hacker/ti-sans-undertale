@@ -27,7 +27,7 @@ check_collision_inner_box:
         ld c, a
 
         ld a, b ; player.y
-        add a, 8
+        add a, sprites.heart_red.height
 
         ; player.y + player_size < box_y + box_size.y
         cp a, c
@@ -62,7 +62,7 @@ check_collision_inner_box:
         ld hl, (iy + 12) ; *player.y
         inc hl ; *player.x
         ld hl, (hl)
-        ld bc, 8 ; player_size
+        ld bc, sprites.heart_red.width
         add hl, bc ; player.x + player_size
                    ; Resets carry
                    ; unless the player's x is greater than 16_777_208.

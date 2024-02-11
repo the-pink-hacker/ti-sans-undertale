@@ -67,7 +67,13 @@ pub fn generate_sprite(
         let width = sprite_png.width();
         let height = sprite_png.height();
 
-        output += &format!("\n{}:\ndb {}, {}", sprite_suffix, width, height);
+        output += &format!(
+            "\n{}:\n\
+            .width := {}\n\
+            .height := {}\n\
+            db .width, .height",
+            sprite_suffix, width, height
+        );
 
         let pixels = sprite_png
             .to_rgb8()
