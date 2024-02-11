@@ -1,7 +1,7 @@
 box_x := 118
 box_y := 109
 box_size := 85
-box_thickness := 1 ; TODO: Make 3
+box_thickness := 3
 
 sans_x := 134
 sans_y := 31
@@ -98,16 +98,30 @@ game:
             pop hl
         pop hl
 
+    .draw.box:
+        ld b, 3
         ld hl, box_size
-        push hl, hl
-            ld l, box_y
-            push hl
-                ld hl, box_x
-                push hl
-                    call gfx.Rectangle_NoClip
-                pop hl
-            pop hl
-        pop hl, hl
+        ld e, box_y
+        ld iy, box_x
+    .draw.box.loop:
+        push bc
+            push hl, hl
+                push de
+                    push iy
+                        call gfx.Rectangle_NoClip
+                    pop iy
+                pop de
+            pop hl, hl
+        pop bc
+
+        dec l ; box_size + 2
+        dec l ; Save some cycles by not increasing hl
+
+        inc e ; box_y + 1
+        inc iy ; box_x - 1
+
+        djnz .draw.box.loop
+    .draw.box_end:
 
         ld l, button_y
         push hl
@@ -151,6 +165,7 @@ game:
         pop hl
 
         jp .loop
+
 
 flags:
     ; Current keys being pressed
