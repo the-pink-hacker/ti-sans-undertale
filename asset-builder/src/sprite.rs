@@ -44,6 +44,7 @@ impl Sprite {
 pub struct SpriteMetadata {
     pub sprites: LinkedHashMap<String, Sprite>,
     pub pointer_table: Option<PointerTable>,
+    pub rotation: Option<f32>,
 }
 
 pub fn load_sprite_metadata(
@@ -61,6 +62,25 @@ fn compress_color_space(rgb: [u8; 3]) -> String {
     let pixel = red | green | blue;
 
     format!("${:x}", pixel).to_uppercase()
+}
+
+fn add_option<T>(a: Option<T>, b: Option<T>) -> Option<T>
+where
+    T: std::ops::Add<Output = T>,
+{
+    if let Some(a) = a {
+        if let Some(b) = b {
+            Some(a + b)
+        } else {
+            Some(a)
+        }
+    } else {
+        if let Some(b) = b {
+            Some(b)
+        } else {
+            None
+        }
+    }
 }
 
 pub fn generate_sprite(
@@ -109,7 +129,7 @@ pub fn generate_sprite(
             sprite_suffix, width, height
         );
 
-        let pixels = if let Some(rotation) = sprite.rotation {
+        let pixels = if let Some(rotation) = add_option(sprite.rotation, metadata.rotation) {
             imageproc::geometric_transformations::rotate_about_center(
                 &sprite_data.to_rgb8(),
                 rotation.to_radians(),
