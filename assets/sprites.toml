@@ -4,15 +4,489 @@ heart_red = "sprites/player/heart_red.png"
 
 [sans.sprites]
 sans = "sprites/sans/sans.png"
-gaster_blaster_0 = "sprites/sans/gaster_blaster_0.png"
-gaster_blaster_1 = "sprites/sans/gaster_blaster_1.png"
-gaster_blaster_2 = "sprites/sans/gaster_blaster_2.png"
-gaster_blaster_3 = "sprites/sans/gaster_blaster_3.png"
-gaster_blaster_4 = "sprites/sans/gaster_blaster_4.png"
-gaster_blaster_5 = "sprites/sans/gaster_blaster_5.png"
 
 [ui.sprites]
 button_fight = "sprites/ui/button_fight.png"
 button_act = "sprites/ui/button_act.png"
 button_item = "sprites/ui/button_item.png"
 button_mercy = "sprites/ui/button_mercy.png"
+
+[gaster_blaster_0.sprites.gaster_blaster_0_0]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 0
+
+[gaster_blaster_0.sprites.gaster_blaster_0_1]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 18
+
+[gaster_blaster_0.sprites.gaster_blaster_0_2]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 36
+
+[gaster_blaster_0.sprites.gaster_blaster_0_3]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 54
+
+[gaster_blaster_0.sprites.gaster_blaster_0_4]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 72
+
+[gaster_blaster_0.sprites.gaster_blaster_0_5]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 90
+
+[gaster_blaster_0.sprites.gaster_blaster_0_6]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 108
+
+[gaster_blaster_0.sprites.gaster_blaster_0_7]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 126
+
+[gaster_blaster_0.sprites.gaster_blaster_0_8]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 144
+
+[gaster_blaster_0.sprites.gaster_blaster_0_9]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 162
+
+[gaster_blaster_0.sprites.gaster_blaster_0_10]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 180
+
+[gaster_blaster_0.sprites.gaster_blaster_0_11]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 198
+
+[gaster_blaster_0.sprites.gaster_blaster_0_12]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 216
+
+[gaster_blaster_0.sprites.gaster_blaster_0_13]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 234
+
+[gaster_blaster_0.sprites.gaster_blaster_0_14]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 252
+
+[gaster_blaster_0.sprites.gaster_blaster_0_15]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 270
+
+[gaster_blaster_0.sprites.gaster_blaster_0_16]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 288
+
+[gaster_blaster_0.sprites.gaster_blaster_0_17]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 306
+
+[gaster_blaster_0.sprites.gaster_blaster_0_18]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 324
+
+[gaster_blaster_0.sprites.gaster_blaster_0_19]
+path = "sprites/sans/gaster_blaster_0.png"
+rotation = 342
+
+[gaster_blaster_1.sprites.gaster_blaster_1_0]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 0
+
+[gaster_blaster_1.sprites.gaster_blaster_1_1]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 18
+
+[gaster_blaster_1.sprites.gaster_blaster_1_2]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 36
+
+[gaster_blaster_1.sprites.gaster_blaster_1_3]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 54
+
+[gaster_blaster_1.sprites.gaster_blaster_1_4]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 72
+
+[gaster_blaster_1.sprites.gaster_blaster_1_5]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 90
+
+[gaster_blaster_1.sprites.gaster_blaster_1_6]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 108
+
+[gaster_blaster_1.sprites.gaster_blaster_1_7]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 126
+
+[gaster_blaster_1.sprites.gaster_blaster_1_8]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 144
+
+[gaster_blaster_1.sprites.gaster_blaster_1_9]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 162
+
+[gaster_blaster_1.sprites.gaster_blaster_1_10]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 180
+
+[gaster_blaster_1.sprites.gaster_blaster_1_11]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 198
+
+[gaster_blaster_1.sprites.gaster_blaster_1_12]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 216
+
+[gaster_blaster_1.sprites.gaster_blaster_1_13]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 234
+
+[gaster_blaster_1.sprites.gaster_blaster_1_14]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 252
+
+[gaster_blaster_1.sprites.gaster_blaster_1_15]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 270
+
+[gaster_blaster_1.sprites.gaster_blaster_1_16]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 288
+
+[gaster_blaster_1.sprites.gaster_blaster_1_17]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 306
+
+[gaster_blaster_1.sprites.gaster_blaster_1_18]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 324
+
+[gaster_blaster_1.sprites.gaster_blaster_1_19]
+path = "sprites/sans/gaster_blaster_1.png"
+rotation = 342
+
+[gaster_blaster_2.sprites.gaster_blaster_2_0]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 0
+
+[gaster_blaster_2.sprites.gaster_blaster_2_1]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 18
+
+[gaster_blaster_2.sprites.gaster_blaster_2_2]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 36
+
+[gaster_blaster_2.sprites.gaster_blaster_2_3]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 54
+
+[gaster_blaster_2.sprites.gaster_blaster_2_4]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 72
+
+[gaster_blaster_2.sprites.gaster_blaster_2_5]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 90
+
+[gaster_blaster_2.sprites.gaster_blaster_2_6]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 108
+
+[gaster_blaster_2.sprites.gaster_blaster_2_7]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 126
+
+[gaster_blaster_2.sprites.gaster_blaster_2_8]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 144
+
+[gaster_blaster_2.sprites.gaster_blaster_2_9]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 162
+
+[gaster_blaster_2.sprites.gaster_blaster_2_10]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 180
+
+[gaster_blaster_2.sprites.gaster_blaster_2_11]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 198
+
+[gaster_blaster_2.sprites.gaster_blaster_2_12]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 216
+
+[gaster_blaster_2.sprites.gaster_blaster_2_13]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 234
+
+[gaster_blaster_2.sprites.gaster_blaster_2_14]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 252
+
+[gaster_blaster_2.sprites.gaster_blaster_2_15]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 270
+
+[gaster_blaster_2.sprites.gaster_blaster_2_16]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 288
+
+[gaster_blaster_2.sprites.gaster_blaster_2_17]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 306
+
+[gaster_blaster_2.sprites.gaster_blaster_2_18]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 324
+
+[gaster_blaster_2.sprites.gaster_blaster_2_19]
+path = "sprites/sans/gaster_blaster_2.png"
+rotation = 342
+
+[gaster_blaster_3.sprites.gaster_blaster_3_0]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 0
+
+[gaster_blaster_3.sprites.gaster_blaster_3_1]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 18
+
+[gaster_blaster_3.sprites.gaster_blaster_3_2]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 36
+
+[gaster_blaster_3.sprites.gaster_blaster_3_3]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 54
+
+[gaster_blaster_3.sprites.gaster_blaster_3_4]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 72
+
+[gaster_blaster_3.sprites.gaster_blaster_3_5]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 90
+
+[gaster_blaster_3.sprites.gaster_blaster_3_6]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 108
+
+[gaster_blaster_3.sprites.gaster_blaster_3_7]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 126
+
+[gaster_blaster_3.sprites.gaster_blaster_3_8]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 144
+
+[gaster_blaster_3.sprites.gaster_blaster_3_9]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 162
+
+[gaster_blaster_3.sprites.gaster_blaster_3_10]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 180
+
+[gaster_blaster_3.sprites.gaster_blaster_3_11]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 198
+
+[gaster_blaster_3.sprites.gaster_blaster_3_12]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 216
+
+[gaster_blaster_3.sprites.gaster_blaster_3_13]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 234
+
+[gaster_blaster_3.sprites.gaster_blaster_3_14]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 252
+
+[gaster_blaster_3.sprites.gaster_blaster_3_15]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 270
+
+[gaster_blaster_3.sprites.gaster_blaster_3_16]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 288
+
+[gaster_blaster_3.sprites.gaster_blaster_3_17]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 306
+
+[gaster_blaster_3.sprites.gaster_blaster_3_18]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 324
+
+[gaster_blaster_3.sprites.gaster_blaster_3_19]
+path = "sprites/sans/gaster_blaster_3.png"
+rotation = 342
+
+[gaster_blaster_4.sprites.gaster_blaster_4_0]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 0
+
+[gaster_blaster_4.sprites.gaster_blaster_4_1]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 18
+
+[gaster_blaster_4.sprites.gaster_blaster_4_2]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 36
+
+[gaster_blaster_4.sprites.gaster_blaster_4_3]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 54
+
+[gaster_blaster_4.sprites.gaster_blaster_4_4]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 72
+
+[gaster_blaster_4.sprites.gaster_blaster_4_5]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 90
+
+[gaster_blaster_4.sprites.gaster_blaster_4_6]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 108
+
+[gaster_blaster_4.sprites.gaster_blaster_4_7]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 126
+
+[gaster_blaster_4.sprites.gaster_blaster_4_8]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 144
+
+[gaster_blaster_4.sprites.gaster_blaster_4_9]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 162
+
+[gaster_blaster_4.sprites.gaster_blaster_4_10]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 180
+
+[gaster_blaster_4.sprites.gaster_blaster_4_11]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 198
+
+[gaster_blaster_4.sprites.gaster_blaster_4_12]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 216
+
+[gaster_blaster_4.sprites.gaster_blaster_4_13]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 234
+
+[gaster_blaster_4.sprites.gaster_blaster_4_14]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 252
+
+[gaster_blaster_4.sprites.gaster_blaster_4_15]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 270
+
+[gaster_blaster_4.sprites.gaster_blaster_4_16]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 288
+
+[gaster_blaster_4.sprites.gaster_blaster_4_17]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 306
+
+[gaster_blaster_4.sprites.gaster_blaster_4_18]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 324
+
+[gaster_blaster_4.sprites.gaster_blaster_4_19]
+path = "sprites/sans/gaster_blaster_4.png"
+rotation = 342
+
+[gaster_blaster_5.sprites.gaster_blaster_5_0]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 0
+
+[gaster_blaster_5.sprites.gaster_blaster_5_1]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 18
+
+[gaster_blaster_5.sprites.gaster_blaster_5_2]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 36
+
+[gaster_blaster_5.sprites.gaster_blaster_5_3]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 54
+
+[gaster_blaster_5.sprites.gaster_blaster_5_4]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 72
+
+[gaster_blaster_5.sprites.gaster_blaster_5_5]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 90
+
+[gaster_blaster_5.sprites.gaster_blaster_5_6]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 108
+
+[gaster_blaster_5.sprites.gaster_blaster_5_7]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 126
+
+[gaster_blaster_5.sprites.gaster_blaster_5_8]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 144
+
+[gaster_blaster_5.sprites.gaster_blaster_5_9]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 162
+
+[gaster_blaster_5.sprites.gaster_blaster_5_10]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 180
+
+[gaster_blaster_5.sprites.gaster_blaster_5_11]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 198
+
+[gaster_blaster_5.sprites.gaster_blaster_5_12]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 216
+
+[gaster_blaster_5.sprites.gaster_blaster_5_13]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 234
+
+[gaster_blaster_5.sprites.gaster_blaster_5_14]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 252
+
+[gaster_blaster_5.sprites.gaster_blaster_5_15]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 270
+
+[gaster_blaster_5.sprites.gaster_blaster_5_16]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 288
+
+[gaster_blaster_5.sprites.gaster_blaster_5_17]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 306
+
+[gaster_blaster_5.sprites.gaster_blaster_5_18]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 324
+
+[gaster_blaster_5.sprites.gaster_blaster_5_19]
+path = "sprites/sans/gaster_blaster_5.png"
+rotation = 342

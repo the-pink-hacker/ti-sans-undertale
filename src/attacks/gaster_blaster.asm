@@ -27,7 +27,7 @@ gaster_blaster.init:
     ret
 
     .name:
-        db "SANSGB", 0
+        db "SANSGB0", 0
     .mode:
         db "r", 0
 
@@ -38,7 +38,7 @@ gaster_blaster.init:
 
         jp sans_undertale.exit_safe
     .failed.text:
-        db "Couldn't find asset: GB", 0
+        db "Couldn't find asset: GB0", 0
 
 gaster_blaster.exit:
     ld hl, gaster_blaster.file

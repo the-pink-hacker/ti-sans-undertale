@@ -1,7 +1,12 @@
 [env]
 BIN_PATH = "bin"
 OUT = "${BIN_PATH}/sans.8xp"
-OUT_GB = "${BIN_PATH}/sansgb.8xv"
+OUT_GB0 = "${BIN_PATH}/sansgb0.8xv"
+OUT_GB1 = "${BIN_PATH}/sansgb1.8xv"
+OUT_GB2 = "${BIN_PATH}/sansgb2.8xv"
+OUT_GB3 = "${BIN_PATH}/sansgb3.8xv"
+OUT_GB4 = "${BIN_PATH}/sansgb4.8xv"
+OUT_GB5 = "${BIN_PATH}/sansgb5.8xv"
 SPRITE_TABLE = "assets/sprites.toml"
 SPRITE_OUT_PATH = "src/generated/sprites/"
 ASSET_BUILDER_MANIFEST = "asset-builder/Cargo.toml"
@@ -27,13 +32,42 @@ args = [
 ]
 
 [tasks.sans]
-dependencies = ["bin", "sprites", "sans-gb"]
+dependencies = [
+  "bin",
+  "sprites",
+  "sans-gb0",
+  "sans-gb1",
+  "sans-gb2",
+  "sans-gb3",
+  "sans-gb4",
+  "sans-gb5",
+]
 command = "fasmg"
 args = ["src/main.asm", "${OUT}"]
 
-[tasks.sans-gb]
+[tasks.sans-gb0]
 command = "fasmg"
-args = ["src/gaster_blaster.asm", "${OUT_GB}"]
+args = ["src/gaster_blaster_0.asm", "${OUT_GB0}"]
+
+[tasks.sans-gb1]
+command = "fasmg"
+args = ["src/gaster_blaster_1.asm", "${OUT_GB1}"]
+
+[tasks.sans-gb2]
+command = "fasmg"
+args = ["src/gaster_blaster_2.asm", "${OUT_GB2}"]
+
+[tasks.sans-gb3]
+command = "fasmg"
+args = ["src/gaster_blaster_3.asm", "${OUT_GB3}"]
+
+[tasks.sans-gb4]
+command = "fasmg"
+args = ["src/gaster_blaster_4.asm", "${OUT_GB4}"]
+
+[tasks.sans-gb5]
+command = "fasmg"
+args = ["src/gaster_blaster_5.asm", "${OUT_GB5}"]
 
 [tasks.clean_asset_builder]
 command = "cargo"

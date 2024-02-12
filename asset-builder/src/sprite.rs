@@ -64,25 +64,6 @@ fn compress_color_space(rgb: [u8; 3]) -> String {
     format!("${:x}", pixel).to_uppercase()
 }
 
-fn add_option<T>(a: Option<T>, b: Option<T>) -> Option<T>
-where
-    T: std::ops::Add<Output = T>,
-{
-    if let Some(a) = a {
-        if let Some(b) = b {
-            Some(a + b)
-        } else {
-            Some(a)
-        }
-    } else {
-        if let Some(b) = b {
-            Some(b)
-        } else {
-            None
-        }
-    }
-}
-
 pub fn generate_sprite(
     sprite_path: &PathBuf,
     out_path: &PathBuf,
@@ -129,7 +110,8 @@ pub fn generate_sprite(
             sprite_suffix, width, height
         );
 
-        let pixels = if let Some(rotation) = add_option(sprite.rotation, metadata.rotation) {
+        let rotation = sprite.rotation.unwrap_or_default() + sprite.rotation.unwrap_or_default();
+        let pixels = if rotation != 0.0 {
             imageproc::geometric_transformations::rotate_about_center(
                 &sprite_data.to_rgb8(),
                 rotation.to_radians(),
