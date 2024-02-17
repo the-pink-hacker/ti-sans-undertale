@@ -10,6 +10,12 @@ button_fight = "sprites/ui/button_fight.png"
 button_act = "sprites/ui/button_act.png"
 button_item = "sprites/ui/button_item.png"
 button_mercy = "sprites/ui/button_mercy.png"
+attack_meter_left = "sprites/ui/attack_meter_left.png"
+attack_meter_right = "sprites/ui/attack_meter_right.png"
+game_over = "sprites/ui/game_over.png"
+speach_box = "sprites/ui/speach_box.png"
+bones_horizontal = "sprites/attacks/bones_horizontal.png"
+bones_vertical = "sprites/attacks/bones_vertical.png"
 
 [gaster_blaster_0.sprites.gaster_blaster_0_0]
 path = "sprites/sans/gaster_blaster_0.png"
