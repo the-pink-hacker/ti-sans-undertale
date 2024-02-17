@@ -75,6 +75,22 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.update
 
+        ld hl, (gb_debug)
+        inc l ; frame + 1
+        ld a, gaster_blaster.frames - 1
+        cp a, l
+        jq nz, .update.test
+
+        ld l, 0
+        inc h
+        ld a, gaster_blaster.rotations - 1
+        cp a, h
+        jq nz, .update.test
+
+        ld h, 0
+    .update.test:
+        ld (gb_debug), hl
+
     .draw:
         call gfx.ZeroScreen
 
@@ -98,27 +114,38 @@ game:
             pop hl
         pop hl
 
+        ld de, (gb_debug)
+        push de
+            call gaster_blaster.get_sprite
+        pop de
+        ld de, 0
+        push de, de
+            push hl
+                call gfx.Sprite_NoClip
+            pop hl
+        pop de, de
+
     .draw.box:
         ld b, box_thickness
         ld hl, box_size
-        ld e, box_y
-        ld iy, box_x
+        ld c, box_y
+        ld de, box_x
     .draw.box.loop:
         push bc
             push hl, hl
-                push de
-                    push iy
+                push bc ; box_y
+                    push de
                         call gfx.Rectangle_NoClip
-                    pop iy
-                pop de
+                    pop de
+                pop bc
             pop hl, hl
         pop bc
 
         dec l ; box_size + 2
         dec l ; Save some cycles by not increasing hl
 
-        inc e ; box_y + 1
-        inc iy ; box_x - 1
+        inc c ; box_y + 1
+        inc de ; box_x - 1
 
         djnz .draw.box.loop
     .draw.box_end:
@@ -166,6 +193,8 @@ game:
 
         jp .loop
 
+gb_debug:
+    dl 0
 
 flags:
     ; Current keys being pressed

@@ -70,7 +70,7 @@ check_collision_inner_box:
 
         ; player.x + player_size < box_x + box_size.x
         sbc hl, de
-        jq c, .right_end
+        ret c
 
         set flags.collision.right_bit, (ix + flags.collision.offset)
     .right_end:

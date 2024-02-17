@@ -20,7 +20,6 @@ sans_undertale:
         call game.start
     .exit:
         call gfx.End
-        call gaster_blaster.exit
     .exit_safe:
         call ti.ClrScrnFull
         call ti.HomeUp

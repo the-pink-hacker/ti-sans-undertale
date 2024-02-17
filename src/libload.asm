@@ -60,7 +60,6 @@ gfx:
     libload_func .Rectangle_NoClip, 41
     libload_func .Sprite_NoClip, 59
     libload_func .ZeroScreen, 76
-    libload_func .RotatedScaledTransparentSprite_NoClip, 90
 
 kb:
     libload_header "KEYPADC", 1
