@@ -2,7 +2,10 @@ include "include/ez80.inc"
 include "include/ti84pceg.inc"
 include "include/tiformat.inc"
 include "include/macros.inc"
+include "include/math.inc"
 format ti executable "SANS"
+
+TRIG_ITERATIONS := 8
 
 sans_undertale:
     .main:
@@ -24,6 +27,7 @@ sans_undertale:
         call ti.ClrScrnFull
         call ti.HomeUp
         jp ti.DrawStatusBar
+
 
 include "src/libload.asm"
 include "src/game.asm"

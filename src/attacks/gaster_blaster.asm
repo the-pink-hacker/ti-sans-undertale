@@ -1,11 +1,24 @@
 gaster_blaster:
     .frames := 6
     .rotations := 20
-
-gaster_blaster.offsets:
-    repeat gaster_blaster.rotations
-        dl (% - 1) * (56 * 56 + 2)
-    end repeat
+    .circle_radius := 50
+    .size := 56
+    .center_x := box_x + (box_size - .size) / 2 + box_thickness
+    .center_y := box_y + (box_size - .size) / 2 + box_thickness
+    .offsets:
+        repeat .rotations, index: 0
+            dl index * (.size * .size + 2)
+        end repeat
+    .locations:
+        repeat .rotations, index: 0
+            ; Y
+            radians = ((%% - index) * 2.0 * PI) / .rotations
+            cos radians, TRIG_ITERATIONS
+            db .center_y - trunc (result * .circle_radius)
+            ; X
+            sin radians, TRIG_ITERATIONS
+            dl .center_x + trunc (result * .circle_radius)
+        end repeat
 
 gaster_blaster.get_sprite:
 ; Arguments:
@@ -36,164 +49,67 @@ gaster_blaster.get_sprite:
     add hl, de ; *sprite
     ret
 
+gaster_blaster.get_location:
+; Arguments:
+;   c: rotation u8 
+; Return:
+;   de: x u24
+;   c:  y u8
+; Destroyes:
+;   bc
+;   hl
+    ld b, 4
+    mlt bc ; 4 * rotation
+
+    ld hl, gaster_blaster.locations
+    add hl, bc ; *gaster_blaster.locations[rotation]
+    
+    ld c, (hl) ; y
+    inc hl ; *x
+    ld de, (hl) ; x
+    ret
+
 ; Overwrites the code to save on space
 ; It *should* be fine
 gaster_blaster.file_pointers:
-    .offset_0 := 3 * 0
-    .offset_1 := 3 * 1
-    .offset_2 := 3 * 2
-    .offset_3 := 3 * 3
-    .offset_4 := 3 * 4
-    .offset_5 := 3 * 5
+    repeat gaster_blaster.frames, index: 0
+        .offset_#index := 3 * index
+    end repeat
+
 gaster_blaster.init:
     ld ix, gaster_blaster.file_pointers
 
-    ld bc, .mode
-    push bc ; mode
-        ld hl, .name_0
-        push hl ; name
-            call io.Open
-        pop hl
-    pop bc
-
-    or a, a
-    jq z, .failed
-
-    ld c, a
-    push bc
-        call io.GetDataPtr
-    pop bc
-
-    ld (ix + gaster_blaster.file_pointers.offset_0), hl
-
-    push bc
-        call io.Close
-    pop bc
-
-    ld bc, .mode
-    push bc ; mode
-        ld hl, .name_1
-        push hl ; name
-            call io.Open
-        pop hl
-    pop bc
-
-    or a, a
-    jq z, .failed
-
-    ld c, a
-    push bc
-        call io.GetDataPtr
-    pop bc
-
-    ld (ix + gaster_blaster.file_pointers.offset_1), hl
-
-    push bc
-        call io.Close
-    pop bc
-
-    ld bc, .mode
-    push bc ; mode
-        ld hl, .name_2
-        push hl ; name
-            call io.Open
-        pop hl
-    pop bc
-
-    or a, a
-    jq z, .failed
-
-    ld c, a
-    push bc
-        call io.GetDataPtr
-    pop bc
-
-    ld (ix + gaster_blaster.file_pointers.offset_2), hl
-
-    push bc
-        call io.Close
-    pop bc
-
-    ld bc, .mode
-    push bc ; mode
-        ld hl, .name_3
-        push hl ; name
-            call io.Open
-        pop hl
-    pop bc
-
-    or a, a
-    jq z, .failed
-
-    ld c, a
-    push bc
-        call io.GetDataPtr
-    pop bc
-
-    ld (ix + gaster_blaster.file_pointers.offset_3), hl
-
-    push bc
-        call io.Close
-    pop bc
-
-    ld bc, .mode
-    push bc ; mode
-        ld hl, .name_4
-        push hl ; name
-            call io.Open
-        pop hl
-    pop bc
-
-    or a, a
-    jq z, .failed
-
-    ld c, a
-    push bc
-        call io.GetDataPtr
-    pop bc
-
-    ld (ix + gaster_blaster.file_pointers.offset_4), hl
-
-    push bc
-        call io.Close
-    pop bc
-
-    ld bc, .mode
-    push bc ; mode
-        ld hl, .name_5
-        push hl ; name
-            call io.Open
-        pop hl
-    pop bc
-
-    or a, a
-    jq z, .failed
-
-    ld c, a
-    push bc
-        call io.GetDataPtr
-    pop bc
-
-    ld (ix + gaster_blaster.file_pointers.offset_5), hl
-
-    push bc
-        call io.Close
-    pop bc
+    repeat gaster_blaster.frames, index: 0
+        ld bc, .mode
+        push bc ; mode
+            ld hl, .name_#index
+            push hl ; name
+                call io.Open
+            pop hl
+        pop bc
+        
+        or a, a
+        jq z, .failed
+        
+        ld c, a
+        push bc
+            call io.GetDataPtr
+        ;pop bc
+        
+        ld (ix + gaster_blaster.file_pointers.offset_#index), hl
+        
+        ;push bc
+            call io.Close
+        pop bc
+    end repeat
 
     ret
 
-    .name_0:
-        db "SANSGB0", 0
-    .name_1:
-        db "SANSGB1", 0
-    .name_2:
-        db "SANSGB2", 0
-    .name_3:
-        db "SANSGB3", 0
-    .name_4:
-        db "SANSGB4", 0
-    .name_5:
-        db "SANSGB5", 0
+    repeat gaster_blaster.frames, index: 0
+        .name_#index:
+            db "SANSGB", `index, 0
+    end repeat
+
     .mode:
         db "r", 0
 

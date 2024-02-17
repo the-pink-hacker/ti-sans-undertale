@@ -110,7 +110,8 @@ pub fn generate_sprite(
             sprite_suffix, width, height
         );
 
-        let rotation = sprite.rotation.unwrap_or_default() + metadata.rotation.unwrap_or_default();
+        let rotation =
+            -1.0 * sprite.rotation.unwrap_or_default() + metadata.rotation.unwrap_or_default();
         let pixels = if rotation != 0.0 {
             imageproc::geometric_transformations::rotate_about_center(
                 &sprite_data.to_rgb8(),

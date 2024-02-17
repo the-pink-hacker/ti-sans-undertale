@@ -59,6 +59,7 @@ gfx:
     libload_func .SwapDraw, 10
     libload_func .Rectangle_NoClip, 41
     libload_func .Sprite_NoClip, 59
+    libload_func .TransparentSprite_NoClip, 60
     libload_func .ZeroScreen, 76
 
 kb:

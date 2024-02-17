@@ -1,6 +1,6 @@
-box_x := 118
+box_x := 117
 box_y := 109
-box_size := 85
+box_size := 86
 box_thickness := 3
 
 sans_x := 134
@@ -118,12 +118,19 @@ game:
         push de
             call gaster_blaster.get_sprite
         pop de
-        ld de, 0
-        push de, de
-            push hl
-                call gfx.Sprite_NoClip
-            pop hl
-        pop de, de
+        
+        push hl
+            ld c, d
+            call gaster_blaster.get_location
+        pop hl
+
+        push bc ; y
+            push de ; x
+                push hl ; sprite
+                    call gfx.TransparentSprite_NoClip
+                pop hl
+            pop de
+        pop bc
 
     .draw.box:
         ld b, box_thickness
