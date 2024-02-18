@@ -7,6 +7,7 @@ OUT_GB2 = "${BIN_PATH}/sansgb2.8xv"
 OUT_GB3 = "${BIN_PATH}/sansgb3.8xv"
 OUT_GB4 = "${BIN_PATH}/sansgb4.8xv"
 OUT_GB5 = "${BIN_PATH}/sansgb5.8xv"
+OUT_FONT = "${BIN_PATH}/sansfntc.8xv"
 SPRITE_TABLE = "assets/sprites.toml"
 SPRITE_OUT_PATH = "src/generated/sprites/"
 ASSET_BUILDER_MANIFEST = "asset-builder/Cargo.toml"
@@ -41,6 +42,7 @@ dependencies = [
   "sans-gb3",
   "sans-gb4",
   "sans-gb5",
+  "font",
 ]
 command = "fasmg"
 args = ["src/main.asm", "${OUT}"]
@@ -68,6 +70,10 @@ args = ["src/gaster_blaster_4.asm", "${OUT_GB4}"]
 [tasks.sans-gb5]
 command = "fasmg"
 args = ["src/gaster_blaster_5.asm", "${OUT_GB5}"]
+
+[tasks.font]
+command = "fasmg"
+args = ["src/font_comic.asm", "${OUT_FONT}"]
 
 [tasks.clean_asset_builder]
 command = "cargo"
