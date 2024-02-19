@@ -221,7 +221,7 @@ pub fn generate_binary_file(
     sprite_collection_name: &str,
     metadata: &SpriteMetadata,
 ) -> anyhow::Result<()> {
-    let mut output = Vec::new();
+    let mut output = Vec::with_capacity(64 * 1_024);
 
     for (sprite_suffix, sprite) in metadata.sprites.iter() {
         let (width, height, pixels) = get_pixel_data(sprite, sprite_path, metadata)?;
