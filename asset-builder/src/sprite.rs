@@ -103,15 +103,10 @@ pub fn generate_assembly_sprite(output: &mut String, sprite: RawSprite<Vec<u8>>)
     );
 }
 
-pub fn generate_binary_sprite(output: &mut Vec<u8>, sprite: RawSprite<Vec<u8>>) {
+pub fn generate_binary_sprite(output: &mut Vec<u8>, mut sprite: RawSprite<Vec<u8>>) {
     output.push(sprite.width as u8);
     output.push(sprite.height as u8);
-
-    let binary_sprites = sprite.pixels.chunks_exact(sprite.width as usize);
-
-    for sprite in binary_sprites {
-        output.extend_from_slice(sprite);
-    }
+    output.append(&mut sprite.pixels);
 }
 
 pub fn get_pixel_data(
