@@ -3,14 +3,7 @@ mod sprite;
 
 use clap::Parser;
 use cli::{Args, Subcommand};
-use serde::Deserialize;
-use sprite::{generate_sprite, load_sprite_metadata};
-
-#[derive(Debug, Deserialize)]
-pub struct PointerTable {
-    name: String,
-    offset: Option<u8>,
-}
+use sprite::{generate_sprite_file, load_sprite_metadata};
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
@@ -20,7 +13,7 @@ fn main() -> anyhow::Result<()> {
             let metadata = load_sprite_metadata(&sprite_args.sprite_path)?;
 
             for (sprite_name, metadata) in metadata.iter() {
-                generate_sprite(
+                generate_sprite_file(
                     &sprite_args.sprite_path,
                     &sprite_args.out_path,
                     sprite_name,
