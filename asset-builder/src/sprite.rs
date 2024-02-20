@@ -95,7 +95,7 @@ pub fn monochrome_string(output: &mut String, pixels: &[u8]) {
         output.push(if pixel == &0 { '0' } else { '1' });
     }
 
-    output.push('%');
+    output.push('b');
 }
 
 pub fn unwrap_sprite_option_or<'a, T>(metadata: &'a Option<T>, sprite: &'a Option<T>, value: T) -> T
@@ -128,15 +128,6 @@ pub struct RawSprite<'a> {
     pub pixels: Vec<u8>,
 }
 
-pub fn generate_assembly_sprite_header(output: &mut String, sprite: &RawSprite) {
-    *output += &format!(
-        "\n.width := {}\n\
-         .height := {}\n\
-         db .width, .height",
-        sprite.width, sprite.height
-    );
-}
-
 pub fn generate_assembly_sprite_pixels_rgb(output: &mut String, sprite: &RawSprite) {
     output.push_str(
         &sprite
@@ -161,7 +152,7 @@ pub fn generate_assembly_sprite_pixels_monochrome(output: &mut String, sprite: &
     if remainder_length != 0 {
         let mut last_byte = [0u8; 8];
 
-        for i in 0..8 - remainder_length {
+        for i in 0..remainder_length {
             last_byte[i] = remainder[i];
         }
 
@@ -248,6 +239,13 @@ pub fn generate_assembly_file(
 
         let (width, height, pixels) = get_pixel_data(&sprite, sprite_path, metadata)?;
 
+        output += &format!(
+            "\n{}:\n\
+            .width := {}\n\
+            .height := {}",
+            sprite_suffix, width, height
+        );
+
         let pixels = pixels
             .pixels()
             .map(|pixel| compress_color_space_rgb(pixel.0))
@@ -264,10 +262,8 @@ pub fn generate_assembly_file(
             pixels,
         };
 
-        output += &format!("\n{}:", sprite_suffix);
-
         if header {
-            generate_assembly_sprite_header(&mut output, &raw_sprite);
+            output += &"\ndb .width, .height";
         }
 
         match raw_sprite.color_space {
