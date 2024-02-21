@@ -94,11 +94,9 @@ gaster_blaster.init:
         ld c, a
         push bc
             call io.GetDataPtr
-        ;pop bc
         
-        ld (ix + gaster_blaster.file_pointers.offset_#index), hl
+            ld (ix + gaster_blaster.file_pointers.offset_#index), hl
         
-        ;push bc
             call io.Close
         pop bc
     end repeat

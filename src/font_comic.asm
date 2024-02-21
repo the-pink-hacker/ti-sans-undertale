@@ -1,6 +1,6 @@
 include "include/ez80.inc"
 include "include/tiformat.inc"
-format ti archived appvar "SANSFNTC"
+format ti archived appvar "SANSFNT"
 
 macro width glyph
     db glyph_#glyph.width
@@ -12,28 +12,29 @@ end macro
 
 header:
     db 0 ; Format Version
-    db 8 ; Height
+    db glyph_space.height ; Height
     .glyph_first := ' '
     .glyph_count := 'z' - .glyph_first + 1
     db .glyph_count ; Glyph count
     db .glyph_first ; First glyph
-    dl .widths - . ; Width table offsets
-    dl .bitmaps - . ; Bitmaps offset
+    dl .widths - header ; Width table offsets
+    dl .bitmaps - header ; Bitmaps offset
     db 0 ; Italics space adjust
     db 0 ; Space above
     db 0 ; Space below
     db 0 ; Weight
     db 0 ; Style field
-    db 0 ; Capital height
-    db 0 ; Lowercase x height
-    db 0 ; Baseline height
 
     .widths:
         width space
         width exclamation_mark
+        rb "'" - '!' - 1
         width apostrophe
+        rb ',' - "'" - 1
         width comma
+        rb '.' - ',' - 1
         width period
+        rb '?' - '.' - 1
         width question_mark
         rb 'A' - '?' - 1
         width A
@@ -92,9 +93,13 @@ header:
     .bitmaps:
         bitmap_entry space
         bitmap_entry exclamation_mark
+        rw "'" - '!' - 1
         bitmap_entry apostrophe
+        rw ',' - "'" - 1
         bitmap_entry comma
+        rw '.' - ',' - 1
         bitmap_entry period
+        rw '?' - '.' - 1
         bitmap_entry question_mark
         rw 'A' - '?' - 1
         bitmap_entry A

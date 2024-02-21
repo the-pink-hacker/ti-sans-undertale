@@ -74,6 +74,21 @@ io:
     libload_func .Close, 3
     libload_func .GetDataPtr, 18
 
+font:
+    libload_header "FONTLIBC", 2
+
+    libload_func .SetWindowFullScreen, 1
+    libload_func .SetFont, 10
+    libload_func .SetForegroundColor, 11
+    libload_func .SetTransparency, 16
+    libload_func .SetAlternateStopCode, 29
+    libload_func .GetStringWidth, 37
+    libload_func .DrawString, 41
+    libload_func .ClearWindow, 46
+    libload_func .Newline, 47
+    libload_func .SetNewlineOptions, 48
+    libload_func .HomeUp, 58
+
     xor a, a      ; return z (loaded)
     pop hl      ; pop error return
     ret

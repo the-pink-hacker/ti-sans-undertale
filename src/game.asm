@@ -102,6 +102,8 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.draw
 
+        call font.draw
+
         ; Sans
         ld l, sans_y
         push hl ; y

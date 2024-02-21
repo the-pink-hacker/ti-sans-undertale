@@ -81,24 +81,34 @@ fn compress_color_space_rgb(rgb: [u8; 3]) -> u8 {
     pixel
 }
 
-pub fn rgb_line_to_string(rgb: &[u8]) -> String {
+fn rgb_line_to_string(rgb: &[u8]) -> String {
     rgb.iter()
         .map(|pixel| format!("${:X}", pixel))
         .collect::<Vec<_>>()
         .join(",")
 }
 
-pub fn monochrome_string(output: &mut String, pixels: &[u8]) {
-    *output += &"\ndb ";
+fn rgb_line_to_monochrome(pixels: &[u8]) -> Vec<String> {
+    let mut output = Vec::with_capacity(2);
 
-    for pixel in pixels {
-        output.push(if pixel == &0 { '0' } else { '1' });
+    for chunk in pixels.chunks(8) {
+        let mut byte = 0;
+
+        for (i, pixel) in chunk.iter().enumerate() {
+            if pixel != &0 {
+                let bit = 7 - i;
+
+                byte |= 1 << bit;
+            }
+        }
+
+        output.push(byte.to_string());
     }
 
-    output.push('b');
+    output
 }
 
-pub fn unwrap_sprite_option_or<'a, T>(metadata: &'a Option<T>, sprite: &'a Option<T>, value: T) -> T
+fn unwrap_sprite_option_or<'a, T>(metadata: &'a Option<T>, sprite: &'a Option<T>, value: T) -> T
 where
     T: Clone + Default,
 {
@@ -140,24 +150,11 @@ pub fn generate_assembly_sprite_pixels_rgb(output: &mut String, sprite: &RawSpri
 }
 
 pub fn generate_assembly_sprite_pixels_monochrome(output: &mut String, sprite: &RawSprite) {
-    let chunks = sprite.pixels.chunks_exact(8);
-    let remainder = chunks.remainder();
-
-    for chunk in chunks {
-        monochrome_string(output, chunk);
-    }
-
-    let remainder_length = remainder.len();
-
-    if remainder_length != 0 {
-        let mut last_byte = [0u8; 8];
-
-        for i in 0..remainder_length {
-            last_byte[i] = remainder[i];
-        }
-
-        monochrome_string(output, &last_byte);
-    }
+    *output += &sprite
+        .pixels
+        .chunks_exact(sprite.width as usize)
+        .map(|line| format!("\ndb {}", rgb_line_to_monochrome(line).join(",")))
+        .collect::<String>();
 }
 
 pub fn check_for_png(path: &PathBuf) -> anyhow::Result<()> {

@@ -17,6 +17,7 @@ sans_undertale:
         jq nz, failed_to_load_libs
 
         call gaster_blaster.init
+        call font.init
 
         call gfx.Begin
 
@@ -34,4 +35,5 @@ include "src/game.asm"
 include "src/player.asm"
 include "src/collisions.asm"
 include "src/attacks.asm"
+include "src/font.asm"
 include "src/sprites.asm"

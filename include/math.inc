@@ -1,4 +1,6 @@
 PI := 3.14159265
+TRUE := 1
+FALSE := 0
 
 macro factorial: n
     if n
