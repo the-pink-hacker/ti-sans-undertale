@@ -520,7 +520,6 @@ color_space = "monochrome"
 header = false
 
 [font_comic.sprites]
-glyph_space = "sprites/fonts/comic/glyph_space.png"
 glyph_exclamation_mark = "sprites/fonts/comic/glyph_exclamation_mark.png"
 glyph_apostrophe = "sprites/fonts/comic/glyph_apostrophe.png"
 glyph_comma = "sprites/fonts/comic/glyph_comma.png"

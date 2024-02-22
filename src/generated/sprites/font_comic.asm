@@ -1,21 +1,4 @@
 
-glyph_space:
-.width := 8
-.height := 14
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
-db 0
 glyph_exclamation_mark:
 .width := 4
 .height := 14

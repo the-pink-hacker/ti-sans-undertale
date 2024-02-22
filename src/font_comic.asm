@@ -12,7 +12,7 @@ end macro
 
 header:
     db 0 ; Format Version
-    db glyph_space.height ; Height
+    db glyph_a.height ; Height
     .glyph_first := ' '
     .glyph_count := 'z' - .glyph_first + 1
     db .glyph_count ; Glyph count
@@ -26,7 +26,7 @@ header:
     db 0 ; Style field
 
     .widths:
-        width space
+        db 8
         width exclamation_mark
         rb "'" - '!' - 1
         width apostrophe
@@ -91,7 +91,7 @@ header:
         width y
         width z
     .bitmaps:
-        bitmap_entry space
+        rw 1
         bitmap_entry exclamation_mark
         rw "'" - '!' - 1
         bitmap_entry apostrophe

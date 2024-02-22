@@ -78,13 +78,15 @@ font:
     libload_header "FONTLIBC", 2
 
     libload_func .SetWindowFullScreen, 1
+    libload_func .GetCursorX, 7
+    libload_func .ShiftCursorPosition, 9
     libload_func .SetFont, 10
     libload_func .SetForegroundColor, 11
     libload_func .SetTransparency, 16
     libload_func .SetAlternateStopCode, 29
     libload_func .GetStringWidth, 37
+    libload_func .GetLastCharacterRead, 39
     libload_func .DrawString, 41
-    libload_func .ClearWindow, 46
     libload_func .Newline, 47
     libload_func .SetNewlineOptions, 48
     libload_func .HomeUp, 58
