@@ -37,3 +37,7 @@ include "src/collisions.asm"
 include "src/attacks.asm"
 include "src/font.asm"
 include "src/sprites.asm"
+
+if $ - ti.userMem >= 64 * 1024
+    err "File size is too big (>64KB)."
+end if

@@ -12,14 +12,24 @@ button_act_x := 92
 button_item_x := 172
 button_mercy_x := 249
 
+max_health := 95
+health_bar_x := 128
+health_bar_y := 200
+health_bar_height := 10
+health_bar_width := 55
+
+color:
+    .white := $FF
+    .red := 111_00_000b
+    .green := 000_00_111b
+    .blue := 000_11_000b
+    .yellow := .red or .green
+    .cyan := .green or .blue
+    .magenta := .blue or .red
+
 game:
     .start:
         ld ix, flags
-
-        ld l, $FF ; White
-        push hl ; color
-            call gfx.SetColor
-        pop hl
     .loop:
     .input:
         ld l, 6
@@ -75,21 +85,21 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.update
 
-        ld hl, (gb_debug)
-        inc l ; frame + 1
-        ld a, gaster_blaster.frames - 1
-        cp a, l
-        jq nz, .update.test
+        ld a, (ix + flags.player_health.offset)
+        sub a, (ix + flags.player_karma.offset) ; health - karma
+        ld hl, 0
+        ld l, a
+        ld bc, health_lookup
+        add hl, bc ; *health_bar_width
+        ld a, (hl) ; health_bar_width
+        ld d, a
+        ld (ix + flags.player_health_width.offset), a
 
-        ld l, 0
-        inc h
-        ld a, gaster_blaster.rotations - 1
-        cp a, h
-        jq nz, .update.test
-
-        ld h, 0
-    .update.test:
-        ld (gb_debug), hl
+        ld hl, (ix + flags.player_karma.offset)
+        add hl, bc ; *health_bar_width
+        ld a, (hl)
+        add a, d
+        ld (ix + flags.player_karma_width.offset), a
 
     .draw:
         call gfx.ZeroScreen
@@ -114,23 +124,55 @@ game:
             pop hl
         pop hl
 
-        ld de, (gb_debug)
-        push de
-            call gaster_blaster.get_sprite
-        pop de
-        
-        push hl
-            ld c, d
-            call gaster_blaster.get_location
+        set_color color.red
+
+        ld l, health_bar_height
+        push hl ; height
+            ld hl, health_bar_width
+            push hl ; width
+                ld l, health_bar_y
+                push hl ; y
+                    ld hl, health_bar_x
+                    push hl ; x
+                        call gfx.FillRectangle_NoClip
+                    pop hl
+                pop hl
+            pop hl
         pop hl
 
-        push bc ; y
-            push de ; x
-                push hl ; sprite
-                    call gfx.TransparentSprite_NoClip
+        set_color color.magenta
+
+        ld l, health_bar_height
+        push hl ; height
+            ld hl, (ix + flags.player_karma_width.offset)
+            push hl ; width
+                ld l, health_bar_y
+                push hl ; y
+                    ld hl, health_bar_x
+                    push hl ; x
+                        call gfx.FillRectangle_NoClip
+                    pop hl
                 pop hl
-            pop de
-        pop bc
+            pop hl
+        pop hl
+
+        set_color color.yellow
+        
+        ld l, health_bar_height
+        push hl ; height
+            ld hl, (ix + flags.player_health_width.offset)
+            push hl ; width
+                ld l, health_bar_y
+                push hl ; y
+                    ld hl, health_bar_x
+                    push hl ; x
+                        call gfx.FillRectangle_NoClip
+                    pop hl
+                pop hl
+            pop hl
+        pop hl
+
+        set_color color.white
 
     .draw.box:
         ld b, box_thickness
@@ -139,7 +181,7 @@ game:
         ld de, box_x
     .draw.box.loop:
         push bc
-            push hl, hl
+            push hl, hl ; height, width
                 push bc ; box_y
                     push de
                         call gfx.Rectangle_NoClip
@@ -198,12 +240,12 @@ game:
             pop bc
         pop hl
 
-        call font.draw
-
         jp .loop
 
-gb_debug:
-    dl 0
+health_lookup:
+    repeat max_health + 1, index: 0
+        db (index * health_bar_width) / max_health
+    end repeat
 
 flags:
     ; Current keys being pressed
@@ -235,3 +277,19 @@ flags:
     ; How many frames should a jump force be applied
     label_with_offset .player_jump_counter
         db 0
+
+    ; 24-bit so it can be loaded in both 8-bit and 24-bit registers
+    ; Should always fit within 8-bit registers
+    label_with_offset .player_health
+        dl max_health - 10
+
+    label_with_offset .player_karma
+        dl 15
+
+    ; Calculated on runtime
+    label_with_offset .player_health_width
+        dl 0
+
+    ; Calculated on runtime
+    label_with_offset .player_karma_width
+        dl 0
