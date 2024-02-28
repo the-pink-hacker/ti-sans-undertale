@@ -15,7 +15,7 @@ button_act_x := 92
 button_item_x := 172
 button_mercy_x := 249
 
-max_health := 95
+max_health := 92
 health_bar_x := 128
 health_bar_y := 200
 health_bar_height := 10
@@ -87,6 +87,15 @@ game:
         ld a, flags.player_control.red
         cp a, (ix + flags.player_control.offset)
         call z, player.red.update
+
+        ; TODO: make once per second
+        xor a, a
+        cp a, (ix + flags.player_karma.offset)
+        jq z, .update.karma_skip
+
+        dec (ix + flags.player_karma.offset)
+        dec (ix + flags.player_health.offset)
+    .update.karma_skip:
 
         ld a, (ix + flags.player_health.offset)
         sub a, (ix + flags.player_karma.offset) ; health - karma
@@ -311,10 +320,10 @@ flags:
     ; 24-bit so it can be loaded in both 8-bit and 24-bit registers
     ; Should always fit within 8-bit registers
     label_with_offset .player_health
-        dl max_health - 10
+        dl max_health
 
     label_with_offset .player_karma
-        dl 15
+        dl max_health - 10
 
     ; Calculated on runtime
     label_with_offset .player_health_width
