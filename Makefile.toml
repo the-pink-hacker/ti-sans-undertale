@@ -73,7 +73,7 @@ args = ["src/gaster_blaster_5.asm", "${OUT_GB5}"]
 
 [tasks.font]
 command = "fasmg"
-args = ["src/font_comic.asm", "${OUT_FONT}"]
+args = ["src/font.asm", "${OUT_FONT}"]
 
 [tasks.clean_asset_builder]
 command = "cargo"

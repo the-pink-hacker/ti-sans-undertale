@@ -1,27 +1,3 @@
-include "include/ez80.inc"
-include "include/tiformat.inc"
-format ti archived appvar "SANSFNT"
-
-macro width glyph
-    db glyph_#glyph.width
-end macro
-
-macro width_empty_range lower, upper
-    repeat upper - lower - 1
-        width question_mark
-    end repeat
-end macro
-
-macro bitmap_entry glyph
-    dw glyph_#glyph - header - 2
-end macro
-
-macro bitmap_empty_range lower, upper
-    repeat upper - lower - 1
-        bitmap_entry question_mark
-    end repeat
-end macro
-
 header:
     db 0 ; Format Version
     db glyph_a.height ; Height
@@ -29,8 +5,8 @@ header:
     .glyph_count := 'z' - .glyph_first + 1
     db .glyph_count ; Glyph count
     db .glyph_first ; First glyph
-    dl .widths - header ; Width table offsets
-    dl .bitmaps - header ; Bitmaps offset
+    dl .widths - . ; Width table offsets
+    dl .bitmaps - . ; Bitmaps offset
     db 0 ; Italics space adjust
     db 0 ; Space above
     db 0 ; Space below
@@ -48,20 +24,7 @@ header:
         width_empty_range ',', "."
 
         width period
-        width_empty_range '.', "/"
-
-        width slash
-        width 0
-        width 1
-        width 2
-        width 3
-        width 4
-        width 5
-        width 6
-        width 7
-        width 8
-        width 9
-        width_empty_range '9', "?"
+        width_empty_range '.', "?"
 
         width question_mark
         width_empty_range '?', "A"
@@ -131,20 +94,7 @@ header:
         bitmap_empty_range ',', '.'
 
         bitmap_entry period
-        bitmap_empty_range '.', '/'
-
-        bitmap_entry slash
-        bitmap_entry 0
-        bitmap_entry 1
-        bitmap_entry 2
-        bitmap_entry 3
-        bitmap_entry 4
-        bitmap_entry 5
-        bitmap_entry 6
-        bitmap_entry 7
-        bitmap_entry 8
-        bitmap_entry 9
-        bitmap_empty_range '9', '?'
+        bitmap_empty_range '.', '?'
 
         bitmap_entry question_mark
         bitmap_empty_range '?', 'A'
@@ -203,5 +153,3 @@ header:
         bitmap_entry x
         bitmap_entry y
         bitmap_entry z
-
-include "src/generated/sprites/font_comic.asm"

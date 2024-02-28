@@ -3,6 +3,9 @@ health_text:
     db "00/92", 0
 
 text.pointers:
+    .comic := $
+    .hud := $ + 3
+    .dialog := $ + 6
 text.init:
     ld bc, gaster_blaster.init.mode
     push bc ; mode
@@ -19,14 +22,38 @@ text.init:
     push bc ; handel
         call io.GetDataPtr
 
-        ld (text.pointers), hl
+        ld ix, text.pointers
 
-        call io.Close
+        ld c, 0
+        push bc ; index
+            push hl ; *pack
+                call font.GetFontByIndexRaw
+                ld (ix), hl
+            pop hl
+        pop bc
+
+        inc c
+        push bc ; index
+            push hl ; *pack
+                call font.GetFontByIndexRaw
+                ld (ix + 3), hl
+            pop hl
+        pop bc
+
+        inc c
+        push bc ; index
+            push hl ; *pack
+                call font.GetFontByIndexRaw
+                ld (ix + 6), hl
+            pop hl
+        pop bc
     pop bc
+
+    call io.Close
 
     ld l, 0
     push hl ; flags
-        ld hl, (text.pointers)
+        ld hl, (text.pointers.hud)
         push hl ; font
             call font.SetFont
         pop hl
@@ -35,7 +62,7 @@ text.init:
     or a, a
     jq z, sans_undertale.exit_safe
 
-    ld l, ti.lcdHeight - health_text_y
+    ld l, 5
     push hl ; height
         ld hl, ti.lcdWidth - health_text_x
         push hl ; width

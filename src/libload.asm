@@ -90,6 +90,7 @@ font:
     libload_func .DrawString, 41
     libload_func .Newline, 47
     libload_func .SetNewlineOptions, 48
+    libload_func .GetFontByIndexRaw, 52
     libload_func .HomeUp, 58
 
     xor a, a      ; return z (loaded)
