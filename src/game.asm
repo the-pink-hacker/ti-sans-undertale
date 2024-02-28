@@ -3,6 +3,9 @@ box_y := 109
 box_size := 86
 box_thickness := 3
 
+health_text_x := 207
+health_text_y := 203
+
 sans_x := 134
 sans_y := 31
 
@@ -170,6 +173,33 @@ game:
                     pop hl
                 pop hl
             pop hl
+        pop hl
+
+        xor a, a
+        cp a, (ix + flags.player_karma.offset)
+        jq nz, .draw.health_text.karma
+
+        ld l, color.white
+        jp .draw.health_text.karam_skip
+    .draw.health_text.karma:
+        ld l, color.magenta
+    .draw.health_text.karam_skip:
+        push hl ; color
+            call font.SetForegroundColor
+        pop hl
+
+        call font.HomeUp
+
+        ld a, (ix + flags.player_health.offset)
+        call number_to_string_99
+
+        ld hl, health_text
+        ld (hl), e
+        inc hl
+        ld (hl), d
+        dec hl
+        push hl ; string
+            call font.DrawString
         pop hl
 
         set_color color.white

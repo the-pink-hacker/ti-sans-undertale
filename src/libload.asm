@@ -78,7 +78,7 @@ io:
 font:
     libload_header "FONTLIBC", 2
 
-    libload_func .SetWindowFullScreen, 1
+    libload_func .SetWindow, 0
     libload_func .GetCursorX, 7
     libload_func .ShiftCursorPosition, 9
     libload_func .SetFont, 10

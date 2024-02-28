@@ -18,3 +18,9 @@ macro set_color color
         call gfx.SetColor
     pop hl
 end macro
+
+macro display_decimal number
+    repeat 1 index: number
+        display `index
+    end repeat
+end macro

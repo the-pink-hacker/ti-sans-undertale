@@ -1,5 +1,9 @@
-font.pointers:
-font.init:
+health_text:
+    .number:
+    db "00/92", 0
+
+text.pointers:
+text.init:
     ld bc, gaster_blaster.init.mode
     push bc ; mode
         ld hl, .name
@@ -15,14 +19,14 @@ font.init:
     push bc ; handel
         call io.GetDataPtr
 
-        ld (font.pointers), hl
+        ld (text.pointers), hl
 
         call io.Close
     pop bc
 
     ld l, 0
     push hl ; flags
-        ld hl, (font.pointers)
+        ld hl, (text.pointers)
         push hl ; font
             call font.SetFont
         pop hl
@@ -31,7 +35,19 @@ font.init:
     or a, a
     jq z, sans_undertale.exit_safe
 
-    call font.SetWindowFullScreen
+    ld l, ti.lcdHeight - health_text_y
+    push hl ; height
+        ld hl, ti.lcdWidth - health_text_x
+        push hl ; width
+            ld l, health_text_y
+            push hl ; y
+                ld hl, health_text_x
+                push hl ; x
+                    call font.SetWindow
+                pop hl
+            pop hl
+        pop hl
+    pop hl
 
     ld l, TRUE
     push hl ; transparency
@@ -48,22 +64,22 @@ font.init:
         call font.SetForegroundColor
     pop hl
 
-    ld l, ' '
-    push hl ; character
-        call font.SetAlternateStopCode
-    pop hl
+    ;ld l, ' '
+    ;push hl ; character
+    ;    call font.SetAlternateStopCode
+    ;pop hl
 
     ret
 
     .name:
         db "SANSFNT", 0
 
-font.current_character:
+text.current_character:
     dl 0
 
-font.draw:
+text.draw:
     call font.HomeUp
-    ld hl, font.text
+    ld hl, 0
     jp .string_first_iteration
 
     .string_space:
@@ -75,7 +91,7 @@ font.draw:
             pop hl
         pop hl
     .string:
-        ld hl, (font.current_character)
+        ld hl, (text.current_character)
     .string_first_iteration:
         push hl ; text
             call font.DrawString ; hl = x
@@ -83,7 +99,7 @@ font.draw:
         
         call font.GetLastCharacterRead
         inc hl
-        ld (font.current_character), hl
+        ld (text.current_character), hl
 
         xor a, a
         cp a, (hl)
@@ -107,6 +123,3 @@ font.draw:
         call font.Newline
 
         jp .string
-
-font.text:
-        db "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black. Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Coming! Hang on a second.", 0

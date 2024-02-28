@@ -6,14 +6,26 @@ macro width glyph
     db glyph_#glyph.width
 end macro
 
+macro width_empty_range lower, upper
+    repeat upper - lower - 1
+        width question_mark
+    end repeat
+end macro
+
 macro bitmap_entry glyph
     dw glyph_#glyph - header - 2
+end macro
+
+macro bitmap_empty_range lower, upper
+    repeat upper - lower - 1
+        bitmap_entry question_mark
+    end repeat
 end macro
 
 header:
     db 0 ; Format Version
     db glyph_a.height ; Height
-    .glyph_first := ' '
+    .glyph_first := '!'
     .glyph_count := 'z' - .glyph_first + 1
     db .glyph_count ; Glyph count
     db .glyph_first ; First glyph
@@ -26,17 +38,34 @@ header:
     db 0 ; Style field
 
     .widths:
-        db 8
         width exclamation_mark
-        rb "'" - '!' - 1
+        width_empty_range '!', "'"
+
         width apostrophe
-        rb ',' - "'" - 1
+        width_empty_range "'", ","
+
         width comma
-        rb '.' - ',' - 1
+        width_empty_range ',', "."
+
         width period
-        rb '?' - '.' - 1
+        width_empty_range '.', "/"
+
+        width slash
+        width 0
+        width 1
+        width 2
+        width 3
+        width 4
+        width 5
+        width 6
+        width 7
+        width 8
+        width 9
+        width_empty_range '9', "?"
+
         width question_mark
-        rb 'A' - '?' - 1
+        width_empty_range '?', "A"
+
         width A
         width B
         width C
@@ -63,7 +92,8 @@ header:
         width X
         width Y
         width Z
-        rb 'a' - 'Z' - 1
+        width_empty_range 'Z', "a"
+
         width a
         width b
         width c
@@ -91,17 +121,34 @@ header:
         width y
         width z
     .bitmaps:
-        rw 1
         bitmap_entry exclamation_mark
-        rw "'" - '!' - 1
+        bitmap_empty_range '!', "'"
+
         bitmap_entry apostrophe
-        rw ',' - "'" - 1
+        bitmap_empty_range "'", ','
+
         bitmap_entry comma
-        rw '.' - ',' - 1
+        bitmap_empty_range ',', '.'
+
         bitmap_entry period
-        rw '?' - '.' - 1
+        bitmap_empty_range '.', '/'
+
+        bitmap_entry slash
+        bitmap_entry 0
+        bitmap_entry 1
+        bitmap_entry 2
+        bitmap_entry 3
+        bitmap_entry 4
+        bitmap_entry 5
+        bitmap_entry 6
+        bitmap_entry 7
+        bitmap_entry 8
+        bitmap_entry 9
+        bitmap_empty_range '9', '?'
+
         bitmap_entry question_mark
-        rw 'A' - '?' - 1
+        bitmap_empty_range '?', 'A'
+
         bitmap_entry A
         bitmap_entry B
         bitmap_entry C
@@ -128,7 +175,8 @@ header:
         bitmap_entry X
         bitmap_entry Y
         bitmap_entry Z
-        rw 'a' - 'Z' - 1
+        bitmap_empty_range 'Z', 'a'
+
         bitmap_entry a
         bitmap_entry b
         bitmap_entry c

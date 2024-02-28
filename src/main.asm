@@ -17,7 +17,7 @@ sans_undertale:
         jq nz, failed_to_load_libs
 
         call gaster_blaster.init
-        call font.init
+        call text.init
 
         call gfx.Begin
 
@@ -29,15 +29,26 @@ sans_undertale:
         call ti.HomeUp
         jp ti.DrawStatusBar
 
-
 include "src/libload.asm"
 include "src/game.asm"
 include "src/player.asm"
 include "src/collisions.asm"
+include "src/math.asm"
 include "src/attacks.asm"
-include "src/font.asm"
+include "src/text.asm"
 include "src/sprites.asm"
 
-if $ - ti.userMem >= 64 * 1024
+total_bytes := $ - ti.userMem
+
+if total_bytes >= 64 * 1024
     err "File size is too big (>64KB)."
+else
+    bytes_left := 64 * 1024 - total_bytes
+    display "remaining: "
+    display_decimal bytes_left / 1024
+    display " KB + "
+    display_decimal bytes_left mod 1024 
+    display " B = "
+    display_decimal bytes_left
+    display " B"
 end if
