@@ -8,17 +8,17 @@ end macro
 
 macro width_empty_range lower, upper
     repeat upper - lower - 1
-        width question_mark
+        dw default_character - . - 2
     end repeat
 end macro
 
 macro bitmap_entry glyph
-    dw glyph_#glyph - header - 2
+    dw glyph_#glyph - . - 2
 end macro
 
 macro bitmap_empty_range lower, upper
     repeat upper - lower - 1
-        bitmap_entry question_mark
+        dw default_character - . - 2
     end repeat
 end macro
 

@@ -1,3 +1,5 @@
+default_character := glyph_slash
+
 header:
     db 0 ; Format Version
     db glyph_0.height ; Height

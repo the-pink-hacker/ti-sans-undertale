@@ -1,3 +1,5 @@
+default_character := glyph_question_mark
+
 header:
     db 0 ; Format Version
     db glyph_a.height ; Height
