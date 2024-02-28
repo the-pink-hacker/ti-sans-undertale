@@ -21,6 +21,8 @@ health_bar_y := 200
 health_bar_height := 10
 health_bar_width := 55
 
+second := 60 ; This will need to be changed to 30.
+
 color:
     .white := $FF
     .red := 111_00_000b
@@ -88,14 +90,25 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.update
 
-        ; TODO: make once per second
-        xor a, a
+    .update.schedule_second:
+        xor a, a ; Reset carry
+        ld hl, (ix + flags.frame_counter.offset)
+        ld de, (ix + flags.frame_counter_next_second.offset)
+        sbc hl, de
+        jq nz, .update.schedule_second_end
+
+        ;xor a, a
         cp a, (ix + flags.player_karma.offset)
         jq z, .update.karma_skip
 
         dec (ix + flags.player_karma.offset)
         dec (ix + flags.player_health.offset)
     .update.karma_skip:
+        ld hl, second
+        ;ld de, (ix + flags.frame_counter_next_second.offset)
+        add hl, de
+        ld (ix + flags.frame_counter_next_second.offset), hl
+    .update.schedule_second_end:
 
         ld a, (ix + flags.player_health.offset)
         sub a, (ix + flags.player_karma.offset) ; health - karma
@@ -112,6 +125,11 @@ game:
         ld a, (hl)
         add a, d
         ld (ix + flags.player_karma_width.offset), a
+
+    .update.end:
+        ld hl, (ix + flags.frame_counter.offset)
+        inc hl
+        ld (ix + flags.frame_counter.offset), hl
 
     .draw:
         call gfx.ZeroScreen
@@ -296,6 +314,12 @@ flags:
     .input.back_bit  := 5
     label_with_offset .input
         db 0
+
+    label_with_offset .frame_counter
+        dl 0
+
+    label_with_offset .frame_counter_next_second
+        dl second
 
     ; The current input controller
     .player_control.dialog := 0
