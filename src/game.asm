@@ -3,9 +3,6 @@ box_y := 109
 box_size := 86
 box_thickness := 3
 
-health_text_x := 207
-health_text_y := 203
-
 sans_x := 134
 sans_y := 31
 
@@ -109,7 +106,6 @@ game:
         add hl, de
         ld (ix + flags.frame_counter_next_second.offset), hl
     .update.schedule_second_end:
-
         ld a, (ix + flags.player_health.offset)
         sub a, (ix + flags.player_karma.offset) ; health - karma
         ld hl, 0
@@ -125,6 +121,15 @@ game:
         ld a, (hl)
         add a, d
         ld (ix + flags.player_karma_width.offset), a
+
+        ; Update text
+        ld a, (ix + flags.player_health.offset)
+        call number_to_string_99
+
+        ld hl, text.hud.health.number
+        ld (hl), e
+        inc hl
+        ld (hl), d
 
     .update.end:
         ld hl, (ix + flags.frame_counter.offset)
@@ -212,24 +217,47 @@ game:
         ld l, color.magenta
     .draw.health_text.karam_skip:
         push hl ; color
+            call font.HomeUp
+            
+            ld l, color.white
+            push hl
+                call font.SetForegroundColor
+                call gfx.SetColor
+            pop hl
+
+            ld hl, text.hud.character
+            push hl ; string
+                call font.DrawString
+            pop hl
+
+            ld hl, 203
+            push hl ; y
+                push hl ; y
+                    ld l, text.hud.level.x
+                    push hl ; x
+                        call font.SetCursorPosition
+                    pop hl
+                
+                    ld hl, text.hud.level
+                    push hl
+                        call font.DrawString
+                    pop hl
+                pop hl
+
+                ld l, text.hud.health.x
+                push hl
+                    call font.SetCursorPosition
+                pop hl
+            pop hl
+
             call font.SetForegroundColor
         pop hl
 
-        call font.HomeUp
-
-        ld a, (ix + flags.player_health.offset)
-        call number_to_string_99
-
-        ld hl, health_text
-        ld (hl), e
-        inc hl
-        ld (hl), d
-        dec hl
-        push hl ; string
+        ld hl, text.hud.health
+        push hl
             call font.DrawString
         pop hl
 
-        set_color color.white
 
     .draw.box:
         ld b, box_thickness
@@ -347,7 +375,7 @@ flags:
         dl max_health
 
     label_with_offset .player_karma
-        dl max_health - 10
+        dl 10
 
     ; Calculated on runtime
     label_with_offset .player_health_width

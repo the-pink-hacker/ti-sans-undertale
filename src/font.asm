@@ -8,7 +8,7 @@ end macro
 
 macro width_empty_range lower, upper
     repeat upper - lower - 1
-        dw default_character - . - 2
+        db default_character_width
     end repeat
 end macro
 

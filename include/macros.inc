@@ -24,3 +24,7 @@ macro display_decimal number
         display `index
     end repeat
 end macro
+
+macro string text
+    db text, 0
+end macro

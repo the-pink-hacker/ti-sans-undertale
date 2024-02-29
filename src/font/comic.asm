@@ -1,4 +1,5 @@
 default_character := glyph_question_mark
+default_character_width := glyph_question_mark.width
 
 header:
     db 0 ; Format Version
@@ -57,7 +58,7 @@ header:
         width X
         width Y
         width Z
-        width_empty_range 'Z', "a"
+        width_empty_range 'Z', 'a'
 
         width a
         width b

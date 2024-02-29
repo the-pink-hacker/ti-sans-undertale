@@ -1,6 +1,16 @@
-health_text:
-    .number:
-    db "00/92", 0
+text.hud:
+    .y := 203
+    .character.x := 20
+    .character:
+        string "CHARA"
+    .level.x := 78
+    .level:
+        string "LV 19 HP"
+    .health.x := 185
+    .health:
+        db "KR "
+    .health.number:
+        string "00/92"
 
 text.pointers:
     .comic := $
@@ -64,11 +74,11 @@ text.init:
 
     ld l, 5
     push hl ; height
-        ld hl, ti.lcdWidth - health_text_x
+        ld hl, ti.lcdWidth
         push hl ; width
-            ld l, health_text_y
+            ld l, text.hud.y
             push hl ; y
-                ld hl, health_text_x
+                ld hl, text.hud.character.x
                 push hl ; x
                     call font.SetWindow
                 pop hl
