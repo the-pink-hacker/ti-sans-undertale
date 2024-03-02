@@ -11,6 +11,20 @@ player.red.update:
         pop hl
     pop hl, hl
 
+    ld l, sprites.bones_horizontal.height
+    push hl ; box_size_y
+        ld hl, sprites.bones_horizontal.width
+        push hl ; box_size_x
+            ld l, bones_y
+            push hl ; box_y
+                ld hl, bones_x
+                push hl ; box_x
+                    call check_soft_collision_box
+                pop hl
+            pop hl
+        pop hl
+    pop hl
+
     ld hl, player.heart.location_y
 
     .input_down:
@@ -50,6 +64,13 @@ player.red.update:
 
         inc (hl)
     .input_right_end:
+
+    .damage:
+        bit flags.collision.soft_bit, (ix + flags.collision.offset)
+        jq z, .damage_end
+
+        dec (ix + flags.player_health.offset)
+    .damage_end:
     
     ret
 

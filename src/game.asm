@@ -18,6 +18,9 @@ health_bar_y := 200
 health_bar_height := 10
 health_bar_width := 55
 
+bones_y := ti.lcdHeight - sprites.bones_horizontal.height - 50
+bones_x := (ti.lcdWidth - sprites.bones_horizontal.width) / 2
+
 second := 60 ; This will need to be changed to 30.
 
 color:
@@ -78,6 +81,10 @@ game:
 
     .update:
         reset_collision_flags
+
+        ld a, (ix + flags.player_health.offset)
+        or a, a
+        jq z, sans_undertale.exit
 
         ; Blue heart
         ld a, flags.player_control.blue
@@ -148,6 +155,17 @@ game:
         ld a, flags.player_control.red
         cp a, (ix + flags.player_control.offset)
         call z, player.red.draw
+
+        ld l, bones_y
+        push hl ; y
+            ld hl, bones_x
+            push hl ; x
+                ld hl, sprites.bones_horizontal
+                push hl ; sprite
+                    call gfx.TransparentSprite_NoClip
+                pop hl
+            pop hl
+        pop hl
 
         ; Sans
         ld l, sans_y
@@ -260,7 +278,6 @@ game:
             call font.DrawString
         pop hl
 
-
     .draw.box:
         ld b, box_thickness
         ld hl, box_size
@@ -295,9 +312,9 @@ game:
                     call gfx.Sprite_NoClip
                 pop de
             pop bc
-        pop hl
+        ;pop hl
 
-        push hl
+        ;push hl
             ld bc, button_act_x
             push bc
                 ld de, sprites.button_act
@@ -305,9 +322,9 @@ game:
                     call gfx.Sprite_NoClip
                 pop de
             pop bc
-        pop hl
+        ;pop hl
 
-        push hl
+        ;push hl
             ld bc, button_item_x
             push bc
                 ld de, sprites.button_item
@@ -315,9 +332,9 @@ game:
                     call gfx.Sprite_NoClip
                 pop de
             pop bc
-        pop hl
+        ;pop hl
 
-        push hl
+        ;push hl
             ld bc, button_mercy_x
             push bc
                 ld de, sprites.button_mercy
@@ -366,10 +383,7 @@ flags:
     .collision.hard_right_bit := 2
     .collision.hard_up_bit    := 3
     ; Player can pass through soft collisions (e.g. bones).
-    .collision.soft_left_bit  := 4
-    .collision.soft_down_bit  := 5
-    .collision.soft_right_bit := 6
-    .collision.soft_up_bit    := 7
+    .collision.soft_bit       := 4
     label_with_offset .collision
         db 0
 
@@ -383,7 +397,7 @@ flags:
         dl max_health
 
     label_with_offset .player_karma
-        dl 10
+        dl 0
 
     ; Calculated on runtime
     label_with_offset .player_health_width

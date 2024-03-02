@@ -75,6 +75,7 @@ check_hard_collision_inner_box:
     ret
 
 check_soft_collision_box:
+;TODO: collision only happens while fully within bounds.
 ; Arguments:
     .box_x      := 03 ; u24
     .box_y      := 06 ; u8
@@ -91,10 +92,7 @@ check_soft_collision_box:
 
         ; player.y < box_y
         cp a, b
-        jq c, .up_end
-
-        set flags.collision.soft_up_bit, (ix + flags.collision.offset)
-    .up_end:
+        ret c
 
     .down:
         add a, sprites.heart_red.height ; player.y + player_size
@@ -104,10 +102,7 @@ check_soft_collision_box:
 
         ; box_y + box_size_y < player.y + player_size
         cp a, c
-        jq c, .down_end
-
-        set flags.collision.soft_down_bit, (ix + flags.collision.offset)
-    .down_end:
+        ret c
 
     .left:
         ld hl, (player.heart.location_x)
@@ -116,10 +111,7 @@ check_soft_collision_box:
         ; player.x < box_x
         or a, a ; Resets carry
         sbc hl, de
-        jq c, .left_end
-
-        set flags.collision.soft_left_bit, (ix + flags.collision.offset)
-    .left_end:
+        ret c
 
     .right:
         ld bc, sprites.heart_red.width
@@ -132,12 +124,10 @@ check_soft_collision_box:
 
         ; box_x + box_size_x < player.x + player_size
         sbc hl, de
-        ret c ; No need to jump
+        ret c
 
-        set flags.collision.soft_right_bit, (ix + flags.collision.offset)
-    .right_end:
-
-    ret
+        set flags.collision.soft_bit, (ix + flags.collision.offset)
+        ret
 
 macro reset_collision_flags
     xor a, a
