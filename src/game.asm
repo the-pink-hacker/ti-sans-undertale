@@ -77,6 +77,8 @@ game:
         call gfx.SwapDraw
 
     .update:
+        reset_collision_flags
+
         ; Blue heart
         ld a, flags.player_control.blue
         cp a, (ix + flags.player_control.offset)
@@ -357,11 +359,17 @@ flags:
     label_with_offset .player_control
         db .player_control.red
 
-    ; Which side of the player is being collided
-    .collision.left_bit  := 0
-    .collision.down_bit  := 1
-    .collision.right_bit := 2
-    .collision.up_bit    := 3
+    ; Which side of the player is being collided.
+    ; Player can't pass through hard collisions (e.g. platforms, box).
+    .collision.hard_left_bit  := 0
+    .collision.hard_down_bit  := 1
+    .collision.hard_right_bit := 2
+    .collision.hard_up_bit    := 3
+    ; Player can pass through soft collisions (e.g. bones).
+    .collision.soft_left_bit  := 4
+    .collision.soft_down_bit  := 5
+    .collision.soft_right_bit := 6
+    .collision.soft_up_bit    := 7
     label_with_offset .collision
         db 0
 

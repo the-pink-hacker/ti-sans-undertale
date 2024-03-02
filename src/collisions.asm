@@ -1,17 +1,17 @@
-check_collision_inner_box:
+check_hard_collision_inner_box:
 ; Arguments:
-;       (03) box_x: u24
-;       (06) box_y: u8
-;       (09) box_size: $00XXYY
-;       (12) player: *position
+    .box_x      := 03 ; u24
+    .box_y      := 06 ; u8
+    .box_size_x := 09 ; u24
+    .box_size_y := 12 ; u8
 ; Return:
-;       Sets collision flags. Never resets.
+;   Sets hard collision flags; never resets.
     ld iy, 0
     add iy, sp
 
     .up:
-        ld a, (iy + 6) ; box_y
-        ld hl, (iy + 12) ; *player.y
+        ld a, (iy + .box_y)
+        ld hl, player.heart.location_y ; *player.y
         ld b, (hl) ; player.y
 
         ; box_y < player.y
@@ -19,11 +19,11 @@ check_collision_inner_box:
         jq c, .up_end
 
         ; Collision
-        set flags.collision.up_bit, (ix + flags.collision.offset)
+        set flags.collision.hard_up_bit, (ix + flags.collision.offset)
     .up_end:
 
     .down:
-        add a, (iy + 9) ; box_size.y
+        add a, (iy + .box_size_y)
         ld c, a
 
         ld a, b ; player.y
@@ -34,13 +34,13 @@ check_collision_inner_box:
         jq c, .down_end
 
         ; Collision
-        set flags.collision.down_bit, (ix + flags.collision.offset)
+        set flags.collision.hard_down_bit, (ix + flags.collision.offset)
     .down_end:
 
     .left:
         inc hl ; *player.x
         ld de, (hl) ; player.x
-        ld hl, (iy + 3) ; box_x
+        ld hl, (iy + .box_x)
 
         ; box_x < player.x
         ; Carry is unknown
@@ -49,19 +49,16 @@ check_collision_inner_box:
         jq c, .left_end
 
         ; Collision
-        set flags.collision.left_bit, (ix + flags.collision.offset)
+        set flags.collision.hard_left_bit, (ix + flags.collision.offset)
     .left_end:
     
     .right:
-        ld hl, 0
-        ld l, (iy + 10) ; box_size.x
-        ld bc, (iy + 3) ; box_x
+        ld hl, (iy + .box_size_x)
+        ld bc, (iy + .box_x)
         add hl, bc ; box_size.x + box_x
         ex de, hl ; de = box_size.x + box_x
 
-        ld hl, (iy + 12) ; *player.y
-        inc hl ; *player.x
-        ld hl, (hl)
+        ld hl, (player.heart.location_x)
         ld bc, sprites.heart_red.width
         add hl, bc ; player.x + player_size
                    ; Resets carry
@@ -72,12 +69,77 @@ check_collision_inner_box:
         sbc hl, de
         ret c
 
-        set flags.collision.right_bit, (ix + flags.collision.offset)
+        set flags.collision.hard_right_bit, (ix + flags.collision.offset)
     .right_end:
 
     ret
 
-reset_collision_flags:
+check_soft_collision_box:
+; Arguments:
+    .box_x      := 03 ; u24
+    .box_y      := 06 ; u8
+    .box_size_x := 09 ; u24
+    .box_size_y := 12 ; u8
+; Return:
+;   Sets soft collision flags; never resets.
+    ld iy, 0
+    add iy, sp
+
+    .up:
+        ld a, (player.heart.location_y) ; player.y
+        ld b, (iy + .box_y)
+
+        ; player.y < box_y
+        cp a, b
+        jq c, .up_end
+
+        set flags.collision.soft_up_bit, (ix + flags.collision.offset)
+    .up_end:
+
+    .down:
+        add a, sprites.heart_red.height ; player.y + player_size
+        ld c, a
+        ld a, b ; box_y
+        add a, (iy + .box_size_y) ; box_y + box_size_y
+
+        ; box_y + box_size_y < player.y + player_size
+        cp a, c
+        jq c, .down_end
+
+        set flags.collision.soft_down_bit, (ix + flags.collision.offset)
+    .down_end:
+
+    .left:
+        ld hl, (player.heart.location_x)
+        ld de, (iy + .box_x)
+
+        ; player.x < box_x
+        or a, a ; Resets carry
+        sbc hl, de
+        jq c, .left_end
+
+        set flags.collision.soft_left_bit, (ix + flags.collision.offset)
+    .left_end:
+
+    .right:
+        ld bc, sprites.heart_red.width
+        add hl, bc ; player.x + player_size
+        ex de, hl ; de = player.x + player_size
+                  ; hl = box_x
+        ld bc, (iy + .box_size_x)
+        add hl, bc ; box_x + box_size
+                                 ; Resets carry
+
+        ; box_x + box_size_x < player.x + player_size
+        sbc hl, de
+        ret c ; No need to jump
+
+        set flags.collision.soft_right_bit, (ix + flags.collision.offset)
+    .right_end:
+
+    ret
+
+macro reset_collision_flags
     xor a, a
     ld (ix + flags.collision.offset), a
-    ret
+end macro
