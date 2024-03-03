@@ -75,7 +75,6 @@ check_hard_collision_inner_box:
     ret
 
 check_soft_collision_box:
-;TODO: collision only happens while fully within bounds.
 ; Arguments:
     .box_x      := 03 ; u24
     .box_y      := 06 ; u8
@@ -88,41 +87,41 @@ check_soft_collision_box:
 
     .up:
         ld a, (player.heart.location_y) ; player.y
+        ld c, a
+        add a, sprites.heart_red.height ; player.y + player_height
         ld b, (iy + .box_y)
 
-        ; player.y < box_y
+        ; player.y + player_height < box_y
         cp a, b
         ret c
 
     .down:
-        add a, sprites.heart_red.height ; player.y + player_size
-        ld c, a
         ld a, b ; box_y
         add a, (iy + .box_size_y) ; box_y + box_size_y
 
-        ; box_y + box_size_y < player.y + player_size
+        ; box_y + box_size_y < player.y
         cp a, c
         ret c
 
     .left:
         ld hl, (player.heart.location_x)
+        add hl, bc ; player.x + player_width
         ld de, (iy + .box_x)
 
-        ; player.x < box_x
+        ; player.x + player_width < box_x
         or a, a ; Resets carry
         sbc hl, de
         ret c
 
     .right:
-        ld bc, sprites.heart_red.width
-        add hl, bc ; player.x + player_size
-        ex de, hl ; de = player.x + player_size
+        ex de, hl ; de = player.x + player_width
                   ; hl = box_x
         ld bc, (iy + .box_size_x)
         add hl, bc ; box_x + box_size
                                  ; Resets carry
 
-        ; box_x + box_size_x < player.x + player_size
+        ; box_x + box_size_x < player.x
+        ld de, (player.heart.location_x)
         sbc hl, de
         ret c
 
