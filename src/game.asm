@@ -18,10 +18,10 @@ health_bar_y := 200
 health_bar_height := 10
 health_bar_width := 55
 
-bones_y := ti.lcdHeight - sprites.bones_horizontal.height - 50
+bones_y := ti.lcdHeight - sprites.bones_horizontal.height - 20
 bones_x := (ti.lcdWidth - sprites.bones_horizontal.width) / 2
 
-second := 60 ; This will need to be changed to 30.
+target_fps := 60 ; This will need to be changed to 30.
 
 color:
     .white := $FF
@@ -83,8 +83,15 @@ game:
         reset_collision_flags
 
         ld a, (ix + flags.player_health.offset)
-        or a, a
+        or a, a ; Resets carry
         jq z, sans_undertale.exit
+
+        ld hl, (ix + flags.frame_counter.offset)
+        ld bc, (ix + flags.frame_counter_attack_step_end.offset)
+        sbc hl, bc
+        call z, attack.advance_step
+
+        call attack.run_step
 
         ; Blue heart
         ld a, flags.player_control.blue
@@ -110,7 +117,7 @@ game:
         dec (ix + flags.player_karma.offset)
         dec (ix + flags.player_health.offset)
     .update.karma_skip:
-        ld hl, second
+        ld hl, target_fps
         ;ld de, (ix + flags.frame_counter_next_second.offset)
         add hl, de
         ld (ix + flags.frame_counter_next_second.offset), hl
@@ -156,10 +163,12 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.draw
 
-        ld l, bones_y
-        push hl ; y
-            ld hl, bones_x
-            push hl ; x
+        ld hl, test
+        ld e, (hl)
+        push de ; y
+            inc hl
+            ld de, (hl)
+            push de ; x
                 ld hl, sprites.bones_horizontal
                 push hl ; sprite
                     call gfx.TransparentSprite_NoClip
@@ -366,7 +375,17 @@ flags:
         dl 0
 
     label_with_offset .frame_counter_next_second
-        dl second
+        dl target_fps
+
+    label_with_offset .frame_counter_attack_step_end
+        dl 0
+
+    label_with_offset .current_attack
+        dl example_attack
+
+    .attack_flags.begining_of_attack_bit := 0
+    label_with_offset .attack_flags
+        db 0000_0001b
 
     ; The current input controller
     .player_control.dialog := 0

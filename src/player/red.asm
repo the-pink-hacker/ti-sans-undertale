@@ -15,10 +15,12 @@ player.red.update:
     push hl ; box_size_y
         ld hl, sprites.bones_horizontal.width
         push hl ; box_size_x
-            ld l, bones_y
-            push hl ; box_y
-                ld hl, bones_x
-                push hl ; box_x
+            ld hl, test
+            ld e, (hl)
+            push de ; box_y
+                inc hl
+                ld de, (hl)
+                push de ; box_x
                     call check_soft_collision_box
                 pop hl
             pop hl
