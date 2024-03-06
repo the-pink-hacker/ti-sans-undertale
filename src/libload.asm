@@ -62,6 +62,7 @@ gfx:
     libload_func .Sprite_NoClip, 59
     libload_func .TransparentSprite_NoClip, 60
     libload_func .ZeroScreen, 76
+    libload_func .Wait, 93
 
 kb:
     libload_header "KEYPADC", 1

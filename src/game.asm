@@ -21,7 +21,7 @@ health_bar_width := 55
 bones_y := ti.lcdHeight - sprites.bones_horizontal.height - 20
 bones_x := (ti.lcdWidth - sprites.bones_horizontal.width) / 2
 
-target_fps := 60 ; This will need to be changed to 30.
+target_fps := 30
 
 color:
     .white := $FF
@@ -36,6 +36,8 @@ game:
     .start:
         ld ix, flags
     .loop:
+        call gfx.SwapDraw
+
     .input:
         ld l, 6
         push hl ; group
@@ -75,9 +77,6 @@ game:
         set flags.input.back_bit, (ix + flags.input.offset)
         ld (ix + flags.player_control.offset), flags.player_control.blue
     .input.group_2_end:
-
-    .pre_draw:
-        call gfx.SwapDraw
 
     .update:
         reset_collision_flags
@@ -153,7 +152,14 @@ game:
         ld (ix + flags.frame_counter.offset), hl
 
     .draw:
-        call gfx.ZeroScreen
+        call gfx.ZeroScreen ; V-sync
+
+        ld l, 0
+        push hl
+            call gfx.SetDraw
+        pop hl
+        call gfx.SwapDraw ; V-sync
+                          ; Very cursed
 
         ld a, flags.player_control.blue
         cp a, (ix + flags.player_control.offset)
