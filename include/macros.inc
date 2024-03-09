@@ -1,3 +1,5 @@
+NULL := 0
+
 macro libload_header name, version
     db $C0, name, 0, version
 end macro

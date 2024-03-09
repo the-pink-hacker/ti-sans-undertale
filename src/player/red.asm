@@ -11,22 +11,6 @@ player.red.update:
         pop hl
     pop hl, hl
 
-    ld l, sprites.bones_horizontal.height
-    push hl ; box_size_y
-        ld hl, sprites.bones_horizontal.width
-        push hl ; box_size_x
-            ld hl, test
-            ld e, (hl)
-            push de ; box_y
-                inc hl
-                ld de, (hl)
-                push de ; box_x
-                    call check_soft_collision_box
-                pop hl
-            pop hl
-        pop hl
-    pop hl
-
     ld hl, player.heart.location_y
 
     .input_down:

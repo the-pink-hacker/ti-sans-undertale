@@ -18,9 +18,6 @@ health_bar_y := 200
 health_bar_height := 10
 health_bar_width := 55
 
-bones_y := ti.lcdHeight - sprites.bones_horizontal.height - 20
-bones_x := (ti.lcdWidth - sprites.bones_horizontal.width) / 2
-
 target_fps := 30
 
 color:
@@ -90,7 +87,7 @@ game:
         sbc hl, bc
         call z, attack.advance_step
 
-        call attack.run_step
+        call attack.run_update_step
 
         ; Blue heart
         ld a, flags.player_control.blue
@@ -159,7 +156,7 @@ game:
             call gfx.SetDraw
         pop hl
         call gfx.SwapDraw ; V-sync
-                          ; Very cursed
+                          ; Very cursed );
 
         ld a, flags.player_control.blue
         cp a, (ix + flags.player_control.offset)
@@ -169,18 +166,7 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.draw
 
-        ld hl, test
-        ld e, (hl)
-        push de ; y
-            inc hl
-            ld de, (hl)
-            push de ; x
-                ld hl, sprites.bones_horizontal
-                push hl ; sprite
-                    call gfx.TransparentSprite_NoClip
-                pop hl
-            pop hl
-        pop hl
+        call attack.run_draw_step
 
         ; Sans
         ld l, sans_y
@@ -387,7 +373,7 @@ flags:
         dl 0
 
     label_with_offset .current_attack
-        dl example_attack
+        dl example_attack - attack_step_size
 
     .attack_flags.begining_of_attack_bit := 0
     label_with_offset .attack_flags
