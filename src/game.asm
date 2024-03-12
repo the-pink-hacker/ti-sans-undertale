@@ -78,16 +78,28 @@ game:
     .input.group_2_end:
 
     .update:
-        reset_collision_flags
-
         ld a, (ix + flags.player_health.offset)
-        or a, a ; Resets carry
-        jq z, sans_undertale.exit
+        or a, a
+        ret z
+        
+        ld (ix + flags.collision.offset), 0
+
+        ld hl, box_size - (2 * box_thickness)
+        push hl, hl ; box_size_x, box_size_y
+            ld l, box_y + box_thickness
+            push hl ; box_y
+                ld hl, box_x + box_thickness
+                push hl ; box_x
+                    call check_hard_collision_inner_box
+                pop hl
+            pop hl
+        pop hl, hl
 
     .update.attack:
         bit flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
         jq z, .update.attack_end
 
+        or a, a ; Resets carry.
         ld hl, (ix + flags.frame_counter.offset)
         ld bc, (ix + flags.frame_counter_attack_step_end.offset)
         sbc hl, bc
@@ -95,6 +107,30 @@ game:
 
         call attack.run_update_step
     .update.attack_end:
+
+    .update.damage:
+        bit flags.collision.soft_bit, (ix + flags.collision.offset)
+        jq z, .update.damage_end
+
+        ld a, (ix + flags.player_health.offset)
+        dec a
+        ld (ix + flags.player_health.offset), a
+        jq nz, .update.damage_karma
+
+        set flags.program.exit_bit, (ix + flags.program.exit_bit)
+    .update.damage_karma:
+        sub a, (ix + flags.player_karma.offset) ; Health left after karma
+        ; carry => karam = 0
+        ; non-zero => karam += 1
+        jq nc, .update.damage_karma_increase
+
+        ld (ix + flags.player_karma.offset), 0
+        jp .update.damage_end
+    .update.damage_karma_increase:
+        jq z, .update.damage_end
+
+        inc (ix + flags.player_karma.offset)
+    .update.damage_end:
 
         ; Blue heart
         ld a, flags.player_control.blue
@@ -385,7 +421,7 @@ flags:
         dl 0
 
     label_with_offset .current_attack
-        dl example_attack
+        dl attack.attack_0
 
     .attack.attack_loaded_bit := 0
     label_with_offset .attack
@@ -422,14 +458,18 @@ flags:
     label_with_offset .player_karma
         dl 0
 
-    ; Calculated on runtime
     label_with_offset .player_health_width
         dl NULL
 
-    ; Calculated on runtime
     label_with_offset .player_karma_width
         dl NULL
 
     .program.exit_bit := 0
     label_with_offset .program
         db 0
+
+    label_with_offset .player_soul_y
+        db box_y + (box_size - sprites.heart_red.height) / 2
+
+    label_with_offset .player_soul_x
+        dl box_x + (box_size - sprites.heart_red.width) / 2

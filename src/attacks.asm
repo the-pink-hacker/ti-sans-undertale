@@ -48,51 +48,6 @@ attack:
         ret z ; Return if null pointer.
         jp (hl)
 
-example_attack:
-    dl 1 * target_fps, NULL, NULL
-    dl 2 * target_fps, .update.spawn, .draw.sprite
-    dl 1 * target_fps, .update.move_left, .draw.sprite
-    dl 1 * target_fps, .update.move_right, .draw.sprite
-    dl 1 * target_fps, .update.move_left, .draw.sprite
-    dl 1 * target_fps, .update.move_right, .draw.sprite
-    dl 1 * target_fps, NULL, NULL
-    dl 0, .exit, NULL
-
-example_attack.update:
-    .spawn:
-        ld (iy), 100 ; y
-        ld hl, 100
-        ld (iy + 1), hl ; x
-        ret
-
-    .move_left:
-        ld hl, (iy + 1)
-        dec hl
-        ld (iy + 1), hl
-        ret
-
-    .move_right:
-        ld hl, (iy + 1)
-        inc hl
-        ld (iy + 1), hl
-        ret
-
-example_attack.draw:
-    .sprite:
-        ld l, (iy)
-        push hl ; y
-            ld hl, (iy + 1)
-            push hl ; x
-                ld hl, sprites.bones_horizontal
-                push hl ; sprite
-                    call gfx.TransparentSprite_NoClip
-                pop hl
-            pop hl
-        pop hl
-        ret
-
-example_attack.exit:
-    res flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
-    ret
-    
+include "src/attacks/general.asm"
+include "src/attacks/attack_0.asm"
 include "src/attacks/gaster_blaster.asm"

@@ -2,19 +2,6 @@ jump_amount := 32
 
 player.blue.update:
 ; ix = flags
-    ld hl, box_size - (2 * box_thickness)
-    push hl, hl ; box_size
-        ld l, box_y + box_thickness
-        push hl ; box_y
-            ld hl, box_x + box_thickness
-            push hl ; box_x
-                call check_hard_collision_inner_box
-            pop hl
-        pop hl
-    pop hl, hl
-
-    ld hl, player.heart.location_y
-
     .jump_trigger:
         bit flags.input.up_bit, (ix + flags.input.offset)
         jq z, .jump_trigger_cancel
@@ -32,7 +19,7 @@ player.blue.update:
         or a, a
         jq z, .jump_force_end
     .jump_force_condition_skip:
-        dec (hl)
+        dec (ix + flags.player_soul_y.offset)
         dec (ix + flags.player_jump_counter.offset)
         jp .gravity_end
     .jump_force_end:
@@ -41,10 +28,8 @@ player.blue.update:
         bit flags.collision.hard_down_bit, (ix + flags.collision.offset)
         jq nz, .gravity_end
 
-        inc (hl)
+        inc (ix + flags.player_soul_y.offset)
     .gravity_end:
-
-    inc hl ; *player.heart.location_x
 
     .input_left:
         bit flags.input.left_bit, (ix + flags.input.offset)
@@ -52,7 +37,9 @@ player.blue.update:
         bit flags.collision.hard_left_bit, (ix + flags.collision.offset)
         jq nz, .input_left_end
 
-        dec (hl)
+        ld hl, (ix + flags.player_soul_x.offset)
+        dec hl
+        ld (ix + flags.player_soul_x.offset), hl
     .input_left_end:
 
     .input_right:
@@ -61,26 +48,19 @@ player.blue.update:
         bit flags.collision.hard_right_bit, (ix + flags.collision.offset)
         jq nz, .input_right_end
 
-        inc (hl)
+        ld hl, (ix + flags.player_soul_x.offset)
+        inc hl
+        ld (ix + flags.player_soul_x.offset), hl
     .input_right_end:
-
-    .damage:
-        bit flags.collision.soft_bit, (ix + flags.collision.offset)
-        jq z, .damage_end
-
-        dec (ix + flags.player_health.offset)
-    .damage_end:
 
     ret
 
 player.blue.draw:
 ; ix = flags
-    ld hl, player.heart.location_y
-    ld e, (hl)
-    push de ; y
-        inc hl
-        ld de, (hl)
-        push de ; x
+    ld hl, (ix + flags.player_soul_y.offset)
+    push hl ; y
+        ld hl, (ix + flags.player_soul_x.offset)
+        push hl ; x
             ld hl, sprites.heart_blue
             push hl ; sprite
                 call gfx.Sprite_NoClip

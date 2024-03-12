@@ -11,8 +11,7 @@ check_hard_collision_inner_box:
 
     .up:
         ld a, (iy + .box_y)
-        ld hl, player.heart.location_y ; *player.y
-        ld b, (hl) ; player.y
+        ld b, (ix + flags.player_soul_y.offset)
 
         ; box_y < player.y
         cp a, b
@@ -38,13 +37,12 @@ check_hard_collision_inner_box:
     .down_end:
 
     .left:
-        inc hl ; *player.x
-        ld de, (hl) ; player.x
+        ld de, (ix + flags.player_soul_x.offset)
         ld hl, (iy + .box_x)
 
         ; box_x < player.x
         ; Carry is unknown
-        cp a, a ; Resets carry
+        or a, a ; Resets carry
         sbc hl, de
         jq c, .left_end
 
@@ -58,7 +56,7 @@ check_hard_collision_inner_box:
         add hl, bc ; box_size.x + box_x
         ex de, hl ; de = box_size.x + box_x
 
-        ld hl, (player.heart.location_x)
+        ld hl, (ix + flags.player_soul_x.offset)
         ld bc, sprites.heart_red.width
         add hl, bc ; player.x + player_size
                    ; Resets carry
@@ -86,30 +84,29 @@ check_soft_collision_box:
     add iy, sp
 
     .up:
-        ld a, (player.heart.location_y) ; player.y
-        ld c, a
+        ld a, (ix + flags.player_soul_y.offset)
         add a, sprites.heart_red.height ; player.y + player_height
-        ld b, (iy + .box_y)
 
         ; player.y + player_height < box_y
-        cp a, b
+        cp a, (iy + .box_y)
         ret c
 
     .down:
-        ld a, b ; box_y
+        ld a, (iy + .box_y) ; box_y
         add a, (iy + .box_size_y) ; box_y + box_size_y
 
         ; box_y + box_size_y < player.y
-        cp a, c
+        cp a, (ix + flags.player_soul_y.offset)
         ret c
 
     .left:
-        ld hl, (player.heart.location_x)
+        ld hl, (ix + flags.player_soul_x.offset)
+        ld bc, sprites.heart_red.width
         add hl, bc ; player.x + player_width
-        ld de, (iy + .box_x)
+                   ; Resets carry.
 
         ; player.x + player_width < box_x
-        or a, a ; Resets carry
+        ld de, (iy + .box_x)
         sbc hl, de
         ret c
 
@@ -121,14 +118,9 @@ check_soft_collision_box:
                                  ; Resets carry
 
         ; box_x + box_size_x < player.x
-        ld de, (player.heart.location_x)
+        ld de, (ix + flags.player_soul_x.offset)
         sbc hl, de
         ret c
 
         set flags.collision.soft_bit, (ix + flags.collision.offset)
         ret
-
-macro reset_collision_flags
-    xor a, a
-    ld (ix + flags.collision.offset), a
-end macro
