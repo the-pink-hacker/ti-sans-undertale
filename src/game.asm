@@ -32,6 +32,8 @@ color:
 game:
     .start:
         ld ix, flags
+
+        call attack.load_attack
     .loop:
         call gfx.SwapDraw
 
@@ -82,12 +84,17 @@ game:
         or a, a ; Resets carry
         jq z, sans_undertale.exit
 
+    .update.attack:
+        bit flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
+        jq z, .update.attack_end
+
         ld hl, (ix + flags.frame_counter.offset)
         ld bc, (ix + flags.frame_counter_attack_step_end.offset)
         sbc hl, bc
         call z, attack.advance_step
 
         call attack.run_update_step
+    .update.attack_end:
 
         ; Blue heart
         ld a, flags.player_control.blue
@@ -134,7 +141,7 @@ game:
         add a, d
         ld (ix + flags.player_karma_width.offset), a
 
-        ; Update text
+        ; Update hud text
         ld a, (ix + flags.player_health.offset)
         call number_to_string_99
 
@@ -166,7 +173,12 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.draw
 
+    .draw.attack:
+        bit flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
+        jq z, .draw.attack_end
+
         call attack.run_draw_step
+    .draw.attack_end:
 
         ; Sans
         ld l, sans_y
@@ -295,8 +307,8 @@ game:
             pop hl, hl
         pop bc
 
-        dec l ; box_size + 2
-        dec l ; Save some cycles by not increasing hl
+        dec hl ; box_size + 2
+        dec hl
 
         inc c ; box_y + 1
         inc de ; box_x - 1
@@ -373,11 +385,11 @@ flags:
         dl 0
 
     label_with_offset .current_attack
-        dl example_attack - attack_step_size
+        dl example_attack
 
-    .attack_flags.begining_of_attack_bit := 0
-    label_with_offset .attack_flags
-        db 0000_0001b
+    .attack.attack_loaded_bit := 0
+    label_with_offset .attack
+        db 0
 
     ; The current input controller
     .player_control.dialog := 0
@@ -412,8 +424,12 @@ flags:
 
     ; Calculated on runtime
     label_with_offset .player_health_width
-        dl 0
+        dl NULL
 
     ; Calculated on runtime
     label_with_offset .player_karma_width
-        dl 0
+        dl NULL
+
+    .program.exit_bit := 0
+    label_with_offset .program
+        db 0

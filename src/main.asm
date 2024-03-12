@@ -5,6 +5,8 @@ include "include/macros.inc"
 include "include/math.inc"
 format ti executable "SANS"
 
+assume adl=1
+
 TRIG_ITERATIONS := 8
 
 sans_undertale:

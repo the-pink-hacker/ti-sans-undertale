@@ -2,11 +2,18 @@ entity_buffer := ti.pixelShadow2
 
 attack_step_size := 9
 
+attack.load_attack:
+    set flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
+    ld iy, (ix + flags.current_attack.offset)
+    jp attack.advance_step.load_attack_jump
+
 attack.advance_step:
     ld iy, (ix + flags.current_attack.offset)
     ld bc, attack_step_size
     add iy, bc ; Advance to next step
     ld (ix + flags.current_attack.offset), iy
+
+    .load_attack_jump:
 
     ld hl, (ix + flags.frame_counter.offset)
     ld bc, (iy)
@@ -18,7 +25,7 @@ attack.advance_step:
 
     ld hl, (iy + 6) ; draw
     ld (attack.draw_step), hl
-    ret ; TODO: Remove ret to save a couple cycles.
+    ret
 
 attack:
     .run_update_step:
@@ -85,7 +92,7 @@ example_attack.draw:
         ret
 
 example_attack.exit:
-        pop hl
-        jp sans_undertale.exit
+    res flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
+    ret
     
 include "src/attacks/gaster_blaster.asm"

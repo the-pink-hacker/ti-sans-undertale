@@ -67,10 +67,10 @@ number_to_string_99:
     ld d, a
 
     ld a, b
-    rra
-    rra
-    rra
-    rra
+    rrca
+    rrca
+    rrca
+    rrca
     and a, $0F
     add a, '0'
     ld e, a
