@@ -33,6 +33,20 @@ game:
     .start:
         ld ix, flags
 
+        ld hl, box_y + box_size - box_thickness
+        push hl ; y_max
+            ld hl, box_x + box_size - box_thickness
+            push hl ; x_max
+                ld hl, box_y + box_thickness
+                push hl ; y_min
+                    ld hl, box_x + box_thickness
+                    push hl ; x_min
+                        call gfx.SetClipRegion
+                    pop hl
+                pop hl
+            pop hl
+        pop hl
+
         call attack.load_attack
     .loop:
         call gfx.SwapDraw
@@ -216,6 +230,14 @@ game:
         call attack.run_draw_step
     .draw.attack_end:
 
+        ld iy, entity_buffer + 100
+        ld hl, box_x + 10
+        ld (iy), hl
+        ld (iy + 3), box_y + 10
+        ld (iy + 4), 25
+
+        call draw.bone_horizontal
+        
         ; Sans
         ld l, sans_y
         push hl ; y

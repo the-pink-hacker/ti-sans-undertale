@@ -38,6 +38,7 @@ include "src/collisions.asm"
 include "src/math.asm"
 include "src/attacks.asm"
 include "src/text.asm"
+include "src/draw.asm"
 include "src/sprites.asm"
 
 total_bytes := $ - ti.userMem

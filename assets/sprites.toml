@@ -14,15 +14,17 @@ attack_meter_left = "sprites/ui/attack_meter_left.png"
 attack_meter_right = "sprites/ui/attack_meter_right.png"
 game_over = "sprites/ui/game_over.png"
 speach_box = "sprites/ui/speach_box.png"
+
+[attacks.sprites]
 bones_horizontal = "sprites/attacks/bones_horizontal.png"
-bones_vertical = "sprites/attacks/bones_vertical.png"
+bone_top = "sprites/attacks/bone_top.png"
+bone_bottom = "sprites/attacks/bone_bottom.png"
 
 [gaster_blaster_0]
 output_type = "binary"
 
 [gaster_blaster_0.sprites.gaster_blaster_0_0]
 path = "sprites/sans/gaster_blaster_0.png"
-rotation = 0
 
 [gaster_blaster_0.sprites.gaster_blaster_0_1]
 path = "sprites/sans/gaster_blaster_0.png"
@@ -105,7 +107,6 @@ output_type = "binary"
 
 [gaster_blaster_1.sprites.gaster_blaster_1_0]
 path = "sprites/sans/gaster_blaster_1.png"
-rotation = 0
 
 [gaster_blaster_1.sprites.gaster_blaster_1_1]
 path = "sprites/sans/gaster_blaster_1.png"
@@ -188,7 +189,6 @@ output_type = "binary"
 
 [gaster_blaster_2.sprites.gaster_blaster_2_0]
 path = "sprites/sans/gaster_blaster_2.png"
-rotation = 0
 
 [gaster_blaster_2.sprites.gaster_blaster_2_1]
 path = "sprites/sans/gaster_blaster_2.png"
@@ -271,7 +271,6 @@ output_type = "binary"
 
 [gaster_blaster_3.sprites.gaster_blaster_3_0]
 path = "sprites/sans/gaster_blaster_3.png"
-rotation = 0
 
 [gaster_blaster_3.sprites.gaster_blaster_3_1]
 path = "sprites/sans/gaster_blaster_3.png"
@@ -354,7 +353,6 @@ output_type = "binary"
 
 [gaster_blaster_4.sprites.gaster_blaster_4_0]
 path = "sprites/sans/gaster_blaster_4.png"
-rotation = 0
 
 [gaster_blaster_4.sprites.gaster_blaster_4_1]
 path = "sprites/sans/gaster_blaster_4.png"
@@ -437,7 +435,6 @@ output_type = "binary"
 
 [gaster_blaster_5.sprites.gaster_blaster_5_0]
 path = "sprites/sans/gaster_blaster_5.png"
-rotation = 0
 
 [gaster_blaster_5.sprites.gaster_blaster_5_1]
 path = "sprites/sans/gaster_blaster_5.png"

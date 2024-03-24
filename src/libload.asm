@@ -57,8 +57,11 @@ gfx:
     libload_func .SetColor, 2
     libload_func .SetDraw, 9
     libload_func .SwapDraw, 10
+    libload_func .FillRectangle, 36
     libload_func .Rectangle_NoClip, 41
     libload_func .FillRectangle_NoClip, 42
+    libload_func .SetClipRegion, 43
+    libload_func .TransparentSprite, 58
     libload_func .Sprite_NoClip, 59
     libload_func .TransparentSprite_NoClip, 60
     libload_func .ZeroScreen, 76
