@@ -1,4 +1,10 @@
-entity_buffer := ti.pixelShadow2
+entity_buffer:
+    .start := ti.pixelShadow2
+    .size := 8_400
+    .end := entity_buffer.start + entity_buffer.size
+    
+    .bones := entity_buffer.start + 128
+    .bones.end := .bones + attack.wave_bones_table.size
 
 attack_step_size := 9
 
@@ -29,7 +35,7 @@ attack.advance_step:
 
 attack:
     .run_update_step:
-        ld iy, entity_buffer
+        ld iy, entity_buffer.start
     .update_step := $ + 1
         ld hl, NULL ; SMC: will be changed to current step.
         ld de, NULL
@@ -39,7 +45,7 @@ attack:
         jp (hl)
 
     .run_draw_step:
-        ld iy, entity_buffer
+        ld iy, entity_buffer.start
     .draw_step := $ + 1
         ld hl, NULL ; SMC: will be changed to current step.
         ld de, NULL

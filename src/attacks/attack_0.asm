@@ -8,8 +8,10 @@ attack.attack_0:
     dl 001, attack.general.update.set_player_soul_red,    .draw.bone_block
     dl 030, .update.bone_block_collision,                 .draw.bone_block
     dl 010, .update.bone_block_move_down,                 .draw.bone_block
+    dl 005, NULL,                                         NULL
+    dl 001, .update.spawn_wave_bones,                     .draw.wave_bones
+    dl 300, NULL,                                         .draw.wave_bones
     dl 001, attack.general.update.exit ; Omitted update to save space.
-    dl 005 ; spawn bones
     dl 032 ; bones
     dl 001 ; bones & spawn gaster blasters
     dl 011 ; bones & move gaster blasters in
@@ -54,6 +56,26 @@ attack.attack_0.update:
         inc (iy)
         jp .bone_block_collision
 
+    .spawn_wave_bones:
+        ld hl, attack.wave_bones_table
+        ld de, entity_buffer.bones
+        ld bc, attack.wave_bones_table.size
+        ldir
+        
+        ret
+
+attack.wave_bones_table:
+    .length := 10
+
+    repeat .length, index: 0
+        dl box_x + box_size - sprites.bone_top.width - (10 * index)
+        db box_y
+        db 2 * index + 8
+    end repeat
+
+    .size := $ - .
+    .bone_length := .size / .length
+
 attack.attack_0.draw:
     .bone_block:
         ld hl, 0
@@ -67,5 +89,19 @@ attack.attack_0.draw:
                 pop hl
             pop hl
         pop hl
+        ret
+
+    .wave_bones:
+        ld b, attack.wave_bones_table.length
+        ld iy, entity_buffer.bones
+
+        .loop:
+            call draw.bone_horizontal
+
+            ld de, attack.wave_bones_table.bone_length
+            add iy, de
+
+            djnz .loop
+
         ret
 

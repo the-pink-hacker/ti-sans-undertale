@@ -230,14 +230,6 @@ game:
         call attack.run_draw_step
     .draw.attack_end:
 
-        ld iy, entity_buffer + 100
-        ld hl, box_x + 10
-        ld (iy), hl
-        ld (iy + 3), box_y + 10
-        ld (iy + 4), 25
-
-        call draw.bone_horizontal
-        
         ; Sans
         ld l, sans_y
         push hl ; y
