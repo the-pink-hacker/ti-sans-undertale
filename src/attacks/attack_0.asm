@@ -9,7 +9,7 @@ attack.attack_0:
     dl 030, .update.bone_block_collision,                 .draw.bone_block
     dl 010, .update.bone_block_move_down,                 .draw.bone_block
     dl 005, NULL,                                         NULL
-    dl 001, .update.spawn_wave_bones,                     .draw.wave_bones
+    dl 001, .update.spawn_wave_bones,                     NULL
     dl 999, .update.move_wave_bones,                      .draw.wave_bones
     dl 001, attack.general.update.exit ; Omitted update to save space.
     dl 032 ; bones
@@ -67,15 +67,37 @@ attack.attack_0.update:
     .move_wave_bones:
         ld hl, entity_buffer.bones
         ld b, attack.wave_bones_table.length
-        ld de, attack.wave_bones_table.bone_length
 
         .loop:
             ld iy, (hl)
-            inc iy
-            inc iy
+            ld de, 3
+            add iy, de
             ld (hl), iy
 
-            add hl, de
+            push bc
+                push hl
+                    add hl, de
+                    ld c, (hl)
+                    inc hl
+                    ld hl, (hl)
+                    add hl, de
+                    add hl, de
+                    push hl ; box_size_y
+                        ld de, sprites.bone_top.width
+                        push de ; box_size_x
+                            push bc ; box_y
+                                push iy ; box_x
+                                    call check_soft_collision_box
+                                pop hl
+                            pop hl
+                        pop hl
+                    pop hl
+                pop hl
+
+                ld de, attack.wave_bones_table.bone_length
+                add hl, de
+
+            pop bc
             djnz .loop
 
         ret
@@ -84,19 +106,21 @@ attack.wave_bones_table:
     .length := 40
 
     repeat .length / 2, index: 0
-        radians = (index / 20.0) * TAU * 2.0
+        radians = (index / 20.0) * TAU * 1.25
         sin radians, TRIG_ITERATIONS
-        height_offset = 28
+        height_offset = 26
+        height_shift = -10
         wave_height = trunc (result * 10.0)
         x = box_x - (10 * index) - 100
 
         dl x
         db box_y
-        db height_offset + wave_height
+        db height_offset + wave_height + height_shift
 
         dl x
-        db box_y + box_size - sprites.bone_top.height - sprites.bone_bottom.height - height_offset + wave_height
-        db height_offset - wave_height
+        height = height_offset - wave_height
+        db box_y + box_size - sprites.bone_top.height - sprites.bone_bottom.height - height + height_shift
+        db height - height_shift
     end repeat
 
     .size := $ - .
