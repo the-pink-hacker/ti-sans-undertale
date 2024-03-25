@@ -5,6 +5,7 @@ entity_buffer:
     
     .bones := entity_buffer.start + 128
     .bones.end := .bones + attack.wave_bones_table.size
+    assert .end >= .bones.end
 
 attack_step_size := 9
 

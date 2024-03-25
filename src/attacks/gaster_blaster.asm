@@ -12,7 +12,7 @@ gaster_blaster:
     .locations:
         repeat .rotations, index: 0
             ; Y
-            radians = ((%% - index) * 2.0 * PI) / .rotations
+            radians = ((%% - index) * TAU) / .rotations
             cos radians, TRIG_ITERATIONS
             db .center_y - trunc (result * .circle_radius)
             ; X

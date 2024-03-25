@@ -7,7 +7,7 @@ format ti executable "SANS"
 
 assume adl=1
 
-TRIG_ITERATIONS := 8
+TRIG_ITERATIONS := 16
 
 sans_undertale:
     .main:

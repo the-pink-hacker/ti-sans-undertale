@@ -10,7 +10,7 @@ attack.attack_0:
     dl 010, .update.bone_block_move_down,                 .draw.bone_block
     dl 005, NULL,                                         NULL
     dl 001, .update.spawn_wave_bones,                     .draw.wave_bones
-    dl 300, NULL,                                         .draw.wave_bones
+    dl 999, .update.move_wave_bones,                      .draw.wave_bones
     dl 001, attack.general.update.exit ; Omitted update to save space.
     dl 032 ; bones
     dl 001 ; bones & spawn gaster blasters
@@ -64,13 +64,39 @@ attack.attack_0.update:
         
         ret
 
-attack.wave_bones_table:
-    .length := 10
+    .move_wave_bones:
+        ld hl, entity_buffer.bones
+        ld b, attack.wave_bones_table.length
+        ld de, attack.wave_bones_table.bone_length
 
-    repeat .length, index: 0
-        dl box_x + box_size - sprites.bone_top.width - (10 * index)
+        .loop:
+            ld iy, (hl)
+            inc iy
+            inc iy
+            ld (hl), iy
+
+            add hl, de
+            djnz .loop
+
+        ret
+
+attack.wave_bones_table:
+    .length := 40
+
+    repeat .length / 2, index: 0
+        radians = (index / 20.0) * TAU * 2.0
+        sin radians, TRIG_ITERATIONS
+        height_offset = 28
+        wave_height = trunc (result * 10.0)
+        x = box_x - (10 * index) - 100
+
+        dl x
         db box_y
-        db 2 * index + 8
+        db height_offset + wave_height
+
+        dl x
+        db box_y + box_size - sprites.bone_top.height - sprites.bone_bottom.height - height_offset + wave_height
+        db height_offset - wave_height
     end repeat
 
     .size := $ - .
@@ -100,7 +126,6 @@ attack.attack_0.draw:
 
             ld de, attack.wave_bones_table.bone_length
             add iy, de
-
             djnz .loop
 
         ret
