@@ -33,20 +33,7 @@ game:
     .start:
         ld ix, flags
 
-        ld hl, box_y + box_size - box_thickness
-        push hl ; y_max
-            ld hl, box_x + box_size - box_thickness
-            push hl ; x_max
-                ld hl, box_y + box_thickness
-                push hl ; y_min
-                    ld hl, box_x + box_thickness
-                    push hl ; x_min
-                        call gfx.SetClipRegion
-                    pop hl
-                pop hl
-            pop hl
-        pop hl
-
+        call draw.set_clip_region_box
         call attack.load_attack
     .loop:
         call gfx.SwapDraw

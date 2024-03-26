@@ -64,6 +64,7 @@ gfx:
     libload_func .TransparentSprite, 58
     libload_func .Sprite_NoClip, 59
     libload_func .TransparentSprite_NoClip, 60
+    libload_func .FillTriangle, 71
     libload_func .ZeroScreen, 76
     libload_func .Wait, 93
 
