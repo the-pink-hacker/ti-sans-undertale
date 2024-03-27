@@ -11,9 +11,10 @@ attack.attack_0:
     dl 005, NULL,                                         NULL
     dl 001, .update.spawn_wave_bones,                     .draw.wave_bones
     dl 032, .update.move_wave_bones,                      .draw.wave_bones
-    dl 999, NULL,                                         .draw.wave_bones_gb
+    dl 001, .update.move_wave_bones_gb_a4_spawn,          .draw.wave_bones_gb_a4
+    dl 029, .update.move_wave_bones_gb_a4,                .draw.wave_bones_gb_a4
+    dl 999, .update.move_wave_bones,                      .draw.wave_bones_gb_a4
     dl 001, attack.general.update.exit ; Omitted update to save space.
-    dl 032 ; bones
     dl 001 ; bones & spawn gaster blasters
     dl 011 ; bones & move gaster blasters in
     dl 006 ; bones & gaster blasters
@@ -65,6 +66,40 @@ attack.attack_0.update:
         
         ret
     
+    .move_wave_bones_gb_a4_spawn:
+        ld (iy + entity_buffer.gb_a4), 0
+
+        assert $ = .move_wave_bones_gb_a4
+
+    .move_wave_bones_gb_a4:
+        ld d, 6
+        ld e, (iy + entity_buffer.gb_a4)
+        inc (iy + entity_buffer.gb_a4)
+        mlt de
+        ld hl, attack.gaster_blaster_table
+        add hl, de
+
+        ld a, (hl)
+        ld (iy + entity_buffer.gb_a4 + 1), a
+
+        inc hl
+
+        ld de, (hl)
+        ld (iy + entity_buffer.gb_a4 + 2), de
+
+        inc hl
+        inc hl
+        inc hl
+
+        ld de, (hl)
+        push de
+            call gaster_blaster.get_sprite
+        pop de
+
+        ld (entity_buffer.start + entity_buffer.gb_a4 + 5), hl
+
+        assert $ = .move_wave_bones
+    
     .move_wave_bones:
         ld hl, entity_buffer.bones
         ld b, attack.wave_bones_table.length
@@ -102,6 +137,14 @@ attack.attack_0.update:
             djnz .loop
 
         ret
+
+attack.gaster_blaster_table:
+    repeat 30, index: 0
+        db index ; y
+        dl index ; x
+        db index mod 6 ; frame
+        db index mod 20 ; rotation
+    end repeat
 
 attack.wave_bones_table:
     .length := 40
@@ -143,90 +186,66 @@ attack.attack_0.draw:
         pop hl
         ret
 
-    .wave_bones_gb:
-        call draw.set_clip_region_screen
-
-        xgb := box_x + box_size / 2
-        ygb := box_y + box_size / 2
-        radius := 10
-        length := 325
-        quarter := PI / 2.0
-        rotation := (4.0 * PI) / 3.0 - quarter
-        side_rotation := rotation - quarter
-        side_alt_rotation := rotation + quarter
-
-        cos side_rotation, TRIG_ITERATIONS
-        xa0 := trunc (result * radius) + xgb ; cos(rotation) * radius
-        sin side_rotation, TRIG_ITERATIONS
-        ya0 := trunc (result * radius) + ygb ; sin(rotation) * radius
-
-        cos rotation, TRIG_ITERATIONS
-        x_end := trunc (result * length) + xgb
-        sin rotation, TRIG_ITERATIONS
-        y_end := trunc (result * length) + ygb
-
-        cos side_rotation, TRIG_ITERATIONS
-        xa1 := trunc (result * radius) + x_end
-        sin side_rotation, TRIG_ITERATIONS
-        ya1 := trunc (result * radius) + y_end
-
-        cos side_alt_rotation, TRIG_ITERATIONS
-        xa2 := trunc (result * radius) + x_end
-        sin side_alt_rotation, TRIG_ITERATIONS
-        ya2 := trunc (result * radius) + y_end
-
-        xb0 := xa0
-        yb0 := ya0
-        
-        cos side_alt_rotation, TRIG_ITERATIONS
-        xb1 := trunc (result * radius) + xgb
-        sin side_alt_rotation, TRIG_ITERATIONS
-        yb1 := trunc (result * radius) + ygb
-
-        xb2 := xa2
-        yb2 := ya2
-
-        ld hl, ya2
-        push hl ; y2
-            ld hl, xa2
-            push hl ; x2
-                ld hl, ya1
-                push hl ; y1
-                    ld hl, xa1
-                    push hl ; x1
-                        ld hl, ya0
-                        push hl ; y0
-                            ld hl, xa0
-                            push hl ; x0
-                                call gfx.FillTriangle
-                            pop hl
-                        pop hl
-                    pop hl
+    .wave_bones_gb_a4:
+        ;ld hl, 0
+        ld l, (iy + entity_buffer.gb_a4 + 1)
+        push hl ; y
+            ;ld hl, 0
+            ld hl, (iy + entity_buffer.gb_a4 + 2)
+            push hl ; x
+                ld hl, (iy + entity_buffer.gb_a4 + 5)
+                ;ld hl, sprites.heart_red
+                push hl ; sprite
+                    call gfx.Sprite_NoClip
                 pop hl
             pop hl
         pop hl
 
-        ld hl, yb2
-        push hl ; y2
-            ld hl, xb2
-            push hl ; x2
-                ld hl, yb1
-                push hl ; y1
-                    ld hl, xb1
-                    push hl ; x1
-                        ld hl, yb0
-                        push hl ; y0
-                            ld hl, xb0
-                            push hl ; x0
-                                call gfx.FillTriangle
-                            pop hl
-                        pop hl
-                    pop hl
-                pop hl
-            pop hl
-        pop hl
+        ;call draw.set_clip_region_screen
 
-        call draw.set_clip_region_box
+        ;gaster_blaster_blast (4.0 * PI) / 3.0, box_x + box_size / 2, box_y + box_size / 2
+        ;
+        ;ld hl, ya2
+        ;push hl ; y2
+        ;    ld hl, xa2
+        ;    push hl ; x2
+        ;        ld hl, ya1
+        ;        push hl ; y1
+        ;            ld hl, xa1
+        ;            push hl ; x1
+        ;                ld hl, ya0
+        ;                push hl ; y0
+        ;                    ld hl, xa0
+        ;                    push hl ; x0
+        ;                        call gfx.FillTriangle
+        ;                    pop hl
+        ;                pop hl
+        ;            pop hl
+        ;        pop hl
+        ;    pop hl
+        ;pop hl
+        ;
+        ;ld hl, yb2
+        ;push hl ; y2
+        ;    ld hl, xb2
+        ;    push hl ; x2
+        ;        ld hl, yb1
+        ;        push hl ; y1
+        ;            ld hl, xb1
+        ;            push hl ; x1
+        ;                ld hl, yb0
+        ;                push hl ; y0
+        ;                    ld hl, xb0
+        ;                    push hl ; x0
+        ;                        call gfx.FillTriangle
+        ;                    pop hl
+        ;                pop hl
+        ;            pop hl
+        ;        pop hl
+        ;    pop hl
+        ;pop hl
+        ;
+        ;call draw.set_clip_region_box
 
         assert $ = .wave_bones
 

@@ -1,7 +1,13 @@
 entity_buffer:
     .start := ti.pixelShadow2
-    .size := 8_400
+    .size := 512
     .end := entity_buffer.start + entity_buffer.size
+
+    .gb_a4 := 0
+    .gb_a4.end := .gb_a4 + 1 + 4 * 7
+
+    .gb_b4 := .gb_a4.end
+    .gb_b4.end := .gb_b4 + 1 + 4 * 7
     
     .bones := entity_buffer.start + 128
     .bones.end := .bones + attack.wave_bones_table.size
