@@ -72,31 +72,44 @@ attack.attack_0.update:
         assert $ = .move_wave_bones_gb_a4
 
     .move_wave_bones_gb_a4:
-        ld d, 6
+        ld d, 5 * 4
         ld e, (iy + entity_buffer.gb_a4)
         inc (iy + entity_buffer.gb_a4)
         mlt de
         ld hl, attack.gaster_blaster_table
         add hl, de
 
-        ld a, (hl)
-        ld (iy + entity_buffer.gb_a4 + 1), a
+        repeat 4, index: 0
+            offset = index * 7
 
-        inc hl
+            ld a, (hl) ; y
+            ld (iy + entity_buffer.gb_a4 + 1 + offset), a
 
-        ld de, (hl)
-        ld (iy + entity_buffer.gb_a4 + 2), de
+            inc hl
 
-        inc hl
-        inc hl
-        inc hl
+            ld de, (hl) ; x
+            ld (iy + entity_buffer.gb_a4 + 2 + offset), de
 
-        ld de, (hl)
-        push de
-            call gaster_blaster.get_sprite
-        pop de
+            inc hl
+            inc hl
+            inc hl
 
-        ld (entity_buffer.start + entity_buffer.gb_a4 + 5), hl
+            push iy
+            push hl
+                ld d, (hl) ; rotation
+                ld e, 0 ; frame
+                push de
+                    call gaster_blaster.get_sprite
+                pop de
+
+                ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + offset), hl
+            pop hl
+            pop iy
+
+            if % <> %% ; Only needs to run if another repeats follow.
+                inc hl
+            end if
+        end repeat
 
         assert $ = .move_wave_bones
     
@@ -140,10 +153,11 @@ attack.attack_0.update:
 
 attack.gaster_blaster_table:
     repeat 30, index: 0
-        db index ; y
-        dl index ; x
-        db index mod 6 ; frame
-        db index mod 20 ; rotation
+        repeat 4, gb: 0
+            db index + 10 * gb ; y
+            dl index + 10 * gb ; x
+            db index mod 20 ; rotation
+        end repeat
     end repeat
 
 attack.wave_bones_table:
@@ -187,21 +201,32 @@ attack.attack_0.draw:
         ret
 
     .wave_bones_gb_a4:
-        ;ld hl, 0
-        ld l, (iy + entity_buffer.gb_a4 + 1)
-        push hl ; y
-            ;ld hl, 0
-            ld hl, (iy + entity_buffer.gb_a4 + 2)
-            push hl ; x
-                ld hl, (iy + entity_buffer.gb_a4 + 5)
-                ;ld hl, sprites.heart_red
-                push hl ; sprite
-                    call gfx.Sprite_NoClip
-                pop hl
-            pop hl
-        pop hl
+        call draw.set_clip_region_screen
 
-        ;call draw.set_clip_region_screen
+        repeat 4, index: 0
+            offset = index * 7
+
+            if % <> %% ; Only needs to run if another repeat follows.
+                push iy
+            end if
+
+                ld hl, 0
+                ld l, (iy + entity_buffer.gb_a4 + 1 + offset)
+                push hl ; y
+                    ld hl, (iy + entity_buffer.gb_a4 + 2 + offset)
+                    push hl ; x
+                        ld hl, (iy + entity_buffer.gb_a4 + 5 + offset)
+                        push hl ; sprite
+                            call gfx.TransparentSprite
+                        pop hl
+                    pop hl
+                pop hl
+
+            if % <> %%
+                pop iy
+            end if
+        end repeat
+
 
         ;gaster_blaster_blast (4.0 * PI) / 3.0, box_x + box_size / 2, box_y + box_size / 2
         ;
@@ -244,8 +269,8 @@ attack.attack_0.draw:
         ;        pop hl
         ;    pop hl
         ;pop hl
-        ;
-        ;call draw.set_clip_region_box
+
+        call draw.set_clip_region_box
 
         assert $ = .wave_bones
 

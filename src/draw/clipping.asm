@@ -18,17 +18,21 @@ draw.set_clip_region_box:
     ret
 
 draw.set_clip_region_screen:
-    ld bc, ti.lcdHeight
-    push bc ; y_max
-        ld hl, ti.lcdWidth
-        push hl ; x_max
-            ld c, 0
-            push bc ; y_min
-                push bc ; x_min
-                    call gfx.SetClipRegion
+; iy = unaffected
+    push iy
+        ld bc, ti.lcdHeight
+        assert ti.lcdHeight <= 255
+        push bc ; y_max
+            ld hl, ti.lcdWidth
+            push hl ; x_max
+                ld c, 0
+                push bc ; y_min
+                    push bc ; x_min
+                        call gfx.SetClipRegion
+                    pop hl
                 pop hl
             pop hl
         pop hl
-    pop hl
+    pop iy
 
     ret
