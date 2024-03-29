@@ -210,13 +210,6 @@ game:
         cp a, (ix + flags.player_control.offset)
         call z, player.red.draw
 
-    .draw.attack:
-        bit flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
-        jq z, .draw.attack_end
-
-        call attack.run_draw_step
-    .draw.attack_end:
-
         ; Sans
         ld l, sans_y
         push hl ; y
@@ -393,6 +386,13 @@ game:
                 pop de
             pop bc
         pop hl
+
+    .draw.attack:
+        bit flags.attack.attack_loaded_bit, (ix + flags.attack.offset)
+        jq z, .draw.attack_end
+
+        call attack.run_draw_step
+    .draw.attack_end:
 
         jp .loop
 

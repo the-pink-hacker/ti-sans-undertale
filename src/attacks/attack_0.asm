@@ -12,7 +12,7 @@ attack.attack_0:
     dl 001, .update.spawn_wave_bones,                     .draw.wave_bones
     dl 032, .update.move_wave_bones,                      .draw.wave_bones
     dl 001, .update.move_wave_bones_gb_a4_spawn,          .draw.wave_bones_gb_a4
-    dl 029, .update.move_wave_bones_gb_a4,                .draw.wave_bones_gb_a4
+    dl 011, .update.move_wave_bones_gb_a4,                .draw.wave_bones_gb_a4
     dl 999, .update.move_wave_bones,                      .draw.wave_bones_gb_a4
     dl 001, attack.general.update.exit ; Omitted update to save space.
     dl 001 ; bones & spawn gaster blasters
@@ -94,21 +94,26 @@ attack.attack_0.update:
             inc hl
             inc hl
 
-            push iy
-            push hl
-                ld d, (hl) ; rotation
-                ld e, 0 ; frame
-                push de
-                    call gaster_blaster.get_sprite
-                pop de
+            if % <> %%
+                push iy
+                    push hl
+            end if
 
-                ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + offset), hl
-            pop hl
-            pop iy
+                    ld d, (hl) ; rotation
+                    ld e, 0 ; frame
+                    push de
+                        call gaster_blaster.get_sprite
+                    pop de
+                    
+                    ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + offset), hl
 
-            if % <> %% ; Only needs to run if another repeats follow.
+            if % <> %% ; Only needs to run if another repeat follows.
+                    pop hl
+                pop iy
+
                 inc hl
             end if
+
         end repeat
 
         assert $ = .move_wave_bones
@@ -152,12 +157,26 @@ attack.attack_0.update:
         ret
 
 attack.gaster_blaster_table:
-    repeat 30, index: 0
-        repeat 4, gb: 0
-            db index + 10 * gb ; y
-            dl index + 10 * gb ; x
-            db index mod 20 ; rotation
-        end repeat
+    repeat 12, index: 0
+        rotation = (index * PI) / (2 * (%% - 1))
+        sin rotation, TRIG_ITERATIONS ; Ease out
+
+        db trunc (result * 53 + 0.5) ; y
+        dl 16 + trunc (result * 83 + 0.5) ; x
+        db 0 ; rotation
+             ; Constant because Toby can do whatever he want to do...
+
+        db 16 + trunc (result * 75 + 0.5) ; y
+        dl trunc (result * 66 + 0.5) ; x
+        db 2 + trunc (result * 3 + 0.5) ; rotation
+
+        db ti.lcdHeight - 32 - trunc (result * 17 + 0.5) ; y
+        dl ti.lcdWidth - 64 - trunc (result * 93 + 0.5); x
+        db 16 - trunc (result * 6 + 0.5) ; rotation
+
+        db ti.lcdHeight - 56 - trunc (result * 28 + 0.5) ; y
+        dl ti.lcdWidth - 56 - trunc (result * 68 + 0.5) ; x
+        db 18 - trunc (result * 3 + 0.5) ; rotation
     end repeat
 
 attack.wave_bones_table:
