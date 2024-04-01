@@ -7,6 +7,7 @@ player.red.update:
         jq nz, .input_down_end
 
         inc (ix + flags.player_soul_y.offset)
+        inc (ix + flags.player_soul_y.offset)
     .input_down_end:
 
     .input_up:
@@ -15,6 +16,7 @@ player.red.update:
         bit flags.collision.hard_up_bit, (ix + flags.collision.offset)
         jq nz, .input_up_end
 
+        dec (ix + flags.player_soul_y.offset)
         dec (ix + flags.player_soul_y.offset)
     .input_up_end:
     
@@ -26,6 +28,7 @@ player.red.update:
 
         ld hl, (ix + flags.player_soul_x.offset)
         dec hl
+        dec hl
         ld (ix + flags.player_soul_x.offset), hl
     .input_left_end:
 
@@ -36,6 +39,7 @@ player.red.update:
         jq nz, .input_right_end
 
         ld hl, (ix + flags.player_soul_x.offset)
+        inc hl
         inc hl
         ld (ix + flags.player_soul_x.offset), hl
     .input_right_end:

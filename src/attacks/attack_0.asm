@@ -1,24 +1,30 @@
+bottom_bone_move_amount := 8
+
 attack.attack_0:
-    dl 080, NULL,                                         NULL
     dl 001, attack.general.update.set_player_soul_blue,   NULL
-    dl 050, attack.general.update.throw_player_soul_down, NULL
+    dl 010, attack.general.update.throw_player_soul_down, NULL
+    dl 015, NULL,                                         NULL
     dl 001, .update.spawn_bottom_bone_block,              .draw.bone_block
-    dl 010, .update.bone_block_move_up,                   .draw.bone_block
-    dl 030, .update.bone_block_collision,                 .draw.bone_block
+    dl 003, .update.bone_block_move_up,                   .draw.bone_block
+    dl 025, .update.bone_block_collision,                 .draw.bone_block
     dl 001, attack.general.update.set_player_soul_red,    .draw.bone_block
     dl 030, .update.bone_block_collision,                 .draw.bone_block
-    dl 010, .update.bone_block_move_down,                 .draw.bone_block
+    dl 003, .update.bone_block_move_down,                 .draw.bone_block
     dl 005, NULL,                                         NULL
     dl 001, .update.spawn_wave_bones,                     .draw.wave_bones
     dl 032, .update.move_wave_bones,                      .draw.wave_bones
     dl 001, .update.move_wave_bones_gb_a4_spawn,          .draw.wave_bones_gb_a4
     dl 011, .update.move_wave_bones_gb_a4,                .draw.wave_bones_gb_a4
-    dl 999, .update.move_wave_bones,                      .draw.wave_bones_gb_a4
+    dl 006, .update.move_wave_bones,                      .draw.wave_bones_gb_a4
+    dl 009, NULL,                                         .draw.gb_a4
+    dl 001, .update.gb_a4_pre_charge,                     .draw.gb_a4
+    dl 001, NULL,                                         .draw.gb_a4
+    repeat 5
+    dl 001, .update.gb_a4_charge,                         .draw.gb_a4
+    dl 001, NULL,                                         .draw.gb_a4
+    end repeat
+    dl 999, NULL,                                         .draw.gb_a4
     dl 001, attack.general.update.exit ; Omitted update to save space.
-    dl 001 ; bones & spawn gaster blasters
-    dl 011 ; bones & move gaster blasters in
-    dl 006 ; bones & gaster blasters
-    dl 003 ; gaster blasters
     dl 003 ; swelling up of gaster blasters
     dl 001 ; fire
     dl 001 ; spawn next gb & fire
@@ -27,13 +33,14 @@ attack.attack_0:
 attack.attack_0.update:
     .spawn_bottom_bone_block:
         ld (iy), box_y + box_size ; y
-        ld hl, box_x + (box_size - sprites.bones_horizontal.width) / 2 ; x
+        ld hl, box_x + box_thickness ; x
         ld (iy + 1), hl
         ret
 
     .bone_block_move_up:
-        dec (iy)
-        dec (iy)
+        ld a, (iy)
+        sub a, bottom_bone_move_amount
+        ld (iy), a
     assert $ = .bone_block_collision
 
     .bone_block_collision:
@@ -54,8 +61,9 @@ attack.attack_0.update:
         ret
 
     .bone_block_move_down:
-        inc (iy)
-        inc (iy)
+        ld a, (iy)
+        add a, bottom_bone_move_amount
+        ld (iy), a
         jp .bone_block_collision
 
     .spawn_wave_bones:
@@ -126,16 +134,17 @@ attack.attack_0.update:
             ld iy, (hl)
             ld de, 3
             add iy, de
-            ld (hl), iy
+            add iy, de
+            ld (hl), iy ; x += 3
 
             push bc
                 push hl
                     add hl, de
-                    ld c, (hl)
+                    ld c, (hl) ; y
                     inc hl
-                    ld hl, (hl)
-                    add hl, de
-                    add hl, de
+                    ld l, (hl) ; height
+                    add hl, de ; height += top
+                    add hl, de ; height += bottom
                     push hl ; box_size_y
                         ld de, sprites.bone_top.width
                         push de ; box_size_x
@@ -153,6 +162,28 @@ attack.attack_0.update:
 
             pop bc
             djnz .loop
+
+        ret
+
+    .gb_a4_pre_charge:
+        ld (iy + entity_buffer.gb_a4), 0
+
+        assert $ = .gb_a4_charge
+
+    .gb_a4_charge:
+        ld e, (iy + entity_buffer.gb_a4) ; frame
+        inc (iy + entity_buffer.gb_a4)
+
+        repeat 4, index: 0
+            push iy
+                ld d, index * 5 ; rotation
+                push de
+                    call gaster_blaster.get_sprite
+                pop de
+            pop iy
+
+            ld (iy + entity_buffer.gb_a4 + 5 + 7 * index), hl
+        end repeat
 
         ret
 
@@ -186,7 +217,7 @@ attack.wave_bones_table:
         radians = (index / 20.0) * TAU * 1.25
         sin radians, TRIG_ITERATIONS
         height_offset = 26
-        height_shift = -10
+        height_shift = -14
         wave_height = trunc (result * 10.0)
         spacing = 10
         x = box_x - (spacing * index) - 1
@@ -219,7 +250,7 @@ attack.attack_0.draw:
         pop hl
         ret
 
-    .wave_bones_gb_a4:
+    .gb_a4:
         call draw.set_clip_region_screen
 
         repeat 4, index: 0
@@ -290,6 +321,11 @@ attack.attack_0.draw:
         ;pop hl
 
         call draw.set_clip_region_box
+
+        ret
+
+    .wave_bones_gb_a4:
+        call .gb_a4
 
         assert $ = .wave_bones
 

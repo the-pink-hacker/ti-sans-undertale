@@ -4,10 +4,15 @@ entity_buffer:
     .end := entity_buffer.start + entity_buffer.size
 
     .gb_a4 := 0
-    .gb_a4.end := .gb_a4 + 1 + 4 * 7
+    ; frame: u8, 0
+    ; gb_a4.x:
+    ; x: i24, 0
+    ; y: u8, 3
+    ; sprite: *sprite, 4
+    .gb_a4.end := .gb_a4 + 1 + 4 * 8
 
     .gb_b4 := .gb_a4.end
-    .gb_b4.end := .gb_b4 + 1 + 4 * 7
+    .gb_b4.end := .gb_b4 + 1 + 4 * 8
     
     .bones := entity_buffer.start + 128
     .bones.end := .bones + attack.wave_bones_table.size
@@ -38,27 +43,28 @@ attack.advance_step:
 
     ld hl, (iy + 6) ; draw
     ld (attack.draw_step), hl
+
     ret
 
 attack:
     .run_update_step:
-        ld iy, entity_buffer.start
     .update_step := $ + 1
         ld hl, NULL ; SMC: will be changed to current step.
         ld de, NULL
         or a, a ; Reset carry.
         adc hl, de ; Has to be an adc since it affects the zero flag.
         ret z ; Return if null pointer.
+        ld iy, entity_buffer.start
         jp (hl)
 
     .run_draw_step:
-        ld iy, entity_buffer.start
     .draw_step := $ + 1
         ld hl, NULL ; SMC: will be changed to current step.
         ld de, NULL
         or a, a ; Reset carry.
         adc hl, de ; Has to be an adc since it affects the zero flag.
         ret z ; Return if null pointer.
+        ld iy, entity_buffer.start
         jp (hl)
 
 include "src/attacks/general.asm"

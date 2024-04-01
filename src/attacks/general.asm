@@ -8,10 +8,7 @@ attack.general.update:
         ret
 
     .throw_player_soul_down:
-        bit flags.collision.hard_down_bit, (ix + flags.collision.offset)
-        ret nz
-
-        inc (ix + flags.player_soul_y.offset)
+        ld (ix + flags.player_soul_y.offset), box_y + box_size - box_thickness - sprites.heart_red.height
         ret
 
     .exit:
