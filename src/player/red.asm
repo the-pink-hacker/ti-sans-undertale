@@ -1,13 +1,15 @@
 player.red.update:
 ; ix = flags
+    ld c, 0 ; velocity
+
     .input_down:
         bit flags.input.down_bit, (ix + flags.input.offset)
         jq z, .input_down_end
         bit flags.collision.hard_down_bit, (ix + flags.collision.offset)
         jq nz, .input_down_end
 
-        inc (ix + flags.player_soul_y.offset)
-        inc (ix + flags.player_soul_y.offset)
+        inc c
+        inc c
     .input_down_end:
 
     .input_up:
@@ -16,9 +18,13 @@ player.red.update:
         bit flags.collision.hard_up_bit, (ix + flags.collision.offset)
         jq nz, .input_up_end
 
-        dec (ix + flags.player_soul_y.offset)
-        dec (ix + flags.player_soul_y.offset)
+        dec c
+        dec c
     .input_up_end:
+
+    ld a, (ix + flags.player_soul_y.offset)
+    add a, c
+    ld (ix + flags.player_soul_y.offset), a
     
     .input_left:
         bit flags.input.left_bit, (ix + flags.input.offset)

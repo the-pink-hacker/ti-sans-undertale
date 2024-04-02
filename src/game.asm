@@ -79,10 +79,6 @@ game:
     .input.group_2_end:
 
     .update:
-        ld a, (ix + flags.player_health.offset)
-        or a, a
-        ret z
-        
         ld (ix + flags.collision.offset), 0
 
         ld hl, box_size - (2 * box_thickness)
@@ -110,22 +106,24 @@ game:
     .update.attack_end:
 
     .update.damage:
+        ; TODO: Rewrite all of this );
         bit flags.collision.soft_bit, (ix + flags.collision.offset)
         jq z, .update.damage_end
 
         ld a, (ix + flags.player_health.offset)
         dec a
         ld (ix + flags.player_health.offset), a
-        jq nz, .update.damage_karma
-
-        set flags.program.exit_bit, (ix + flags.program.exit_bit)
+        jq z, .update.damage_end
     .update.damage_karma:
         sub a, (ix + flags.player_karma.offset) ; Health left after karma
-        ; carry => karam = 0
+        ; carry => lower karma
         ; non-zero => karam += 1
         jq nc, .update.damage_karma_increase
 
-        ld (ix + flags.player_karma.offset), 0
+        ;ld (ix + flags.player_karma.offset), 0
+        add a, (ix + flags.player_karma.offset)
+        dec a
+        ld (ix + flags.player_karma.offset), a ; Keep health above 0 after karma.
         jp .update.damage_end
     .update.damage_karma_increase:
         jq z, .update.damage_end
@@ -150,7 +148,6 @@ game:
         sbc hl, de
         jq nz, .update.schedule_second_end
 
-        ;xor a, a
         cp a, (ix + flags.player_karma.offset)
         jq z, .update.karma_skip
 
@@ -158,7 +155,6 @@ game:
         dec (ix + flags.player_health.offset)
     .update.karma_skip:
         ld hl, target_fps
-        ;ld de, (ix + flags.frame_counter_next_second.offset)
         add hl, de
         ld (ix + flags.frame_counter_next_second.offset), hl
     .update.schedule_second_end:
@@ -398,7 +394,7 @@ game:
 
 health_lookup:
     repeat max_health + 1, index: 0
-        db (index * health_bar_width) / max_health
+        db trunc (((index * health_bar_width) / float (max_health)) + 0.5)
     end repeat
 
 flags:

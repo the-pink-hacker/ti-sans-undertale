@@ -21,8 +21,6 @@ player.blue.update:
         or a, a
         jq z, .jump_force_end
     .jump_force_condition_skip:
-        ;dec (ix + flags.player_soul_y.offset)
-        ;dec (ix + flags.player_soul_y.offset)
         dec c
         dec c
         dec (ix + flags.player_jump_counter.offset)
@@ -33,8 +31,6 @@ player.blue.update:
         bit flags.collision.hard_down_bit, (ix + flags.collision.offset)
         jq nz, .gravity_end
 
-        ;inc (ix + flags.player_soul_y.offset)
-        ;inc (ix + flags.player_soul_y.offset)
         inc c
         inc c
     .gravity_end:

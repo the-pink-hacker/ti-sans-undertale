@@ -23,11 +23,7 @@ attack.attack_0:
     dl 001, .update.gb_a4_charge,                         .draw.gb_a4
     dl 001, NULL,                                         .draw.gb_a4
     end repeat
-    dl 999, NULL,                                         .draw.gb_a4
-    dl 001, attack.general.update.exit ; Omitted update to save space.
-    dl 003 ; swelling up of gaster blasters
-    dl 001 ; fire
-    dl 001 ; spawn next gb & fire
+    dl 090, NULL,                                         .draw.gb_a4
     dl 001, attack.general.update.exit ; Omitted update to save space.
 
 attack.attack_0.update:
