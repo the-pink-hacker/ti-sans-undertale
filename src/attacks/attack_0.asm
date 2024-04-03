@@ -1,4 +1,5 @@
 bottom_bone_move_amount := 8
+gb_blast_radius := 12
 
 attack.attack_0:
     dl 001, attack.general.update.set_player_soul_blue,   NULL
@@ -23,6 +24,7 @@ attack.attack_0:
     dl 001, .update.gb_a4_charge,                         .draw.gb_a4
     dl 001, NULL,                                         .draw.gb_a4
     end repeat
+    dl 090, NULL,                                         .draw.gb_a4_blast
     dl 090, NULL,                                         .draw.gb_a4
     dl 001, attack.general.update.exit ; Omitted update to save space.
 
@@ -164,8 +166,6 @@ attack.attack_0.update:
     .gb_a4_pre_charge:
         ld (iy + entity_buffer.gb_a4), 0
 
-        assert $ = .gb_a4_charge
-
     .gb_a4_charge:
         ld e, (iy + entity_buffer.gb_a4) ; frame
         inc (iy + entity_buffer.gb_a4)
@@ -246,6 +246,23 @@ attack.attack_0.draw:
         pop hl
         ret
 
+    .gb_a4_blast:
+        push iy
+            iterate x, 99, 163
+                ld hl, x - gb_blast_radius + (56 / 2)
+                ld a, gb_blast_radius * 2
+                call gaster_blaster.draw_blast_vertical
+            end iterate
+
+            iterate y, 91, 156
+                ld a, y - gb_blast_radius + (56 / 2)
+                ld l, gb_blast_radius * 2
+                call gaster_blaster.draw_blast_horizontal
+            end iterate
+        pop iy
+
+        assert $ = .gb_a4
+
     .gb_a4:
         call draw.set_clip_region_screen
 
@@ -272,49 +289,6 @@ attack.attack_0.draw:
                 pop iy
             end if
         end repeat
-
-
-        ;gaster_blaster_blast (4.0 * PI) / 3.0, box_x + box_size / 2, box_y + box_size / 2
-        ;
-        ;ld hl, ya2
-        ;push hl ; y2
-        ;    ld hl, xa2
-        ;    push hl ; x2
-        ;        ld hl, ya1
-        ;        push hl ; y1
-        ;            ld hl, xa1
-        ;            push hl ; x1
-        ;                ld hl, ya0
-        ;                push hl ; y0
-        ;                    ld hl, xa0
-        ;                    push hl ; x0
-        ;                        call gfx.FillTriangle
-        ;                    pop hl
-        ;                pop hl
-        ;            pop hl
-        ;        pop hl
-        ;    pop hl
-        ;pop hl
-        ;
-        ;ld hl, yb2
-        ;push hl ; y2
-        ;    ld hl, xb2
-        ;    push hl ; x2
-        ;        ld hl, yb1
-        ;        push hl ; y1
-        ;            ld hl, xb1
-        ;            push hl ; x1
-        ;                ld hl, yb0
-        ;                push hl ; y0
-        ;                    ld hl, xb0
-        ;                    push hl ; x0
-        ;                        call gfx.FillTriangle
-        ;                    pop hl
-        ;                pop hl
-        ;            pop hl
-        ;        pop hl
-        ;    pop hl
-        ;pop hl
 
         call draw.set_clip_region_box
 

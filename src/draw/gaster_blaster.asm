@@ -122,3 +122,42 @@ gaster_blaster.init:
         jp sans_undertale.exit_safe
     .failed.text:
         db "Couldn't find asset: ", 0
+
+gaster_blaster.draw_blast_vertical:
+; Arguments:
+;   hl: x
+;   a: thickness
+    ld de, ti.lcdHeight
+    assert ti.lcdHeight < 256 ; d = 0
+    push de ; height
+        ld e, a
+        push de ; width
+            ld e, d ; de = 0
+            push de ; y
+                push hl ; x
+                    call gfx.FillRectangle_NoClip
+                pop hl
+            pop de
+        pop de
+    pop de
+
+    ret
+
+gaster_blaster.draw_blast_horizontal:
+; Arguments:
+;   a: y
+;   l: thickness
+    push hl ; height
+        ld hl, ti.lcdWidth
+        push hl ; width
+            ld l, a
+            push hl ; y
+                ld hl, 0
+                push hl ; x
+                    call gfx.FillRectangle_NoClip
+                pop hl
+            pop hl
+        pop hl
+    pop hl
+
+    ret

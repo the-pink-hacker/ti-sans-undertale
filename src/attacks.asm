@@ -69,4 +69,3 @@ attack:
 
 include "src/attacks/general.asm"
 include "src/attacks/attack_0.asm"
-include "src/attacks/gaster_blaster.asm"
