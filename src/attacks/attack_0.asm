@@ -20,11 +20,16 @@ attack.attack_0:
     dl 009, NULL,                                         .draw.gb_a4
     dl 001, .update.gb_a4_pre_charge,                     .draw.gb_a4
     dl 001, NULL,                                         .draw.gb_a4
-    repeat 5
+    repeat 3
     dl 001, .update.gb_a4_charge,                         .draw.gb_a4
     dl 001, NULL,                                         .draw.gb_a4
     end repeat
-    dl 090, NULL,                                         .draw.gb_a4_blast
+    dl 001, .update.gb_a4_charge,                         .draw.gb_a4_blast
+    dl 001, NULL,                                         .draw.gb_a4_blast
+    repeat 60
+    dl 001, .update.gb_a4_toggle,                         .draw.gb_a4
+    dl 001, NULL,                                         .draw.gb_a4
+    end repeat
     dl 090, NULL,                                         .draw.gb_a4
     dl 001, attack.general.update.exit ; Omitted update to save space.
 
@@ -171,14 +176,30 @@ attack.attack_0.update:
         inc (iy + entity_buffer.gb_a4)
 
         repeat 4, index: 0
-            push iy
-                ld d, index * 5 ; rotation
-                push de
-                    call gaster_blaster.get_sprite
-                pop de
-            pop iy
+            ld d, index * 5 ; rotation
+            push de
+                call gaster_blaster.get_sprite
+            pop de
 
-            ld (iy + entity_buffer.gb_a4 + 5 + 7 * index), hl
+            ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + 7 * index), hl
+        end repeat
+
+        ret
+
+    .gb_a4_toggle:
+        ld hl, entity_buffer.start + entity_buffer.gb_a4
+        ld a, (hl)
+        xor a, 4 xor 5 ; Toggle between frame 4 and 5.
+        ld (hl), a
+        ld e, a
+
+        repeat 4, index: 0
+            ld d, index * 5 ; rotation
+            push de
+                call gaster_blaster.get_sprite
+            pop de
+
+            ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + 7 * index), hl
         end repeat
 
         ret
