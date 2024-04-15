@@ -78,21 +78,24 @@ number_to_string_99:
     ret
 
 float_op1_to_u8:
+; Domain: (-0.5, 255.5)
+; Range: [0, 255]
 ; Arguments:
 ;   OP1 = float
 ; Return:
 ;   a = u8
     call ti.Int
-    ld a, (ti.OP1 + 1) ; Exponent
-    ld b, a
+    ld hl, ti.OP1 + 1
+    ld b, (hl) ; Exponent
     ld a, $82
-    sub a, b
+    sub a, (hl) ; $82 - exponent
     ld b, a
     or a, a
 
     jq z, .shift_skip
 
-    ld hl, (ti.OP1 + 2) ; Mantissa
+    inc hl
+    ld hl, (hl) ; Mantissa
 
     .shift_loop:
         repeat 4

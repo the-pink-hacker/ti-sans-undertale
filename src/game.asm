@@ -413,7 +413,7 @@ text_float:
     string " 00"
 
 float_value:
-    ti_number 12.5475847397
+    ti_number -12.5475847397
 
 flags:
     ; Current keys being pressed

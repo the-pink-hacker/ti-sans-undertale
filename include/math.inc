@@ -54,35 +54,38 @@ macro cos: theta, iterations
     end if
 end macro
 
-; Domain: [1, 9.9999999999999E128]
+; Domain: [-9.9999999999999E128, -1] | [1, 9.9999999999999E128]
 ; No need to add less than one numbers.
 macro ti_number: number
-    db 1 ; Positive | Real
+    if number < 0
+        number_abs = -number
+        sign = 1 shl 7
+    else
+        number_abs = number
+        sign = 0
+    end if
+    db sign or 1
     exponent = 0
     exponent_eval = 1.0
-    if number >= 1.0
-        while number / exponent_eval >= 10.0
+    if number_abs >= 1.0
+        while number_abs / exponent_eval >= 10.0
             exponent = exponent + 1
             exponent_eval = exponent_eval * 10.0
         end while
-    else
-        exponent = 0
-        exponent_eval = 1.0
     end if
     db $80 + exponent
     i = 0
-    current_number = number
-    ;display_decimal trunc (current_number)
+    ;display_decimal trunc (number_abs)
     ;display $0A
     ;display_decimal exponent
     ;display $0A, $0A
     while i < 7
-        number_first = trunc (current_number / exponent_eval)
-        current_number = current_number - (number_first * exponent_eval)
+        number_first = trunc (number_abs / exponent_eval)
+        number_abs = number_abs - (number_first * exponent_eval)
         exponent_eval = exponent_eval / 10.0
 
-        number_second = trunc (current_number / exponent_eval)
-        current_number = current_number - (number_second * exponent_eval)
+        number_second = trunc (number_abs / exponent_eval)
+        number_abs = number_abs - (number_second * exponent_eval)
         exponent_eval = exponent_eval / 10.0
 
         ;display_decimal number_first
