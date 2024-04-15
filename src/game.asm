@@ -184,7 +184,6 @@ game:
         ld (hl), d
 
         ; DEBUG FLOAT TEXT
-        display_decimal $
         ld hl, float_value
         call ti.Mov9ToOP1
 
@@ -414,11 +413,7 @@ text_float:
     string " 00"
 
 float_value:
-    db 0000_0001b ; Positive | Real
-    db $81 ; Exponent
-    db $68
-    db $55
-    rb 5
+    ti_number 12.5475847397
 
 flags:
     ; Current keys being pressed

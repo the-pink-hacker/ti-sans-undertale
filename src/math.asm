@@ -81,11 +81,12 @@ float_op1_to_u8:
 ; Arguments:
 ;   OP1 = float
 ; Return:
-;   hl = bcd
 ;   a = u8
     call ti.Int
     ld a, (ti.OP1 + 1) ; Exponent
-    sub a, $80
+    ld b, a
+    ld a, $82
+    sub a, b
     ld b, a
     or a, a
 
