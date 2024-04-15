@@ -54,8 +54,9 @@ macro cos: theta, iterations
     end if
 end macro
 
-; Domain: [-9.9999999999999E128, -1] | [1, 9.9999999999999E128]
-; No need to add less than one numbers.
+; Domain: [-9.9999999999999E128, 9.9999999999999E128]
+; I don't think IEEE-754 is as pecise as TI's floating point.
+; The limit is probably the assembler and not the calculator.
 macro ti_number: number
     if number < 0
         number_abs = -number
@@ -65,14 +66,18 @@ macro ti_number: number
         sign = 0
     end if
     db sign or 1
-    exponent = 0
+    exponent = -127
     exponent_eval = 1.0
-    if number_abs >= 1.0
-        while number_abs / exponent_eval >= 10.0
-            exponent = exponent + 1
-            exponent_eval = exponent_eval * 10.0
-        end while
-    end if
+    i = 0
+    while i < -exponent ; Looses some percision.
+                        ; TODO: calculate exponent without really small numbers.
+        exponent_eval = exponent_eval / 10.0
+        i = i + 1
+    end while
+    while number_abs / exponent_eval >= 10.0
+        exponent = exponent + 1
+        exponent_eval = exponent_eval * 10.0
+    end while
     db $80 + exponent
     i = 0
     ;display_decimal trunc (number_abs)
