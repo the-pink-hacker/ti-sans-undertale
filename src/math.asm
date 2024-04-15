@@ -76,3 +76,60 @@ number_to_string_99:
     ld e, a
 
     ret
+
+float_op1_to_u8:
+; Arguments:
+;   OP1 = float
+; Return:
+;   hl = bcd
+;   a = u8
+    call ti.Int
+    ld a, (ti.OP1 + 1) ; Exponent
+    sub a, $80
+    ld b, a
+    or a, a
+
+    jq z, .shift_skip
+
+    ld hl, (ti.OP1 + 2) ; Mantissa
+
+    .shift_loop:
+        repeat 4
+            srl l
+            rra
+        end repeat
+        ld h, a
+
+        djnz .shift_loop
+
+    .shift_skip:
+
+    .bcd_ones:
+        ld a, h
+        rrca
+        rrca
+        rrca
+        rrca
+
+    .bcd_tens:
+        ld b, a
+            ld a, l
+            and a, $0F
+            ld c, a
+        ld a, b
+
+        ld b, 10
+        mlt bc
+        add a, c
+
+    .bcd_hundreds:
+        srl l
+        srl l
+        srl l
+        srl l
+
+        ld h, 100
+        mlt hl
+        add a, l
+
+    ret
