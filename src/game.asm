@@ -183,19 +183,6 @@ game:
         inc hl
         ld (hl), d
 
-        ; DEBUG FLOAT TEXT
-        ld hl, float_value
-        call ti.Mov9ToOP1
-
-        call float_op1_to_u8
-
-        call number_to_string_99
-
-        ld hl, text_float + 1
-        ld (hl), e
-        inc hl
-        ld (hl), d
-
     .update.end:
         ld hl, (ix + flags.frame_counter.offset)
         inc hl
@@ -330,11 +317,6 @@ game:
             call font.DrawString
         pop hl
 
-        ld hl, text_float
-        push hl
-            call font.DrawString
-        pop hl
-
     .draw.box:
         ld b, box_thickness
         ld hl, box_size
@@ -408,12 +390,6 @@ health_lookup:
     repeat max_health + 1, index: 0
         db trunc (((index * health_bar_width) / float (max_health)) + 0.5)
     end repeat
-
-text_float:
-    string " 00"
-
-float_value:
-    ti_number 0.01234
 
 flags:
     ; Current keys being pressed

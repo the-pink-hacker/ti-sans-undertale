@@ -23,9 +23,9 @@ macro power: base, exponent
 end macro
 
 ; Power series
-macro sin: theta, iterations
+macro sin_iterations: theta, iterations
     if iterations
-        sin theta, iterations - 1
+        sin_iterations theta, iterations - 1
         old = result
         power -1.0, (iterations)
         var1 = result
@@ -38,10 +38,14 @@ macro sin: theta, iterations
     end if
 end macro
 
+macro sin: theta
+    sin_iterations theta, TRIG_ITERATIONS
+end macro
+
 ; Power series
-macro cos: theta, iterations
+macro cos_iterations: theta, iterations
     if iterations
-        cos theta, iterations - 1
+        cos_iterations theta, iterations - 1
         old = result
         power -1.0, (iterations)
         var1 = result
@@ -52,6 +56,21 @@ macro cos: theta, iterations
     else
         result = 1.0
     end if
+end macro
+
+macro cos: theta
+    cos_iterations theta, TRIG_ITERATIONS
+end macro
+
+macro tan_iterations: theta, iterations
+    sin theta, iterations
+    result_sin = result
+    cos theta, iterations
+    result = result_sin / result
+end macro
+
+macro tan: theta
+    tan_iterations theta, TRIG_ITERATIONS
 end macro
 
 ; Domain: [-9.9999999999999E128, 9.9999999999999E128]
@@ -65,7 +84,7 @@ macro ti_number: number
         number_abs = number
         sign = 0
     end if
-    db sign or 1
+    db sign
     exponent = -127
     exponent_eval = 1.0
     i = 0

@@ -184,6 +184,15 @@ attack.attack_0.update:
             ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + 7 * index), hl
         end repeat
 
+        ld hl, (ix + flags.player_soul_x.offset)
+        call u9_to_float_op1
+
+        ld hl, attack.fire_lines
+        call ti.Mov9ToOP2
+        call ti.FPMult
+
+        call float_op1_to_u8
+
         ret
 
     .gb_a4_toggle:
@@ -207,12 +216,12 @@ attack.attack_0.update:
 attack.gaster_blaster_table:
     repeat 12, index: 0
         rotation = (index * PI) / (2 * (%% - 1))
-        sin rotation, TRIG_ITERATIONS ; Ease out
+        sin rotation ; Ease out
 
         db trunc (result * 53 + 0.5) ; y
         dl 16 + trunc (result * 83 + 0.5) ; x
         db 0 ; rotation
-             ; Constant because Toby can do whatever he want to do...
+             ; Constant because Toby can do whatever he wants to do...
 
         db 16 + trunc (result * 75 + 0.5) ; y
         dl trunc (result * 66 + 0.5) ; x
@@ -227,12 +236,15 @@ attack.gaster_blaster_table:
         db 18 - trunc (result * 3 + 0.5) ; rotation
     end repeat
 
+attack.fire_lines:
+    ti_number 1.0 / 2.0
+
 attack.wave_bones_table:
     .length := 40
 
     repeat .length / 2, index: 0
         radians = (index / 20.0) * TAU * 1.25
-        sin radians, TRIG_ITERATIONS
+        sin radians
         height_offset = 26
         height_shift = -14
         wave_height = trunc (result * 10.0)

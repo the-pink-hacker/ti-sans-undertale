@@ -13,10 +13,10 @@ gaster_blaster:
         repeat .rotations, index: 0
             ; Y
             radians = ((%% - index) * TAU) / .rotations
-            cos radians, TRIG_ITERATIONS
+            cos radians
             db .center_y - trunc (result * .circle_radius)
             ; X
-            sin radians, TRIG_ITERATIONS
+            sin radians
             dl .center_x + trunc (result * .circle_radius)
         end repeat
 
