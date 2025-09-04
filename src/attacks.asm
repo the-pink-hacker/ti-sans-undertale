@@ -6,13 +6,13 @@ entity_buffer:
     .gb_a4 := 0
     ; frame: u8, 0
     ; gb_a4.x:
-    ; x: i24, 0
-    ; y: u8, 3
-    ; sprite: *sprite, 4
-    .gb_a4.end := .gb_a4 + 1 + 4 * 8
+    ; y: i24, 0
+    ; x: i24, 3
+    ; sprite: *sprite, 6
+    .gb_a4.end := .gb_a4 + 1 + 4 * 9
 
     .gb_b4 := .gb_a4.end
-    .gb_b4.end := .gb_b4 + 1 + 4 * 8
+    .gb_b4.end := .gb_b4 + 1 + 4 * 9
     
     .bones := entity_buffer.start + 128
     .bones.end := .bones + attack.wave_bones_table.size

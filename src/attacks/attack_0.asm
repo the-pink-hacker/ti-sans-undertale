@@ -12,7 +12,7 @@ attack.attack_0:
     dl 030, .update.bone_block_collision,                 .draw.bone_block
     dl 003, .update.bone_block_move_down,                 .draw.bone_block
     dl 005, NULL,                                         NULL
-    dl 001, .update.spawn_wave_bones,                     .draw.wave_bones
+    dl 001, .update.spawn_wave_bones,                     NULL
     dl 032, .update.move_wave_bones,                      .draw.wave_bones
     dl 001, .update.move_wave_bones_gb_a4_spawn,          .draw.wave_bones_gb_a4
     dl 011, .update.move_wave_bones_gb_a4,                .draw.wave_bones_gb_a4
@@ -26,11 +26,11 @@ attack.attack_0:
     end repeat
     dl 001, .update.gb_a4_charge,                         .draw.gb_a4_blast
     dl 001, NULL,                                         .draw.gb_a4_blast
-    repeat 60
+    repeat 30
     dl 001, .update.gb_a4_toggle,                         .draw.gb_a4
     dl 001, NULL,                                         .draw.gb_a4
     end repeat
-    dl 090, NULL,                                         .draw.gb_a4
+    dl 120, .update.gb_a4_leave,                          .draw.gb_a4
     dl 001, attack.general.update.exit ; Omitted update to save space.
 
 attack.attack_0.update:
@@ -91,15 +91,17 @@ attack.attack_0.update:
         add hl, de
 
         repeat 4, index: 0
-            offset = index * 7
+            offset = index * 9
 
             ld a, (hl) ; y
             ld (iy + entity_buffer.gb_a4 + 1 + offset), a
 
             inc hl
+            inc hl
+            inc hl
 
             ld de, (hl) ; x
-            ld (iy + entity_buffer.gb_a4 + 2 + offset), de
+            ld (iy + entity_buffer.gb_a4 + 4 + offset), de
 
             inc hl
             inc hl
@@ -116,7 +118,7 @@ attack.attack_0.update:
                         call gaster_blaster.get_sprite
                     pop de
                     
-                    ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + offset), hl
+                    ld (entity_buffer.start + entity_buffer.gb_a4 + 7 + offset), hl
 
             if % <> %% ; Only needs to run if another repeat follows.
                     pop hl
@@ -181,7 +183,7 @@ attack.attack_0.update:
                 call gaster_blaster.get_sprite
             pop de
 
-            ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + 7 * index), hl
+            ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + 9 * index), hl
         end repeat
 
         ld hl, (ix + flags.player_soul_x.offset)
@@ -208,8 +210,40 @@ attack.attack_0.update:
                 call gaster_blaster.get_sprite
             pop de
 
-            ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + 7 * index), hl
+            ld (entity_buffer.start + entity_buffer.gb_a4 + 5 + 9 * index), hl
         end repeat
+
+        ret
+
+    ; TODO: Ease-out animation
+    .gb_a4_leave:
+        ret
+        lea hl, iy + entity_buffer.gb_a4 + 1
+        ; top
+        dec (hl)
+        dec (hl)
+
+        ; left
+        ld bc, 10
+        add hl, bc
+        dec (hl)
+        dec (hl)
+
+        ; bottom
+        dec bc
+        dec bc ; bc = 6
+        add hl, bc
+        inc (hl)
+        inc (hl)
+
+        ; right
+        inc bc
+        inc bc ; bc = 8
+        add hl, bc
+        ld bc, (hl)
+        inc bc
+        inc bc
+        ld (hl), bc
 
         ret
 
@@ -300,18 +334,17 @@ attack.attack_0.draw:
         call draw.set_clip_region_screen
 
         repeat 4, index: 0
-            offset = index * 7
+            offset = index * 9
 
             if % <> %% ; Only needs to run if another repeat follows.
                 push iy
             end if
 
-                ld hl, 0
-                ld l, (iy + entity_buffer.gb_a4 + 1 + offset)
+                ld hl, (iy + entity_buffer.gb_a4 + 1 + offset)
                 push hl ; y
-                    ld hl, (iy + entity_buffer.gb_a4 + 2 + offset)
+                    ld hl, (iy + entity_buffer.gb_a4 + 4 + offset)
                     push hl ; x
-                        ld hl, (iy + entity_buffer.gb_a4 + 5 + offset)
+                        ld hl, (iy + entity_buffer.gb_a4 + 7 + offset)
                         push hl ; sprite
                             call gfx.TransparentSprite
                         pop hl
