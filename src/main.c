@@ -1,11 +1,10 @@
-#include <ti/screen.h>
-#include <ti/getcsc.h>
-#include <stdlib.h>
+#include "game.h"
+#include "init.h"
 
 int main(void) {
-    os_ClrHome();
-    os_PutStrFull("Hello, World.");
-    while (!os_GetCSC());
+    sans_init();
+    sans_game_init();
+    sans_exit();
 
     return 0;
 }
