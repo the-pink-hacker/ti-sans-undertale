@@ -1,7 +1,7 @@
 use std::{
     fs::{self, File},
     io::Write,
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use anyhow::{bail, Context};
@@ -48,12 +48,12 @@ impl Sprite {
     }
 }
 
-#[derive(Debug, Deserialize, Default, Clone)]
+#[derive(Debug, Deserialize, Default, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum OutputType {
     #[default]
+    C,
     Assembly,
-    Binary,
 }
 
 #[derive(Debug, Deserialize)]
@@ -77,13 +77,19 @@ fn compress_color_space_rgb(rgb: [u8; 3]) -> u8 {
     let red = (red / 32) << 5;
     let green = green / 32;
     let blue = (blue / 64) << 3;
-    let pixel = red | green | blue;
-    pixel
+    red | green | blue
 }
 
-fn rgb_line_to_string(rgb: &[u8]) -> String {
+fn rgb_line_to_string_assembly(rgb: &[u8]) -> String {
     rgb.iter()
         .map(|pixel| format!("${:X}", pixel))
+        .collect::<Vec<_>>()
+        .join(",")
+}
+
+fn rgb_line_to_string_c(rgb: &[u8]) -> String {
+    rgb.iter()
+        .map(|pixel| format!("0x{:X}", pixel))
         .collect::<Vec<_>>()
         .join(",")
 }
@@ -130,10 +136,8 @@ where
     }
 }
 
-pub struct RawSprite<'a> {
-    pub sprite_suffix: &'a str,
+pub struct RawSprite {
     pub width: u32,
-    pub height: u32,
     pub color_space: ColorSpace,
     pub pixels: Vec<u8>,
 }
@@ -143,7 +147,7 @@ pub fn generate_assembly_sprite_pixels_rgb(output: &mut String, sprite: &RawSpri
         &sprite
             .pixels
             .chunks_exact(sprite.width as usize)
-            .map(rgb_line_to_string)
+            .map(rgb_line_to_string_assembly)
             .map(|line| format!("\ndb {}", line))
             .collect::<String>(),
     );
@@ -157,12 +161,32 @@ pub fn generate_assembly_sprite_pixels_monochrome(output: &mut String, sprite: &
         .collect::<String>();
 }
 
-pub fn check_for_png(path: &PathBuf) -> anyhow::Result<()> {
+pub fn generate_c_sprite_pixels_rgb(output: &mut String, sprite: &RawSprite) {
+    output.push_str(
+        &sprite
+            .pixels
+            .chunks_exact(sprite.width as usize)
+            .map(rgb_line_to_string_c)
+            .map(|line| format!("\n        {}", line))
+            .collect::<Vec<String>>()
+            .join(","),
+    );
+}
+
+pub fn generate_c_sprite_pixels_monochrome(output: &mut String, sprite: &RawSprite) {
+    *output += &sprite
+        .pixels
+        .chunks_exact(sprite.width as usize)
+        .map(|line| format!("\n        {}", rgb_line_to_monochrome(line).join(",")))
+        .collect::<Vec<String>>()
+        .join(",");
+}
+
+pub fn check_for_png(path: &Path) -> anyhow::Result<()> {
     let is_png = path
         .extension()
         .with_context(|| format!("Failed to get extension of file: {}", path.display()))?
-        .to_ascii_lowercase()
-        == "png";
+        .eq_ignore_ascii_case("png");
 
     if !is_png {
         bail!("Image format not supported; PNGs are only supported.");
@@ -173,20 +197,19 @@ pub fn check_for_png(path: &PathBuf) -> anyhow::Result<()> {
 
 pub fn get_pixel_data(
     sprite: &ExpandedSprite,
-    sprite_path: &PathBuf,
+    sprite_path: &Path,
     metadata: &SpriteMetadata,
 ) -> anyhow::Result<(u32, u32, image::ImageBuffer<Rgb<u8>, Vec<u8>>)> {
     let source_image_path = sprite_path
         .parent()
         .with_context(|| "Sprite path was empty.")?
-        .join(sprite.path.to_path_buf());
+        .join(sprite.path.clone());
 
     check_for_png(&source_image_path)?;
 
     let sprite_data = image::io::Reader::open(source_image_path.clone())?.decode()?;
 
-    let rotation =
-        -1.0 * sprite.rotation.unwrap_or_default() + metadata.rotation.unwrap_or_default();
+    let rotation = -sprite.rotation.unwrap_or_default() + metadata.rotation.unwrap_or_default();
 
     let pixels = if rotation != 0.0 {
         imageproc::geometric_transformations::rotate_about_center(
@@ -206,26 +229,26 @@ pub fn get_pixel_data(
 }
 
 pub fn generate_sprite_file(
-    sprite_path: &PathBuf,
-    out_path: &PathBuf,
+    sprite_path: &Path,
+    out_path: &Path,
     sprite_collection_name: &str,
     metadata: &SpriteMetadata,
 ) -> anyhow::Result<()> {
-    let output_type = metadata.output_type.clone().unwrap_or_default();
+    let output_type = metadata.output_type.unwrap_or_default();
 
     match output_type {
-        OutputType::Assembly => {
-            generate_assembly_file(sprite_path, out_path, sprite_collection_name, metadata)
+        OutputType::C => {
+            generate_sprite_file_c(sprite_path, out_path, sprite_collection_name, metadata)
         }
-        OutputType::Binary => {
-            generate_binary_file(sprite_path, out_path, sprite_collection_name, metadata)
+        OutputType::Assembly => {
+            generate_sprite_file_assembly(sprite_path, out_path, sprite_collection_name, metadata)
         }
     }
 }
 
-pub fn generate_assembly_file(
-    sprite_path: &PathBuf,
-    out_path: &PathBuf,
+pub fn generate_sprite_file_assembly(
+    sprite_path: &Path,
+    out_path: &Path,
     sprite_collection_name: &str,
     metadata: &SpriteMetadata,
 ) -> anyhow::Result<()> {
@@ -252,15 +275,13 @@ pub fn generate_assembly_file(
         let header = unwrap_sprite_option_or(&metadata.header, &sprite.header, true);
 
         let raw_sprite = RawSprite {
-            sprite_suffix,
             width,
-            height,
             color_space,
             pixels,
         };
 
         if header {
-            output += &"\ndb .width, .height";
+            output += "\ndb .width, .height";
         }
 
         match raw_sprite.color_space {
@@ -273,7 +294,7 @@ pub fn generate_assembly_file(
 
     let sprite_out = out_path.join(format!("{}.asm", sprite_collection_name));
 
-    fs::create_dir_all(out_path.clone())?;
+    fs::create_dir_all(out_path)?;
 
     let mut file = File::create(sprite_out)?;
     file.write_all(output.as_bytes())?;
@@ -281,42 +302,76 @@ pub fn generate_assembly_file(
     Ok(())
 }
 
-pub fn generate_binary_file(
-    sprite_path: &PathBuf,
-    out_path: &PathBuf,
+pub fn generate_sprite_file_c(
+    sprite_path: &Path,
+    out_path: &Path,
     sprite_collection_name: &str,
     metadata: &SpriteMetadata,
 ) -> anyhow::Result<()> {
-    let mut output = Vec::with_capacity(64 * 1_024);
+    fs::create_dir_all(out_path)?;
 
-    for sprite in metadata.sprites.values().map(Sprite::to_expanded) {
+    let mut header_output = "#include <graphx.h>\n".to_string();
+    let mut c_output = header_output.clone();
+
+    for (sprite_suffix, sprite) in metadata.sprites.iter() {
+        let sprite = sprite.to_expanded();
+
         let (width, height, pixels) = get_pixel_data(&sprite, sprite_path, metadata)?;
+        let sprite_suffix_upper = sprite_suffix.to_uppercase();
 
-        let mut pixels = pixels
+        header_output += &format!(
+            "\n#define SPRITE_{sprite_suffix_upper}_WIDTH {width}\n\
+            #define SPRITE_{sprite_suffix_upper}_HEIGHT {height}"
+        );
+
+        let header = unwrap_sprite_option_or(&metadata.header, &sprite.header, true);
+        if header {
+            c_output += &format!(
+                "\nconst gfx_sprite_t sprite_{sprite_suffix} = {{\n    \
+                .width = {width},\n    \
+                .height = {height},\n    \
+                .data = {{"
+            );
+            header_output += &format!("\nextern const gfx_sprite_t sprite_{sprite_suffix};\n");
+        } else {
+            c_output += &format!("const uint8_t sprite_{sprite_suffix}[SPRITE_{sprite_suffix_upper}_WIDTH * SPRITE_{sprite_suffix_upper}_HEIGHT] = {{\n");
+            header_output += &format!("\nconst uint8_t sprite_{sprite_suffix}[SPRITE_{sprite_suffix_upper}_WIDTH * SPRITE_{sprite_suffix_upper}_HEIGHT];\n");
+        }
+
+        let pixels = pixels
             .pixels()
             .map(|pixel| compress_color_space_rgb(pixel.0))
             .collect::<Vec<_>>();
 
         let color_space = unwrap_sprite_option(&metadata.color_space, &sprite.color_space);
-        let header = unwrap_sprite_option_or(&metadata.header, &sprite.header, true);
 
-        if header {
-            output.push(width as u8);
-            output.push(height as u8);
+        let raw_sprite = RawSprite {
+            width,
+            color_space,
+            pixels,
+        };
+
+        match raw_sprite.color_space {
+            ColorSpace::Rgb => generate_c_sprite_pixels_rgb(&mut c_output, &raw_sprite),
+            ColorSpace::Monochrome => {
+                generate_c_sprite_pixels_monochrome(&mut c_output, &raw_sprite)
+            }
         }
 
-        match color_space {
-            ColorSpace::Rgb => output.append(&mut pixels),
-            ColorSpace::Monochrome => bail!("Binary can't be used with monochrome."),
+        if header {
+            c_output += "\n    }\n};\n";
+        } else {
+            c_output += "\n};\n"
         }
     }
 
-    let sprite_out = out_path.join(format!("{}.bin", sprite_collection_name));
+    let c_out = out_path.join(format!("{}.c", sprite_collection_name));
+    let mut file = File::create(c_out)?;
+    file.write_all(c_output.as_bytes())?;
 
-    fs::create_dir_all(out_path.clone())?;
-
-    let mut file = File::create(sprite_out)?;
-    file.write_all(&output)?;
+    let header_out = out_path.join(format!("{}.h", sprite_collection_name));
+    let mut file = File::create(header_out)?;
+    file.write_all(header_output.as_bytes())?;
 
     Ok(())
 }

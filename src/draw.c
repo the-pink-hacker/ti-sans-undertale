@@ -1,4 +1,7 @@
 #include <graphx.h>
+#include <sys/lcd.h>
+
+#include "generated/sprites/player.h"
 
 void sans_draw_pre(void) {
     gfx_SwapDraw();
@@ -19,4 +22,6 @@ void sans_draw(void) {
     // Empty out the current buffer
     gfx_ZeroScreen();
     sans_draw_wait_frame();
+
+    gfx_Sprite(&sprite_heart_red, LCD_WIDTH / 2, LCD_HEIGHT / 2);
 }

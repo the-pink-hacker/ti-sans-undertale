@@ -1,0 +1,81 @@
+#include <graphx.h>
+
+#define SPRITE_GASTER_BLASTER_0_0_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_0_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_0;
+
+#define SPRITE_GASTER_BLASTER_0_1_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_1_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_1;
+
+#define SPRITE_GASTER_BLASTER_0_2_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_2_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_2;
+
+#define SPRITE_GASTER_BLASTER_0_3_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_3_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_3;
+
+#define SPRITE_GASTER_BLASTER_0_4_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_4_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_4;
+
+#define SPRITE_GASTER_BLASTER_0_5_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_5_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_5;
+
+#define SPRITE_GASTER_BLASTER_0_6_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_6_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_6;
+
+#define SPRITE_GASTER_BLASTER_0_7_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_7_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_7;
+
+#define SPRITE_GASTER_BLASTER_0_8_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_8_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_8;
+
+#define SPRITE_GASTER_BLASTER_0_9_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_9_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_9;
+
+#define SPRITE_GASTER_BLASTER_0_10_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_10_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_10;
+
+#define SPRITE_GASTER_BLASTER_0_11_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_11_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_11;
+
+#define SPRITE_GASTER_BLASTER_0_12_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_12_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_12;
+
+#define SPRITE_GASTER_BLASTER_0_13_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_13_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_13;
+
+#define SPRITE_GASTER_BLASTER_0_14_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_14_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_14;
+
+#define SPRITE_GASTER_BLASTER_0_15_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_15_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_15;
+
+#define SPRITE_GASTER_BLASTER_0_16_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_16_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_16;
+
+#define SPRITE_GASTER_BLASTER_0_17_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_17_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_17;
+
+#define SPRITE_GASTER_BLASTER_0_18_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_18_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_18;
+
+#define SPRITE_GASTER_BLASTER_0_19_WIDTH 56
+#define SPRITE_GASTER_BLASTER_0_19_HEIGHT 56
+extern const gfx_sprite_t sprite_gaster_blaster_0_19;

@@ -43,6 +43,15 @@
         devShells = lib.mapAttrs (system: pkgs: {
             default = pkgs.mkShell {
                 inputsFrom = [self.packages.${system}.default];
+                packages = with pkgs; [
+                    (rust-bin.selectLatestNightlyWith (toolchain:
+                        toolchain.default.override {
+                            extensions = [
+                                "rust-analyzer"
+                                "rust-src"
+                            ];
+                        }))
+                ];
             };
         })
         pkgsFor;

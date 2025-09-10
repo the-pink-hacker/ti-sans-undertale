@@ -20,9 +20,6 @@ bones_horizontal = "sprites/attacks/bones_horizontal.png"
 bone_top = "sprites/attacks/bone_top.png"
 bone_bottom = "sprites/attacks/bone_bottom.png"
 
-[gaster_blaster_0]
-output_type = "binary"
-
 [gaster_blaster_0.sprites.gaster_blaster_0_0]
 path = "sprites/sans/gaster_blaster_0.png"
 
@@ -101,9 +98,6 @@ rotation = 324
 [gaster_blaster_0.sprites.gaster_blaster_0_19]
 path = "sprites/sans/gaster_blaster_0.png"
 rotation = 342
-
-[gaster_blaster_1]
-output_type = "binary"
 
 [gaster_blaster_1.sprites.gaster_blaster_1_0]
 path = "sprites/sans/gaster_blaster_1.png"
@@ -184,9 +178,6 @@ rotation = 324
 path = "sprites/sans/gaster_blaster_1.png"
 rotation = 342
 
-[gaster_blaster_2]
-output_type = "binary"
-
 [gaster_blaster_2.sprites.gaster_blaster_2_0]
 path = "sprites/sans/gaster_blaster_2.png"
 
@@ -265,9 +256,6 @@ rotation = 324
 [gaster_blaster_2.sprites.gaster_blaster_2_19]
 path = "sprites/sans/gaster_blaster_2.png"
 rotation = 342
-
-[gaster_blaster_3]
-output_type = "binary"
 
 [gaster_blaster_3.sprites.gaster_blaster_3_0]
 path = "sprites/sans/gaster_blaster_3.png"
@@ -348,9 +336,6 @@ rotation = 324
 path = "sprites/sans/gaster_blaster_3.png"
 rotation = 342
 
-[gaster_blaster_4]
-output_type = "binary"
-
 [gaster_blaster_4.sprites.gaster_blaster_4_0]
 path = "sprites/sans/gaster_blaster_4.png"
 
@@ -429,9 +414,6 @@ rotation = 324
 [gaster_blaster_4.sprites.gaster_blaster_4_19]
 path = "sprites/sans/gaster_blaster_4.png"
 rotation = 342
-
-[gaster_blaster_5]
-output_type = "binary"
 
 [gaster_blaster_5.sprites.gaster_blaster_5_0]
 path = "sprites/sans/gaster_blaster_5.png"
@@ -515,6 +497,7 @@ rotation = 342
 [font_comic]
 color_space = "monochrome"
 header = false
+output_type = "assembly"
 
 [font_comic.sprites]
 glyph_exclamation_mark = "sprites/fonts/comic/glyph_exclamation_mark.png"
@@ -578,6 +561,7 @@ glyph_z = "sprites/fonts/comic/glyph_z.png"
 [font_hud]
 header = false
 color_space = "monochrome"
+output_type = "assembly"
 
 [font_hud.sprites]
 glyph_space = "sprites/fonts/hud/glyph_space.png"
