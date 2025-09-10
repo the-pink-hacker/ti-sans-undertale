@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 // Update the keyboard values
 // Called at the start of the frame
 void sans_update_input(void);
