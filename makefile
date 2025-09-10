@@ -7,7 +7,9 @@ NAME = SANS
 DESCRIPTION = "Sans Undertale Boss Fight"
 COMPRESSED = NO
 
-CFLAGS = -Wall -Wextra -Oz
+# Give me my booleans
+# God ez80 clang is getting out of date
+CFLAGS = -Wall -Wextra -Oz -std=c2x
 CXXFLAGS = -Wall -Wextra -Oz
 
 # ----------------------------

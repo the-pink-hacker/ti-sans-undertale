@@ -1,5 +1,3 @@
-#include <stdbool.h>
-
 #include "draw.h"
 #include "input.h"
 
