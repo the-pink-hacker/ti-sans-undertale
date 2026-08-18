@@ -1,9 +1,10 @@
 {
     description = "The Sans Undertale boss fight for the TI-84+ CE";
     inputs = {
-        nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+        flake-utils.url = "github:numtide/flake-utils";
+        nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
         toolchain = {
-            url = "github:myclevorname/flake";
+            url = "github:the-pink-hacker/ce-toolchain-nix";
             inputs = {
                 nixpkgs.follows = "nixpkgs";
             };
@@ -18,31 +19,28 @@
         nixpkgs,
         toolchain,
         rust-overlay,
+        flake-utils,
         ...
-    }: let
-      inherit (nixpkgs) lib;
-      systems = [
-          "x86_64-linux"
-          "x86_64-darwin"
-      ];
-      pkgsFor = lib.genAttrs systems (system:
-          import nixpkgs {
-              localSystem.system = system;
-              overlays = [(import rust-overlay)];
-              config.allowUnfree = true;
-          });
-    in {
-        packages = lib.mapAttrs (system: pkgs: {
-            default = toolchain.packages.x86_64-linux.mkDerivation {
-                pname = "sans-ti";
-                version = "0.0.1";
-                src = self;
+    }:
+        flake-utils.lib.eachDefaultSystem (system: let
+            pkgs = import nixpkgs {
+                inherit system;
+                overlays = [(import rust-overlay)];
+                config.allowUnfree = true;
             };
-        })
-        pkgsFor;
-        devShells = lib.mapAttrs (system: pkgs: {
-            default = pkgs.mkShell {
-                inputsFrom = [self.packages.${system}.default];
+            pkgsSelf = self.packages.${system};
+        in {
+            formatter = pkgs.alejandra;
+            packages = {
+                sans-ti = toolchain.packages.x86_64-linux.mkDerivation {
+                    pname = "sans-ti";
+                    version = "0.0.1";
+                    src = self;
+                };
+                default = pkgsSelf.sans-ti;
+            };
+            devShells.default = pkgs.mkShell {
+                inputsFrom = [pkgsSelf.default];
                 packages = with pkgs; [
                     (rust-bin.selectLatestNightlyWith (toolchain:
                         toolchain.default.override {
@@ -53,7 +51,8 @@
                         }))
                 ];
             };
-        })
-        pkgsFor;
-    };
+            overlays.default = final: prev: {
+                inherit (self.packages.${prev.system}) sans-ti;
+            };
+        });
 }
