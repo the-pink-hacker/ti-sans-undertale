@@ -1,13 +1,14 @@
-#include <graphx.h>
-#include <sys/lcd.h>
+#include "draw.h"
 
-#include "generated/sprites/player.h"
+#include <graphx.h>
+
+#include "heart.h"
 
 void sans_draw_pre(void) {
     gfx_SwapDraw();
 }
 
-static void sans_draw_wait_frame() {
+static void sans_draw_wait_frame(void) {
     // Set screen to visible
     gfx_SetDraw(gfx_screen);
     // Swap to non-visible
@@ -23,5 +24,5 @@ void sans_draw(void) {
     gfx_ZeroScreen();
     sans_draw_wait_frame();
 
-    gfx_Sprite(&sprite_heart_red, LCD_WIDTH / 2, LCD_HEIGHT / 2);
+    sans_heart_draw();
 }

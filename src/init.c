@@ -1,3 +1,5 @@
+#include "init.h"
+
 #include <ti/screen.h>
 #include <graphx.h>
 
