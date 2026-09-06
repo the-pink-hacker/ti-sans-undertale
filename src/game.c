@@ -4,7 +4,7 @@
 #include "input.h"
 #include "heart.h"
 
-static bool sans_gameloop(void) {
+static bool _gameloop(void) {
     sans_draw_pre();
     sans_input_update();
 
@@ -20,5 +20,5 @@ static bool sans_gameloop(void) {
 }
 
 void sans_game_init(void) {
-    while (sans_gameloop());
+    while (_gameloop());
 }
