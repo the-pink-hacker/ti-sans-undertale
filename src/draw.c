@@ -3,6 +3,7 @@
 #include <graphx.h>
 
 #include "heart.h"
+#include "ui.h"
 
 void sans_draw_pre(void) {
     gfx_SwapDraw();
@@ -24,5 +25,6 @@ void sans_draw(void) {
     gfx_ZeroScreen();
     _wait_frame();
 
+    sans_ui_draw();
     sans_heart_draw();
 }

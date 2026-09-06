@@ -1,3 +1,11 @@
+#define SANS_KEY_EXIT kb_KeyClear
+#define SANS_KEY_LEFT kb_KeyLeft
+#define SANS_KEY_RIGHT kb_KeyRight
+#define SANS_KEY_UP kb_KeyUp
+#define SANS_KEY_DOWN kb_KeyDown
+#define SANS_KEY_DEBUG_HEART_RED kb_Key2nd
+#define SANS_KEY_DEBUG_HEART_BLUE kb_KeyAlpha
+
 // Update the keyboard values
 // Called at the start of the frame
 void sans_input_update(void);

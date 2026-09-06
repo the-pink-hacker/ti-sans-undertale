@@ -1,7 +1,6 @@
 #include "heart.h"
 
 #include <sys/lcd.h>
-
 #include <graphx.h>
 
 #include "input.h"
@@ -64,7 +63,7 @@ void sans_heart_update(void) {
 }
 
 void sans_heart_draw(void) {
-    gfx_Sprite(_sprite, _heart_x, _heart_y);
+    gfx_TransparentSprite_NoClip(_sprite, _heart_x, _heart_y);
 }
 
 void sans_heart_set_red(void) {
