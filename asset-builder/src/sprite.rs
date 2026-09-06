@@ -207,7 +207,7 @@ pub fn get_pixel_data(
 
     check_for_png(&source_image_path)?;
 
-    let sprite_data = image::io::Reader::open(source_image_path.clone())?.decode()?;
+    let sprite_data = image::ImageReader::open(source_image_path.clone())?.decode()?;
 
     let rotation = -sprite.rotation.unwrap_or_default() + metadata.rotation.unwrap_or_default();
 
@@ -216,7 +216,7 @@ pub fn get_pixel_data(
             &sprite_data.to_rgb8(),
             rotation.to_radians(),
             Interpolation::Bilinear,
-            Rgb([0, 0, 0]),
+            imageproc::geometric_transformations::Border::Constant(Rgb([0, 0, 0])),
         )
     } else {
         sprite_data.to_rgb8()
