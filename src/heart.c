@@ -5,7 +5,7 @@
 #include <graphx.h>
 
 #include "input.h"
-#include "generated/sprites/player.h"
+#include "generated/sprites/heart.h"
 
 static uint24_t _heart_x = LCD_WIDTH / 2;
 static uint8_t _heart_y = LCD_HEIGHT / 2;
