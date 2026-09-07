@@ -9,7 +9,8 @@
 #include "attack_box.h"
 #include "generated/sprites/heart.h"
 
-#define _SPEED 1
+#define _SPEED 2
+#define _GRAVITY 2
 
 typedef enum {
     SANS_HEART_STATE_RED,
@@ -20,6 +21,10 @@ static vec24_t _heart_position = {
     .x = LCD_WIDTH / 2,
     .y = LCD_HEIGHT / 2,
 };
+static vec24_t _heart_velocity = {
+    .x = 0,
+    .y = 0,
+};
 static vec2_t _heart_size = {
     .x = SPRITE_HEART_RED_WIDTH,
     .y = SPRITE_HEART_RED_HEIGHT,
@@ -27,28 +32,44 @@ static vec2_t _heart_size = {
 static sans_heart_state_t _state = SANS_HEART_STATE_RED;
 static const gfx_sprite_t *_sprite = &sprite_heart_red;
 
-static void _move_red(vec24_t *position) {
-    uint24_t delta_x = 0;
-    uint8_t delta_y = 0;
-
+static void _move_horizontal(vec24_t *delta) {
     if (sans_input_pressing_left()) {
-        delta_x -= _SPEED;
+        delta->x -= _SPEED;
     }
 
     if (sans_input_pressing_right()) {
-        delta_x += _SPEED;
+        delta->x += _SPEED;
     }
+}
+
+static void _move_red(vec24_t *velocity) {
+    vec24_t delta = {
+        .x = 0,
+        .y = 0,
+    };
+
+    _move_horizontal(&delta);
 
     if (sans_input_pressing_up()) {
-        delta_y -= _SPEED;
+        delta.y -= _SPEED;
     }
 
     if (sans_input_pressing_down()) {
-        delta_y += _SPEED;
+        delta.y += _SPEED;
     }
 
-    position->x += delta_x;
-    position->y += delta_y;
+    *velocity = delta;
+}
+
+static void _move_blue(vec24_t *velocity) {
+    vec24_t delta = {
+        .x = 0,
+        .y = _GRAVITY,
+    };
+
+    _move_horizontal(&delta);
+
+    *velocity = delta;
 }
 
 void sans_heart_update(void) {
@@ -58,26 +79,27 @@ void sans_heart_update(void) {
         sans_heart_set_blue();
     }
 
-    vec24_t new_position = _heart_position;
-
     // Movement based on current state
     switch (_state) {
         case SANS_HEART_STATE_RED:
-            _move_red(&new_position);
+            _move_red(&_heart_velocity);
             break;
         case SANS_HEART_STATE_BLUE:
+            _move_blue(&_heart_velocity);
             break;
     }
 
-    // Check if colliding attack_box
-    vec24_t attack_box_position = sans_attack_box_position();
-    vec2_t attack_box_size = sans_attack_box_size();
+    // Apply velocity
+    _heart_position.x += _heart_velocity.x;
+    _heart_position.y += _heart_velocity.y;
 
-    if (!sans_physics_collision_within_box(new_position, _heart_size, attack_box_position, attack_box_size)) {
-        return;
-    }
-
-    _heart_position = new_position;
+    // Clamps the player's position within the attack box
+    sans_physics_clamp_within_box(
+        &_heart_position,
+        _heart_size,
+        sans_attack_box_position(),
+        sans_attack_box_size()
+    );
 }
 
 void sans_heart_draw(void) {
