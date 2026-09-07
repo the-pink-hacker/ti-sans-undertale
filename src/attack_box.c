@@ -16,9 +16,9 @@ static vec2_t _size = {
     .y = 80,
 };
 
-void sans_attack_box_update() {}
+void sans_attack_box_update(void) {}
 
-void sans_attack_box_draw() {
+void sans_attack_box_draw(void) {
     gfx_SetColor(white);
 
     vec24_t position = _position;
@@ -34,10 +34,10 @@ void sans_attack_box_draw() {
     }
 }
 
-vec24_t sans_attack_box_position() {
+vec24_t sans_attack_box_position(void) {
     return _position;
 }
 
-vec2_t sans_attack_box_size() {
+vec2_t sans_attack_box_size(void) {
     return _size;
 }

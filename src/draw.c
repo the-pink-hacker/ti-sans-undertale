@@ -5,6 +5,7 @@
 #include "heart.h"
 #include "ui.h"
 #include "attack_box.h"
+#include "character.h"
 
 void sans_draw_pre(void) {
     gfx_SwapDraw();
@@ -26,6 +27,7 @@ void sans_draw(void) {
     gfx_ZeroScreen();
     _wait_frame();
 
+    sans_character_draw();
     sans_ui_draw();
     sans_attack_box_draw();
     sans_heart_draw();
