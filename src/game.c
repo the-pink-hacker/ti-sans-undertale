@@ -4,6 +4,7 @@
 #include "input.h"
 #include "heart.h"
 #include "ui.h"
+#include "attack_box.h"
 
 static bool _gameloop(void) {
     sans_draw_pre();
@@ -13,6 +14,7 @@ static bool _gameloop(void) {
         return false;
     }
 
+    sans_attack_box_update();
     sans_heart_update();
     sans_ui_update();
 
