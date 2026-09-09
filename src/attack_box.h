@@ -1,4 +1,4 @@
-#include "math.h"
+#include "vec.h"
 
 void sans_attack_box_update(void);
 
