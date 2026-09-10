@@ -1,21 +1,21 @@
-[heart.sprites]
-heart_blue = "sprites/player/heart_blue.png"
-heart_red = "sprites/player/heart_red.png"
+[heart]
+heart_blue = "sprites/player/heart_blue"
+heart_red = "sprites/player/heart_red"
 
-[sans.sprites]
-sans = "sprites/sans/sans.png"
+[sans]
+sans = "sprites/sans/sans"
 
-[ui.sprites]
-button_fight = "sprites/ui/button_fight.png"
-button_act = "sprites/ui/button_act.png"
-button_item = "sprites/ui/button_item.png"
-button_mercy = "sprites/ui/button_mercy.png"
-attack_meter_left = "sprites/ui/attack_meter_left.png"
-attack_meter_right = "sprites/ui/attack_meter_right.png"
-game_over = "sprites/ui/game_over.png"
-speach_box = "sprites/ui/speach_box.png"
+[ui]
+button_fight = "sprites/ui/button_fight"
+button_act = "sprites/ui/button_act"
+button_item = "sprites/ui/button_item"
+button_mercy = "sprites/ui/button_mercy"
+attack_meter_left = "sprites/ui/attack_meter_left"
+attack_meter_right = "sprites/ui/attack_meter_right"
+game_over = "sprites/ui/game_over"
+speach_box = "sprites/ui/speach_box"
 
-[attacks.sprites]
-bones_horizontal = "sprites/attacks/bones_horizontal.png"
-bone_top = "sprites/attacks/bone_top.png"
-bone_bottom = "sprites/attacks/bone_bottom.png"
+[attacks]
+bones_horizontal = "sprites/attacks/bones_horizontal"
+bone_top = "sprites/attacks/bone_top"
+bone_bottom = "sprites/attacks/bone_bottom"

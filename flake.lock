@@ -125,6 +125,7 @@
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay",
+        "tice-rust": "tice-rust",
         "toolchain": "toolchain"
       }
     },
@@ -175,6 +176,35 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tice-rust": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ],
+        "toolchain": [
+          "toolchain"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789016928,
+        "narHash": "sha256-NIH74t0bywrT8aA0ew6ExqDrn25dkmntpDJlUYj5h4I=",
+        "owner": "the-pink-hacker",
+        "repo": "tice-rust",
+        "rev": "1f68305b675647628a101e0d0a70bf213f74b7b9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "the-pink-hacker",
+        "repo": "tice-rust",
         "type": "github"
       }
     },
