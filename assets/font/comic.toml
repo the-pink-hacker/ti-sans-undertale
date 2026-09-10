@@ -1,0 +1,230 @@
+[font]
+height = 14
+
+[[font.glyphs]]
+index = "!"
+source = "comic/glyph_exclamation_mark"
+
+[[font.glyphs]]
+index = "'"
+source = "comic/glyph_apostrophe"
+
+[[font.glyphs]]
+index = ","
+source = "comic/glyph_comma"
+
+[[font.glyphs]]
+index = "."
+source = "comic/glyph_period"
+
+[[font.glyphs]]
+index = "?"
+source = "comic/glyph_question_mark"
+
+[[font.glyphs]]
+index = "A"
+source = "comic/glyph_A"
+
+[[font.glyphs]]
+index = "B"
+source = "comic/glyph_B"
+
+[[font.glyphs]]
+index = "C"
+source = "comic/glyph_C"
+
+[[font.glyphs]]
+index = "D"
+source = "comic/glyph_D"
+
+[[font.glyphs]]
+index = "E"
+source = "comic/glyph_E"
+
+[[font.glyphs]]
+index = "F"
+source = "comic/glyph_F"
+
+[[font.glyphs]]
+index = "G"
+source = "comic/glyph_G"
+
+[[font.glyphs]]
+index = "H"
+source = "comic/glyph_H"
+
+[[font.glyphs]]
+index = "I"
+source = "comic/glyph_I"
+
+[[font.glyphs]]
+index = "J"
+source = "comic/glyph_J"
+
+[[font.glyphs]]
+index = "K"
+source = "comic/glyph_K"
+
+[[font.glyphs]]
+index = "L"
+source = "comic/glyph_L"
+
+[[font.glyphs]]
+index = "M"
+source = "comic/glyph_M"
+
+[[font.glyphs]]
+index = "N"
+source = "comic/glyph_N"
+
+[[font.glyphs]]
+index = "O"
+source = "comic/glyph_O"
+
+[[font.glyphs]]
+index = "P"
+source = "comic/glyph_P"
+
+[[font.glyphs]]
+index = "Q"
+source = "comic/glyph_Q"
+
+[[font.glyphs]]
+index = "R"
+source = "comic/glyph_R"
+
+[[font.glyphs]]
+index = "S"
+source = "comic/glyph_S"
+
+[[font.glyphs]]
+index = "T"
+source = "comic/glyph_T"
+
+[[font.glyphs]]
+index = "U"
+source = "comic/glyph_U"
+
+[[font.glyphs]]
+index = "V"
+source = "comic/glyph_V"
+
+[[font.glyphs]]
+index = "W"
+source = "comic/glyph_W"
+
+[[font.glyphs]]
+index = "X"
+source = "comic/glyph_X"
+
+[[font.glyphs]]
+index = "Y"
+source = "comic/glyph_Y"
+
+[[font.glyphs]]
+index = "Z"
+source = "comic/glyph_Z"
+
+[[font.glyphs]]
+index = "a"
+source = "comic/glyph_a"
+
+[[font.glyphs]]
+index = "b"
+source = "comic/glyph_b"
+
+[[font.glyphs]]
+index = "c"
+source = "comic/glyph_c"
+
+[[font.glyphs]]
+index = "d"
+source = "comic/glyph_d"
+
+[[font.glyphs]]
+index = "e"
+source = "comic/glyph_e"
+
+[[font.glyphs]]
+index = "f"
+source = "comic/glyph_f"
+
+[[font.glyphs]]
+index = "g"
+source = "comic/glyph_g"
+
+[[font.glyphs]]
+index = "h"
+source = "comic/glyph_h"
+
+[[font.glyphs]]
+index = "i"
+source = "comic/glyph_i"
+
+[[font.glyphs]]
+index = "j"
+source = "comic/glyph_j"
+
+[[font.glyphs]]
+index = "k"
+source = "comic/glyph_k"
+
+[[font.glyphs]]
+index = "l"
+source = "comic/glyph_l"
+
+[[font.glyphs]]
+index = "m"
+source = "comic/glyph_m"
+
+[[font.glyphs]]
+index = "n"
+source = "comic/glyph_n"
+
+[[font.glyphs]]
+index = "o"
+source = "comic/glyph_o"
+
+[[font.glyphs]]
+index = "p"
+source = "comic/glyph_p"
+
+[[font.glyphs]]
+index = "q"
+source = "comic/glyph_q"
+
+[[font.glyphs]]
+index = "r"
+source = "comic/glyph_r"
+
+[[font.glyphs]]
+index = "s"
+source = "comic/glyph_s"
+
+[[font.glyphs]]
+index = "t"
+source = "comic/glyph_t"
+
+[[font.glyphs]]
+index = "u"
+source = "comic/glyph_u"
+
+[[font.glyphs]]
+index = "v"
+source = "comic/glyph_v"
+
+[[font.glyphs]]
+index = "w"
+source = "comic/glyph_w"
+
+[[font.glyphs]]
+index = "x"
+source = "comic/glyph_x"
+
+[[font.glyphs]]
+index = "y"
+source = "comic/glyph_y"
+
+[[font.glyphs]]
+index = "z"
+source = "comic/glyph_z"

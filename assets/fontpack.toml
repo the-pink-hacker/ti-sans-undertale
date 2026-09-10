@@ -1,0 +1,9 @@
+[pack.metadata]
+version = "0.1.0"
+family_name = "undertale"
+
+[pack]
+fonts = [
+    "font/comic",
+    "font/hud",
+]

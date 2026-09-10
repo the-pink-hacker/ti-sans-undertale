@@ -1,0 +1,154 @@
+[font]
+height = 5
+
+[[font.glyphs]]
+index = " "
+source = "hud/glyph_space"
+
+[[font.glyphs]]
+index = "/"
+source = "hud/glyph_slash"
+
+[[font.glyphs]]
+index = "0"
+source = "hud/glyph_0"
+
+[[font.glyphs]]
+index = "1"
+source = "hud/glyph_1"
+
+[[font.glyphs]]
+index = "2"
+source = "hud/glyph_2"
+
+[[font.glyphs]]
+index = "3"
+source = "hud/glyph_3"
+
+[[font.glyphs]]
+index = "4"
+source = "hud/glyph_4"
+
+[[font.glyphs]]
+index = "5"
+source = "hud/glyph_5"
+
+[[font.glyphs]]
+index = "6"
+source = "hud/glyph_6"
+
+[[font.glyphs]]
+index = "7"
+source = "hud/glyph_7"
+
+[[font.glyphs]]
+index = "8"
+source = "hud/glyph_8"
+
+[[font.glyphs]]
+index = "9"
+source = "hud/glyph_9"
+
+[[font.glyphs]]
+index = "A"
+source = "hud/glyph_A"
+
+[[font.glyphs]]
+index = "B"
+source = "hud/glyph_B"
+
+[[font.glyphs]]
+index = "C"
+source = "hud/glyph_C"
+
+[[font.glyphs]]
+index = "D"
+source = "hud/glyph_D"
+
+[[font.glyphs]]
+index = "E"
+source = "hud/glyph_E"
+
+[[font.glyphs]]
+index = "F"
+source = "hud/glyph_F"
+
+[[font.glyphs]]
+index = "G"
+source = "hud/glyph_G"
+
+[[font.glyphs]]
+index = "H"
+source = "hud/glyph_H"
+
+[[font.glyphs]]
+index = "I"
+source = "hud/glyph_I"
+
+[[font.glyphs]]
+index = "J"
+source = "hud/glyph_J"
+
+[[font.glyphs]]
+index = "K"
+source = "hud/glyph_K"
+
+[[font.glyphs]]
+index = "L"
+source = "hud/glyph_L"
+
+[[font.glyphs]]
+index = "M"
+source = "hud/glyph_M"
+
+[[font.glyphs]]
+index = "N"
+source = "hud/glyph_N"
+
+[[font.glyphs]]
+index = "O"
+source = "hud/glyph_O"
+
+[[font.glyphs]]
+index = "P"
+source = "hud/glyph_P"
+
+[[font.glyphs]]
+index = "Q"
+source = "hud/glyph_Q"
+
+[[font.glyphs]]
+index = "R"
+source = "hud/glyph_R"
+
+[[font.glyphs]]
+index = "S"
+source = "hud/glyph_S"
+
+[[font.glyphs]]
+index = "T"
+source = "hud/glyph_T"
+
+[[font.glyphs]]
+index = "U"
+source = "hud/glyph_U"
+
+[[font.glyphs]]
+index = "V"
+source = "hud/glyph_V"
+
+[[font.glyphs]]
+index = "W"
+source = "hud/glyph_W"
+
+[[font.glyphs]]
+index = "X"
+source = "hud/glyph_X"
+
+[[font.glyphs]]
+index = "Y"
+source = "hud/glyph_Y"
+
+[[font.glyphs]]
+index = "Z"
+source = "hud/glyph_Z"
