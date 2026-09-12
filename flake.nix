@@ -9,15 +9,10 @@
                 nixpkgs.follows = "nixpkgs";
             };
         };
-        rust-overlay = {
-            url = "github:oxalica/rust-overlay";
-            inputs.nixpkgs.follows = "nixpkgs";
-        };
         tice-rust = {
             url = "github:the-pink-hacker/tice-rust";
             inputs = {
                 nixpkgs.follows = "nixpkgs";
-                rust-overlay.follows = "rust-overlay";
                 flake-utils.follows = "flake-utils";
                 toolchain.follows = "toolchain";
             };
@@ -27,7 +22,6 @@
         self,
         nixpkgs,
         toolchain,
-        rust-overlay,
         tice-rust,
         flake-utils,
         ...
@@ -36,7 +30,6 @@
             pkgs = import nixpkgs {
                 inherit system;
                 overlays = [
-                    (import rust-overlay)
                     tice-rust.overlays.${system}.default
                 ];
                 config.allowUnfree = true;
@@ -57,15 +50,6 @@
             };
             devShells.default = pkgs.mkShell {
                 inputsFrom = [pkgsSelf.default];
-                packages = with pkgs; [
-                    (rust-bin.selectLatestNightlyWith (toolchain:
-                        toolchain.default.override {
-                            extensions = [
-                                "rust-analyzer"
-                                "rust-src"
-                            ];
-                        }))
-                ];
             };
             overlays.default = final: prev: {
                 inherit (self.packages.${prev.system}) sans-ti;
