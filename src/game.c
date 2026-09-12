@@ -7,6 +7,7 @@
 #include "attack_box.h"
 #include "character.h"
 #include "timer.h"
+#include "init.h"
 
 static void _update(void) {
     sans_timer_update();
@@ -20,13 +21,13 @@ static void _post_update(void) {
     sans_input_post_update();
 }
 
-static bool _gameloop(void) {
+static sans_result_t _gameloop(void) {
     sans_draw_pre();
 
     sans_input_update();
 
     if (sans_input_pressing_exit()) {
-        return false;
+        return SANS_USER_EXIT;
     }
 
     _update();
@@ -34,9 +35,13 @@ static bool _gameloop(void) {
 
     sans_draw();
 
-    return true;
+    return SANS_SUCCESS;
 }
 
-void sans_game_init(void) {
-    while (_gameloop());
+sans_result_t sans_game_init(void) {
+    EARLY_EXIT(sans_init());
+
+    while (true) {
+        EARLY_EXIT(_gameloop());
+    }
 }

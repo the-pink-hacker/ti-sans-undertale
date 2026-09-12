@@ -1,12 +1,12 @@
 #pragma once
 
-#define white 0b11111111
-#define black 0b00000000
-#define red 0b11100000
-#define green 0b00000111
-#define blue 0b00011000
-#define yellow red | green
-#define cyan green | blue
-#define magenta blue | red
+#define WHITE 0b11111111
+#define BLACK 0b00000000
+#define RED 0b11100000
+#define GREEN 0b00000111
+#define BLUE 0b00011000
+#define YELLOW red | green
+#define CYAN green | blue
+#define MAGENTA blue | red
 
 

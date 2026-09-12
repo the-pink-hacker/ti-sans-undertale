@@ -10,6 +10,8 @@
 // Called at the start of the frame
 void sans_input_update(void);
 
+void sans_input_exit(void);
+
 void sans_input_post_update(void);
 
 // Has the user requested to exit

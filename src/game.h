@@ -1,2 +1,4 @@
+#include "error.h"
+
 // Starts the game loop
-void sans_game_init(void);
+sans_result_t sans_game_init(void);

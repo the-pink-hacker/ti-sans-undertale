@@ -11,6 +11,10 @@ void sans_input_update(void) {
     kb_Scan();
 }
 
+void sans_input_exit(void) {
+    kb_Reset();
+}
+
 void sans_input_post_update(void) {
     // TODO: Use memcpy
     for (uint8_t i = 0; i < sizeof(_last); i++) {

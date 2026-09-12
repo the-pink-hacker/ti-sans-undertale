@@ -1,5 +1,7 @@
+#include "error.h"
+
 // Init external libraries and gfx
-void sans_init(void);
+sans_result_t sans_init(void);
 
 // Exits gfx
 void sans_exit(void);

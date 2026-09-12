@@ -19,7 +19,7 @@ static vec2_t _size = {
 void sans_attack_box_update(void) {}
 
 void sans_attack_box_draw(void) {
-    gfx_SetColor(white);
+    gfx_SetColor(WHITE);
 
     vec24_t position = _position;
     vec2_t size = _size;
