@@ -8,9 +8,11 @@
 #include "character.h"
 #include "timer.h"
 #include "init.h"
+#include "health.h"
 
 static void _update(void) {
     sans_timer_update();
+    sans_health_update();
     sans_attack_box_update();
     sans_heart_update();
     sans_ui_update();

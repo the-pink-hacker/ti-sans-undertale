@@ -42,6 +42,7 @@ sans_result_t sans_ui_font_init(void) {
     EARLY_EXIT(_load_file());
     fontlib_SetNewlineOptions(FONTLIB_ENABLE_AUTO_WRAP);
     fontlib_SetTransparency(true);
+    fontlib_SetWindowFullScreen();
 
     return SANS_SUCCESS;
 }
@@ -52,6 +53,10 @@ void sans_ui_font_set_color_black(void) {
 
 void sans_ui_font_set_color_white(void) {
     fontlib_SetForegroundColor(WHITE);
+}
+
+void sans_ui_font_set_color_magenta(void) {
+    fontlib_SetForegroundColor(MAGENTA);
 }
 
 static void _set_font(const fontlib_font_t *font) {
