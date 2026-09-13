@@ -6,15 +6,9 @@
 
 #define _attack_box_thickness 3
 
-static vec24_t _position = {
-    .x = 120,
-    .y = 112,
-};
+static vec24_t _position = vec2(120, 112);
 
-static vec2_t _size = {
-    .x = 80,
-    .y = 80,
-};
+static vec2_t _size = vec2(80, 80);
 
 void sans_attack_box_update(void) {}
 

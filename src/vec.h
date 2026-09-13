@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#define vec2(x_val, y_val) {.x = x_val, .y = y_val}
+
 // A 2d vector with a 24-bit x and 8-bit y
 typedef struct {
     uint24_t x;

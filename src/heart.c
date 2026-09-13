@@ -31,23 +31,11 @@ typedef enum {
     SANS_HEART_MOVEMENT_THROW,
 } sans_heart_movement_t;
 
-static vec2f_t _heart_position = {
-    .x = LCD_WIDTH / 2.0,
-    .y = LCD_HEIGHT / 2.0,
-};
+static vec2f_t _heart_position = vec2(LCD_WIDTH / 2.0, LCD_HEIGHT / 2.0);
 // Updated based on the float position. Used for rendering.
-static vec24_t _heart_int_position = {
-    .x = 0.0,
-    .y = 0.0,
-};
-static vec2f_t _heart_velocity = {
-    .x = 0.0,
-    .y = 0.0,
-};
-static const vec2_t _heart_size = {
-    .x = SPRITE_HEART_RED_WIDTH,
-    .y = SPRITE_HEART_RED_HEIGHT,
-};
+static vec24_t _heart_int_position = vec2(0.0, 0.0);
+static vec2f_t _heart_velocity = vec2(0.0, 0.0);
+static const vec2_t _heart_size = vec2(SPRITE_HEART_RED_WIDTH, SPRITE_HEART_RED_HEIGHT);
 static sans_heart_state_t _state = SANS_HEART_STATE_RED;
 static const gfx_sprite_t *_sprite = &sprite_heart_red;
 

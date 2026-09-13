@@ -8,5 +8,6 @@
 #define YELLOW RED | GREEN
 #define CYAN GREEN | BLUE
 #define MAGENTA BLUE | RED
+#define ORANGE 0xE3
 
 

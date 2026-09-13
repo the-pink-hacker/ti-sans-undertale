@@ -9,6 +9,7 @@
 
 static fontlib_font_t *_hud;
 static fontlib_font_t *_comic;
+static fontlib_font_t *_button;
 
 static sans_result_t _get_font(const fontlib_font_pack_t *font_pack, uint8_t index, fontlib_font_t **font) {
     fontlib_font_t *new_font = fontlib_GetFontByIndexRaw(font_pack, index);
@@ -34,6 +35,7 @@ static sans_result_t _load_file(void) {
 
     EARLY_EXIT(_get_font(font_pack, 0, &_comic));
     EARLY_EXIT(_get_font(font_pack, 1, &_hud));
+    EARLY_EXIT(_get_font(font_pack, 2, &_button));
 
     return SANS_SUCCESS;
 }
@@ -59,6 +61,14 @@ void sans_ui_font_set_color_magenta(void) {
     fontlib_SetForegroundColor(MAGENTA);
 }
 
+void sans_ui_font_set_color_orange(void) {
+    fontlib_SetForegroundColor(ORANGE);
+}
+
+void sans_ui_font_set_color_yellow(void) {
+    fontlib_SetForegroundColor(YELLOW);
+}
+
 static void _set_font(const fontlib_font_t *font) {
     fontlib_LoadFont(font, 0);
 }
@@ -69,4 +79,8 @@ void sans_ui_font_set_comic(void) {
 
 void sans_ui_font_set_hud(void) {
     _set_font(_hud);
+}
+
+void sans_ui_font_set_button(void) {
+    _set_font(_button);
 }

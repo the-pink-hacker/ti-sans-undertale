@@ -8,6 +8,12 @@ void sans_ui_font_set_color_white(void);
 
 void sans_ui_font_set_color_magenta(void);
 
+void sans_ui_font_set_color_orange(void);
+
+void sans_ui_font_set_color_yellow(void);
+
 void sans_ui_font_set_comic(void);
 
 void sans_ui_font_set_hud(void);
+
+void sans_ui_font_set_button(void);

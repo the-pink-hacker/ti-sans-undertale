@@ -8,21 +8,21 @@ extern const gfx_sprite_t sprite_attack_meter_left;
 #define SPRITE_ATTACK_METER_RIGHT_HEIGHT 58
 extern const gfx_sprite_t sprite_attack_meter_right;
 
-#define SPRITE_BUTTON_ACT_WIDTH 57
-#define SPRITE_BUTTON_ACT_HEIGHT 23
-extern const gfx_sprite_t sprite_button_act;
+#define SPRITE_BUTTON_ACT_ICON_WIDTH 5
+#define SPRITE_BUTTON_ACT_ICON_HEIGHT 9
+extern const gfx_sprite_t sprite_button_act_icon;
 
-#define SPRITE_BUTTON_FIGHT_WIDTH 57
-#define SPRITE_BUTTON_FIGHT_HEIGHT 23
-extern const gfx_sprite_t sprite_button_fight;
+#define SPRITE_BUTTON_FIGHT_ICON_WIDTH 7
+#define SPRITE_BUTTON_FIGHT_ICON_HEIGHT 13
+extern const gfx_sprite_t sprite_button_fight_icon;
 
-#define SPRITE_BUTTON_ITEM_WIDTH 57
-#define SPRITE_BUTTON_ITEM_HEIGHT 23
-extern const gfx_sprite_t sprite_button_item;
+#define SPRITE_BUTTON_ITEM_ICON_WIDTH 8
+#define SPRITE_BUTTON_ITEM_ICON_HEIGHT 13
+extern const gfx_sprite_t sprite_button_item_icon;
 
-#define SPRITE_BUTTON_MERCY_WIDTH 57
-#define SPRITE_BUTTON_MERCY_HEIGHT 23
-extern const gfx_sprite_t sprite_button_mercy;
+#define SPRITE_BUTTON_MERCY_ICON_WIDTH 7
+#define SPRITE_BUTTON_MERCY_ICON_HEIGHT 10
+extern const gfx_sprite_t sprite_button_mercy_icon;
 
 #define SPRITE_GAME_OVER_WIDTH 208
 #define SPRITE_GAME_OVER_HEIGHT 88

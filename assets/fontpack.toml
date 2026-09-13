@@ -6,4 +6,5 @@ family_name = "undertale"
 fonts = [
     "font/comic",
     "font/hud",
+    "font/button",
 ]

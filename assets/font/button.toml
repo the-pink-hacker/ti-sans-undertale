@@ -1,0 +1,34 @@
+[font]
+height = 13
+
+[[font.glyphs]]
+index = "0"
+source = "button/fight_0"
+
+[[font.glyphs]]
+index = "1"
+source = "button/fight_1"
+
+[[font.glyphs]]
+index = "2"
+source = "button/act_0"
+
+[[font.glyphs]]
+index = "3"
+source = "button/act_1"
+
+[[font.glyphs]]
+index = "4"
+source = "button/item_0"
+
+[[font.glyphs]]
+index = "5"
+source = "button/item_1"
+
+[[font.glyphs]]
+index = "6"
+source = "button/mercy_0"
+
+[[font.glyphs]]
+index = "7"
+source = "button/mercy_1"
