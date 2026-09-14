@@ -22,11 +22,6 @@
 #define _JUMP_FRAMES 12
 
 typedef enum {
-    SANS_HEART_STATE_RED,
-    SANS_HEART_STATE_BLUE,
-} sans_heart_state_t;
-
-typedef enum {
     // Heart is being thrown
     SANS_HEART_MOVEMENT_THROW,
 } sans_heart_movement_t;
@@ -53,9 +48,18 @@ static void _move_horizontal() {
     }
 }
 
+static bool _check_focus(void) {
+    return sans_input_get_focus() == SANS_INPUT_FOCUS_HEART;
+}
+
 static void _move_red() {
     _heart_velocity.x = 0.0;
     _heart_velocity.y = 0.0;
+
+    // Check if heart is being controlled
+    if (!_check_focus()) {
+        return;
+    }
 
     _move_horizontal();
 
@@ -94,25 +98,28 @@ static void _move_blue(void) {
     // Reset x velocity
     _heart_velocity.x = 0.0;
 
-    _move_horizontal();
+    // Check if heart is being controlled
+    if (_check_focus()) {
+        _move_horizontal();
 
-    bool pressing_up = sans_input_pressing_up();
+        bool pressing_up = sans_input_pressing_up();
 
-    if (_grounded && pressing_up) {
-        _start_jump();
-    }
-
-    if (_jump_frames > 0) {
-        // Is no longer press jump; cancel jumping
-        if (sans_input_was_pressing_up() && !pressing_up) {
-            _jump_frames = 0;
-            _apply_gravity();
-        } else {
-            _apply_jump();
+        if (_grounded && pressing_up) {
+            _start_jump();
         }
-    } else {
-        _apply_gravity();
+
+        if (_jump_frames > 0) {
+            // Is no longer press jump; cancel jumping
+            if (sans_input_was_pressing_up() && !pressing_up) {
+                _jump_frames = 0;
+            } else {
+                _apply_jump();
+                return;
+            }
+        }
     }
+
+    _apply_gravity();
 }
 
 // Updates the integer position to the current float position
@@ -182,4 +189,8 @@ void sans_heart_set_red(void) {
 void sans_heart_set_blue(void) {
     _sprite = &sprite_heart_blue;
     _state = SANS_HEART_STATE_BLUE;
+}
+
+sans_heart_state_t sans_heart_get_state(void) {
+    return _state;
 }

@@ -1,10 +1,11 @@
-#define SANS_KEY_EXIT kb_KeyClear
-#define SANS_KEY_LEFT kb_KeyLeft
-#define SANS_KEY_RIGHT kb_KeyRight
-#define SANS_KEY_UP kb_KeyUp
-#define SANS_KEY_DOWN kb_KeyDown
-#define SANS_KEY_DEBUG_HEART_RED kb_Key2nd
-#define SANS_KEY_DEBUG_HEART_BLUE kb_KeyAlpha
+typedef enum {
+    // Player input does nothing
+    SANS_INPUT_FOCUS_NONE,
+    // The bottom buttons
+    SANS_INPUT_FOCUS_BUTTON,
+    // The soul
+    SANS_INPUT_FOCUS_HEART,
+} sans_input_focus_t;
 
 // Update the keyboard values
 // Called at the start of the frame
@@ -14,11 +15,20 @@ void sans_input_exit(void);
 
 void sans_input_post_update(void);
 
+void sans_input_set_focus(sans_input_focus_t focus);
+
+sans_input_focus_t sans_input_get_focus(void);
+
 // Has the user requested to exit
 bool sans_input_pressing_exit(void);
 
+bool sans_input_pressing_enter(void);
+bool sans_input_pressed_enter(void);
+
 bool sans_input_pressing_left(void);
+bool sans_input_pressed_left(void);
 bool sans_input_pressing_right(void);
+bool sans_input_pressed_right(void);
 bool sans_input_pressing_up(void);
 bool sans_input_was_pressing_up(void);
 bool sans_input_pressing_down(void);

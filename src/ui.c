@@ -16,6 +16,7 @@ sans_result_t sans_ui_init(void) {
 
 void sans_ui_update(void) {
     sans_ui_health_update();
+    sans_ui_button_update();
 }
 
 static void _draw_hud_text(void) {
