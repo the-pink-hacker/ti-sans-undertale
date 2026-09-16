@@ -1,12 +1,14 @@
 #include "ui.h"
 
 #include <fontlibc.h>
+#include <graphx.h>
 
 #include "color.h"
 #include "ui/font.h"
 #include "ui/button.h"
 #include "ui/health.h"
 #include "ui/speach_box.h"
+#include "ui/box.h"
 #include "health.h"
 
 #define _HUD_Y 203
@@ -18,6 +20,7 @@ sans_result_t sans_ui_init(void) {
 void sans_ui_update(void) {
     sans_ui_health_update();
     sans_ui_button_update();
+    sans_ui_speach_box_update();
 }
 
 static void _draw_hud_text(void) {
@@ -42,10 +45,13 @@ static void _draw_hud_text(void) {
 }
 
 void sans_ui_draw(void) {
+    gfx_SetColor(WHITE);
+    sans_ui_box_draw();
+    sans_ui_speach_box_draw();
+
     fontlib_SetWindowFullScreen();
     _draw_hud_text();
 
-    sans_ui_speach_box_draw();
     sans_ui_health_draw();
     sans_ui_button_draw();
 }

@@ -7,7 +7,7 @@
 #include "input.h"
 #include "physics.h"
 #include "vec.h"
-#include "attack_box.h"
+#include "ui/box.h"
 #include "generated/sprites/heart.h"
 
 // Amount of speed added per frame when red
@@ -37,6 +37,8 @@ static const gfx_sprite_t *_sprite = &sprite_heart_red;
 static bool _grounded = false;
 // How many frames of jumping are left
 static uint8_t _jump_frames = 0;
+
+static bool _disable = false;
 
 static void _move_horizontal() {
     if (sans_input_pressing_left()) {
@@ -129,6 +131,10 @@ static void _update_int_position(void) {
 }
 
 void sans_heart_update(void) {
+    if (_disable) {
+        return;
+    }
+
     if (sans_input_pressing_debug_heart_red()) {
         sans_heart_set_red();
     } else if (sans_input_pressing_debug_heart_blue()) {
@@ -159,8 +165,8 @@ void sans_heart_update(void) {
     sans_physics_clamp_within_box(
         &_heart_int_position,
         _heart_size,
-        sans_attack_box_position(),
-        sans_attack_box_size(),
+        sans_ui_box_position(),
+        sans_ui_box_get_size(),
         &_grounded
     );
 
@@ -178,17 +184,27 @@ void sans_heart_update(void) {
 }
 
 void sans_heart_draw(void) {
+    if (_disable) {
+        return;
+    }
+
     gfx_TransparentSprite_NoClip(_sprite, _heart_int_position.x, _heart_int_position.y);
 }
 
 void sans_heart_set_red(void) {
     _sprite = &sprite_heart_red;
     _state = SANS_HEART_STATE_RED;
+    _disable = false;
 }
 
 void sans_heart_set_blue(void) {
     _sprite = &sprite_heart_blue;
     _state = SANS_HEART_STATE_BLUE;
+    _disable = false;
+}
+
+void sans_heart_disable(void) {
+    _disable = true;
 }
 
 sans_heart_state_t sans_heart_get_state(void) {

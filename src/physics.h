@@ -1,3 +1,5 @@
+#pragma once
+
 #include "vec.h"
 
 // Is fully within a box

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "error.h"
 
 // Starts the game loop

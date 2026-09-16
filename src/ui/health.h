@@ -1,3 +1,5 @@
+#pragma once
+
 void sans_ui_health_update(void);
 
 void sans_ui_health_draw(void);

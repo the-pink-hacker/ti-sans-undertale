@@ -1,3 +1,5 @@
+#pragma once
+
 // Waits a v-sync
 void sans_draw_pre(void);
 

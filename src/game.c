@@ -1,19 +1,22 @@
 #include "game.h"
 
+#include "battle.h"
 #include "draw.h"
 #include "input.h"
 #include "heart.h"
 #include "ui.h"
-#include "attack_box.h"
 #include "character.h"
-#include "timer.h"
 #include "init.h"
 #include "health.h"
 
+static void _pre_update(void) {
+    sans_draw_pre();
+    sans_input_update();
+}
+
 static void _update(void) {
-    sans_timer_update();
+    sans_battle_update();
     sans_health_update();
-    sans_attack_box_update();
     sans_heart_update();
     sans_ui_update();
     sans_character_update();
@@ -24,9 +27,7 @@ static void _post_update(void) {
 }
 
 static sans_result_t _gameloop(void) {
-    sans_draw_pre();
-
-    sans_input_update();
+    _pre_update();
 
     if (sans_input_pressing_exit()) {
         return SANS_USER_EXIT;

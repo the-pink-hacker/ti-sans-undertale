@@ -1,3 +1,5 @@
+#pragma once
+
 #include "error.h"
 
 // Init external libraries and gfx

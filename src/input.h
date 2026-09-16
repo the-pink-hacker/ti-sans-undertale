@@ -1,3 +1,5 @@
+#pragma once
+
 typedef enum {
     // Player input does nothing
     SANS_INPUT_FOCUS_NONE,
