@@ -28,6 +28,10 @@ extern const gfx_sprite_t sprite_button_mercy_icon;
 #define SPRITE_GAME_OVER_HEIGHT 88
 extern const gfx_sprite_t sprite_game_over;
 
-#define SPRITE_SPEACH_BOX_WIDTH 116
-#define SPRITE_SPEACH_BOX_HEIGHT 50
-extern const gfx_sprite_t sprite_speach_box;
+#define SPRITE_SPEACH_BOX_LEFT_WIDTH 19
+#define SPRITE_SPEACH_BOX_LEFT_HEIGHT 49
+extern const gfx_sprite_t sprite_speach_box_left;
+
+#define SPRITE_SPEACH_BOX_RIGHT_WIDTH 7
+#define SPRITE_SPEACH_BOX_RIGHT_HEIGHT 49
+extern const gfx_sprite_t sprite_speach_box_right;

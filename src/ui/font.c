@@ -44,7 +44,6 @@ sans_result_t sans_ui_font_init(void) {
     EARLY_EXIT(_load_file());
     fontlib_SetNewlineOptions(FONTLIB_ENABLE_AUTO_WRAP);
     fontlib_SetTransparency(true);
-    fontlib_SetWindowFullScreen();
 
     return SANS_SUCCESS;
 }

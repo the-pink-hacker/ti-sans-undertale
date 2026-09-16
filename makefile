@@ -25,14 +25,17 @@ SPRITE_OUT_DIR := $(call NATIVEPATH,$(GENERATED_DIR)/sprites)
 ASSET_DIR := assets
 SPRITE_TABLE := $(call NATIVEPATH,$(ASSET_DIR)/sprites.toml)
 # All files that should cause the sprites to regenerate
-SPRITE_FILES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/sprites/*.png)) $(SPRITE_TABLE)
+SPRITE_FILES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/sprites/*/*.png)) $(SPRITE_TABLE)
 
 FONTPACK := $(call NATIVEPATH,$(ASSET_DIR)/fontpack.toml)
 FONTPACK_NAME := SANSFNT
 FONTPACK_BIN_OUT := $(call NATIVEPATH,$(BINDIR)/$(FONTPACK_NAME).bin)
 FONTPACK_OUT := $(call NATIVEPATH,$(BINDIR)/$(FONTPACK_NAME).8xv)
 # All files that should cause the sprites to regenerate
-FONTPACK_FILES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/font/*/*.png)) $(call NATIVEPATH,$(ASSET_DIR)/fontpack.toml)
+FONTPACK_FILE := $(call NATIVEPATH,$(ASSET_DIR)/fontpack.toml)
+FONTPACK_IMAGES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/font/*/*.png)) 
+FONTPACK_FONTS := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/font/*.toml))
+FONTPACK_FILES := $(FONTPACK_FILE) $(FONTPACK_IMAGES) $(FONTPACK_FONTS)
 
 # Creates the sprites in the generated directory
 $(SPRITE_OUT_DIR): $(SPRITE_FILES)

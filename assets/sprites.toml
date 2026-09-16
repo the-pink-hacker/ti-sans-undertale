@@ -13,7 +13,8 @@ button_mercy_icon = "sprites/ui/button_mercy_icon"
 attack_meter_left = "sprites/ui/attack_meter_left"
 attack_meter_right = "sprites/ui/attack_meter_right"
 game_over = "sprites/ui/game_over"
-speach_box = "sprites/ui/speach_box"
+speach_box_left = "sprites/ui/speach_box_left"
+speach_box_right = "sprites/ui/speach_box_right"
 
 [attacks]
 bones_horizontal = "sprites/attacks/bones_horizontal"

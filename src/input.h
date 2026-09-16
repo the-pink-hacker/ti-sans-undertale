@@ -5,6 +5,8 @@ typedef enum {
     SANS_INPUT_FOCUS_BUTTON,
     // The soul
     SANS_INPUT_FOCUS_HEART,
+    // The speach box
+    SANS_INPUT_FOCUS_DIALOG
 } sans_input_focus_t;
 
 // Update the keyboard values

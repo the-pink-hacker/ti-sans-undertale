@@ -12,7 +12,7 @@
 #define SANS_KEY_DEBUG_HEART_BLUE kb_KeyAlpha
 
 static uint8_t _last[7];
-static sans_input_focus_t _focus = SANS_INPUT_FOCUS_BUTTON;
+static sans_input_focus_t _focus = SANS_INPUT_FOCUS_DIALOG;
 
 #define _was_down(lkey) (_last[((lkey) >> 8) - 1] & (lkey))
 #define _pressed(lkey) (kb_IsDown(lkey) && !_was_down(lkey))

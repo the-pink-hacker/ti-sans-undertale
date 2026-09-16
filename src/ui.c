@@ -6,6 +6,7 @@
 #include "ui/font.h"
 #include "ui/button.h"
 #include "ui/health.h"
+#include "ui/speach_box.h"
 #include "health.h"
 
 #define _HUD_Y 203
@@ -41,8 +42,10 @@ static void _draw_hud_text(void) {
 }
 
 void sans_ui_draw(void) {
+    fontlib_SetWindowFullScreen();
     _draw_hud_text();
 
+    sans_ui_speach_box_draw();
     sans_ui_health_draw();
     sans_ui_button_draw();
 }

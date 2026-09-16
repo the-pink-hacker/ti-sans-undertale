@@ -46,7 +46,7 @@ static void _select_left(void) {
     }
 }
 
-static void _select_reset(void) {
+void sans_ui_button_select_reset(void) {
     _selected_index = 0;
 }
 
@@ -56,7 +56,6 @@ void sans_ui_button_update(void) {
     }
 
     if (sans_input_pressed_enter()) {
-        _select_reset();
         sans_input_set_focus(SANS_INPUT_FOCUS_HEART);
         return;
     }
