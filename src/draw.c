@@ -10,7 +10,7 @@ void sans_draw_pre(void) {
     gfx_SwapDraw();
 }
 
-static void _wait_frame(void) {
+static void g_wait_frame(void) {
     // Set screen to visible
     gfx_SetDraw(gfx_screen);
     // Swap to non-visible
@@ -24,7 +24,7 @@ static void _wait_frame(void) {
 void sans_draw(void) {
     // Empty out the current buffer
     gfx_ZeroScreen();
-    _wait_frame();
+    g_wait_frame();
 
     sans_character_draw();
     sans_ui_draw();

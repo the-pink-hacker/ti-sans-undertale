@@ -2,6 +2,16 @@
 
 #include <fontlibc.h>
 
+static bool g_can_continue(sans_message_t *message) {
+    sans_input_focus_t focus = sans_input_get_focus();
+
+    if (focus != SANS_INPUT_FOCUS_NONE && focus != message->focus) {
+        return false;
+    }
+
+    return sans_input_pressed_enter();
+}
+
 void sans_message_update(sans_message_state_t *state) {
     if (state->status == SANS_MESSAGE_PRINTING) {
         if (state->advance_in_frames == 0) {
@@ -15,7 +25,7 @@ void sans_message_update(sans_message_state_t *state) {
         } else {
             state->advance_in_frames--;
         }
-    } else if (sans_input_pressed_enter()) {
+    } else if (g_can_continue(state->message)) {
         state->status = SANS_MESSAGE_CONTINUE;
     }
 }

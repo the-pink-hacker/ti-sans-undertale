@@ -9,20 +9,20 @@ static char sans_error_buffer[64];
 static char *sans_error_file;
 static uint24_t sans_error_line = -1;
 
-static void _println(char *text) {
+static void g_println(char *text) {
     os_PutStrFull(text);
     os_NewLine();
 }
 
 void sans_error_print(char *text) {
-    _println(text);
+    g_println(text);
     boot_sprintf(
         sans_error_buffer,
         "%s:%u",
         sans_error_file,
         (unsigned int)sans_error_line
     );
-    _println(sans_error_buffer);
+    g_println(sans_error_buffer);
 }
 
 void sans_error_set_file_line(char *file, uint24_t line) {
