@@ -18,6 +18,7 @@ sans_result_t sans_ui_init(void) {
 }
 
 void sans_ui_update(void) {
+    sans_ui_box_update();
     sans_ui_health_update();
     sans_ui_button_update();
     sans_ui_speach_box_update();

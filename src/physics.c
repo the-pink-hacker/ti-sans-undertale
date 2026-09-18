@@ -22,7 +22,7 @@ static uint8_t g_clamp_8(uint8_t x, uint8_t min, uint8_t max) {
     }
 }
 
-void sans_physics_clamp_within_box(vec24_t *position, vec2_t size, vec24_t box_position, vec2_t box_size, bool *grounded) {
+void sans_physics_clamp_within_box(vec24_t *position, vec2_t size, vec24_t box_position, vec24_t box_size, bool *grounded) {
     position->x = g_clamp_24(position->x, box_position.x, box_position.x + box_size.x - size.x);
     uint8_t y = position->y;
     uint8_t y_max = box_position.y + box_size.y - size.y;
