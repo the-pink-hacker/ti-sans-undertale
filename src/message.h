@@ -4,7 +4,7 @@
 
 #include "input.h"
 
-typedef enum {
+typedef enum __attribute__((packed)) {
     // Message is currently being printed
     SANS_MESSAGE_PRINTING,
     // Message is done being printed
@@ -15,9 +15,6 @@ typedef enum {
 
 typedef struct {
     const char *text;
-    // Only allows interacting with the message when the focus is active.
-    // Set to none for always focused
-    sans_input_focus_t focus;
     bool allow_skip;
     uint8_t frame_delay;
 } sans_message_t;

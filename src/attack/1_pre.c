@@ -7,12 +7,11 @@
 
 static sans_message_t g_message = {
     .text = "ready?",
-    .focus = SANS_INPUT_FOCUS_DIALOG,
     .frame_delay = 1,
     .allow_skip = true,
 };
 
-void sans_battle_1_pre_update(void) {
+void sans_attack_1_pre_update(void) {
     if (sans_battle_get_time() == 0) {
         sans_ui_box_disable();
         sans_heart_disable();

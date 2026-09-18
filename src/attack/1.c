@@ -7,7 +7,7 @@
 #include "../input.h"
 #include "../ui/box.h"
 
-void sans_battle_1_update(void) {
+void sans_attack_1_update(void) {
     uint24_t time = sans_battle_get_time();
 
     if (time == 0) {
@@ -19,7 +19,7 @@ void sans_battle_1_update(void) {
     } else if (time == 10) {
         sans_input_set_focus(SANS_INPUT_FOCUS_HEART);
         sans_heart_set_red();
-    } else if (time >= 30 * 10) {
+    } else if (time >= 30 * 5) {
         sans_battle_set_attack(SANS_BATTLE_ATTACK_1_POST);
     }
 }

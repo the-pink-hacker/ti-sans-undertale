@@ -233,9 +233,11 @@ void sans_heart_throw(sans_direction_t direction) {
 
 void sans_heart_set_position(vec24_t position) {
     g_heart_int_position.x = position.x;
-    g_heart_int_position.y = position.y;
     g_heart_position.x = (float)position.x;
+    g_heart_int_position.y = position.y;
     g_heart_position.y = (float)position.y;
+    g_heart_velocity.x = 0.0;
+    g_heart_velocity.y = 0.0;
 }
 
 void sans_heart_set_position_default(void) {

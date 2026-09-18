@@ -20,7 +20,6 @@
 #define G_TEXT_Y_OFFSET G_TEXT_Y_PADDING
 #define G_TEXT_HEIGHT (G_HEIGHT - G_TEXT_Y_PADDING)
 
-
 static sans_message_state_t g_state = {
     .message = NULL,
     .status = SANS_MESSAGE_CONTINUE,
@@ -81,6 +80,7 @@ void sans_ui_speach_box_draw(void) {
 void sans_ui_speach_box_set_message(sans_message_t *message) {
     g_state.status = SANS_MESSAGE_PRINTING;
     g_state.message = message;
+    g_state.print_index = 0;
 }
 
 bool sans_ui_speach_box_continue(void) {

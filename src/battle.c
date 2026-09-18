@@ -8,13 +8,16 @@ uint24_t g_time = 0;
 void sans_battle_update(void) {
     switch (g_attack) {
         case SANS_BATTLE_ATTACK_1_PRE:
-            sans_battle_1_pre_update();
+            sans_attack_1_pre_update();
             break;
         case SANS_BATTLE_ATTACK_1:
-            sans_battle_1_update();
+            sans_attack_1_update();
             break;
         case SANS_BATTLE_ATTACK_1_POST:
-            sans_battle_1_post_update();
+            sans_attack_1_post_update();
+            break;
+        case SANS_BATTLE_ATTACK_MENU:
+            sans_attack_menu_update();
             break;
     }
 

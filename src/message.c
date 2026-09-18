@@ -2,13 +2,7 @@
 
 #include <fontlibc.h>
 
-static bool g_can_continue(sans_message_t *message) {
-    sans_input_focus_t focus = sans_input_get_focus();
-
-    if (focus != SANS_INPUT_FOCUS_NONE && focus != message->focus) {
-        return false;
-    }
-
+static bool g_can_continue() {
     return sans_input_pressed_enter();
 }
 
@@ -25,7 +19,7 @@ void sans_message_update(sans_message_state_t *state) {
         } else {
             state->advance_in_frames--;
         }
-    } else if (g_can_continue(state->message)) {
+    } else if (g_can_continue()) {
         state->status = SANS_MESSAGE_CONTINUE;
     }
 }

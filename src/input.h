@@ -1,6 +1,6 @@
 #pragma once
 
-typedef enum {
+typedef enum __attribute__((packed)) {
     // Player input does nothing
     SANS_INPUT_FOCUS_NONE,
     // The bottom buttons

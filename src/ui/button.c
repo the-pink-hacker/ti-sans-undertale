@@ -22,7 +22,7 @@
 #include "../generated/sprites/ui.h"
 #include "../generated/sprites/heart.h"
 
-typedef enum {
+typedef enum __attribute__((packed)) {
     SANS_BUTTON_UNSELECTED,
     SANS_BUTTON_RED,
     SANS_BUTTON_BLUE,

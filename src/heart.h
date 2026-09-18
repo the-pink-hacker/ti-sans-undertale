@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-typedef enum {
+typedef enum __attribute__((packed)) {
     SANS_HEART_STATE_RED,
     SANS_HEART_STATE_BLUE,
 } sans_heart_state_t;

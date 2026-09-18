@@ -1,3 +1,3 @@
 #pragma once
 
-void sans_battle_1_update(void);
+void sans_attack_1_update(void);

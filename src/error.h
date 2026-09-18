@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-typedef enum [[nodiscard]] {
+typedef enum [[nodiscard]] __attribute__((packed)) {
     SANS_SUCCESS = 0,
     SANS_USER_EXIT,
     SANS_FONT_MISSING,

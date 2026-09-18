@@ -4,8 +4,24 @@
 
 #define G_THICKNESS 3
 
+#define G_POSITION_DEFAULT_X 120
+#define G_POSITION_DEFAULT_Y 112
+
+#define G_POSITION_WIDE_X 18
+#define G_POSITION_WIDE_Y 112
+#define G_SIZE_WIDE_X 256
+
 static vec24_t g_position = vec2(0, 0);
 static vec2_t g_size = vec2(0, 0);
+static vec24_t g_target_position = vec2(0, 0);
+static vec2_t g_target_size = vec2(0, 0);
+static bool _transition = false;
+
+void sans_ui_box_update(void) {
+    if (!_transition) {
+        return;
+    }
+}
 
 void sans_ui_box_draw(void) {
     // Checks if box is disabled
@@ -39,6 +55,12 @@ void sans_ui_box_set_size_default(void) {
     g_position.y = 112;
     g_size.x = 80;
     g_size.y = 80;
+}
+
+void sans_ui_box_transition_wide(void) {
+}
+
+void sans_ui_box_transition_default(void) {
 }
 
 void sans_ui_box_disable(void) {
