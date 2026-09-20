@@ -1,4 +1,4 @@
-#include <graphx.h>
+#include "attacks.h"
 
 const gfx_sprite_t sprite_bone_bottom = {
     .width = 5,

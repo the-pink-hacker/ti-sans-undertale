@@ -6,7 +6,6 @@
 
 #include "input.h"
 #include "physics.h"
-#include "vec.h"
 #include "ui/box.h"
 #include "generated/sprites/heart.h"
 
@@ -21,13 +20,14 @@
 // How many frames to jump
 #define G_JUMP_FRAMES 12
 
-#define G_THROW_SPEED 20
-
 #define G_BOX_X 120
 #define G_BOX_Y 112
 #define G_BOX_SIZE 80
 #define G_POSITION_DEFAULT_X (G_BOX_X + (G_BOX_SIZE / 2) - (SPRITE_HEART_RED_WIDTH / 2))
 #define G_POSITION_DEFAULT_Y (G_BOX_Y + (G_BOX_SIZE / 2) - (SPRITE_HEART_RED_HEIGHT / 2))
+
+#define G_THROW_FRAMES 9
+#define G_THROW_SPEED 10
 
 static vec2f_t g_heart_position = vec2(G_POSITION_DEFAULT_X, G_POSITION_DEFAULT_Y);
 // Updated based on the float position. Used for rendering.
@@ -40,6 +40,9 @@ static const gfx_sprite_t *g_sprite = &sprite_heart_red;
 static bool g_grounded = false;
 // How many frames of jumping are left
 static uint8_t g_jump_frames = 0;
+// Is the soul being thrown
+static uint8_t g_throw_frames = 0;
+static sans_direction_t g_throw_direction = SANS_DIRECTION_UP;
 
 static bool g_disable = false;
 
@@ -99,9 +102,33 @@ static void g_apply_jump(void) {
     g_jump_frames--;
 }
 
+static void g_apply_throw(void) {
+    switch (g_throw_direction) {
+        case SANS_DIRECTION_UP:
+            g_heart_velocity.y = -G_THROW_SPEED;
+            break;
+        case SANS_DIRECTION_DOWN:
+            g_heart_velocity.y = G_THROW_SPEED;
+            break;
+        case SANS_DIRECTION_LEFT:
+            g_heart_velocity.x = -G_THROW_SPEED;
+            break;
+        case SANS_DIRECTION_RIGHT:
+            g_heart_velocity.x = +G_THROW_SPEED;
+            break;
+    }
+
+    g_throw_frames--;
+}
+
 static void g_move_blue(void) {
     // Reset x velocity
     g_heart_velocity.x = 0.0;
+
+    if (g_throw_frames != 0) {
+        g_apply_throw();
+        return;
+    }
 
     // Check if heart is being controlled
     if (g_check_focus()) {
@@ -133,6 +160,32 @@ static void g_update_int_position(void) {
     g_heart_int_position.y = lround(g_heart_position.y);
 }
 
+// Confines the player to within the bullet box and updates collision flags
+static void g_handle_box_collision(void) {
+    vec24_t old_position = g_heart_int_position;
+
+    // Clamps the player's position within the bullet box
+    sans_physics_clamp_within_box(
+        &g_heart_int_position,
+        g_heart_size,
+        sans_ui_box_position(),
+        sans_ui_box_get_size(),
+        &g_grounded
+    );
+
+    // Correct the float x if clamped
+    if (old_position.x != g_heart_int_position.x) {
+        g_heart_position.x = (uint24_t)g_heart_int_position.x;
+        g_heart_velocity.x = 0.0;
+    }
+
+    // Correct the float y if clamped
+    if (old_position.y != g_heart_int_position.y) {
+        g_heart_position.y = (uint8_t)g_heart_int_position.y;
+        g_heart_velocity.y = 0.0;
+    }
+}
+
 void sans_heart_update(void) {
     if (g_disable) {
         return;
@@ -162,28 +215,7 @@ void sans_heart_update(void) {
 
     g_update_int_position();
 
-    vec24_t old_position = g_heart_int_position;
-
-    // Clamps the player's position within the attack box
-    sans_physics_clamp_within_box(
-        &g_heart_int_position,
-        g_heart_size,
-        sans_ui_box_position(),
-        sans_ui_box_get_size(),
-        &g_grounded
-    );
-
-    // Correct the float x if clamped
-    if (old_position.x != g_heart_int_position.x) {
-        g_heart_position.x = (uint24_t)g_heart_int_position.x;
-        g_heart_velocity.x = 0.0;
-    }
-
-    // Correct the float y if clamped
-    if (old_position.y != g_heart_int_position.y) {
-        g_heart_position.y = (uint8_t)g_heart_int_position.y;
-        g_heart_velocity.y = 0.0;
-    }
+    g_handle_box_collision();
 }
 
 void sans_heart_draw(void) {
@@ -211,22 +243,21 @@ void sans_heart_disable(void) {
 }
 
 void sans_heart_throw(sans_direction_t direction) {
-    switch (direction) {
-        case SANS_DIRECTION_UP:
-            g_heart_velocity.x = 0;
-            g_heart_velocity.y = -G_THROW_SPEED;
-            break;
+    g_throw_direction = direction;
+    g_throw_frames = G_THROW_FRAMES;
+
+    switch (g_throw_direction) {
         case SANS_DIRECTION_DOWN:
-            g_heart_velocity.x = 0;
-            g_heart_velocity.y = G_THROW_SPEED;
+            g_sprite = &sprite_heart_blue;
             break;
         case SANS_DIRECTION_LEFT:
-            g_heart_velocity.x = -G_THROW_SPEED;
-            g_heart_velocity.y = 0;
+            g_sprite = &sprite_heart_blue_90;
+            break;
+        case SANS_DIRECTION_UP:
+            g_sprite = &sprite_heart_blue_180;
             break;
         case SANS_DIRECTION_RIGHT:
-            g_heart_velocity.x = G_THROW_SPEED;
-            g_heart_velocity.y = 0;
+            g_sprite = &sprite_heart_blue_270;
             break;
     }
 }

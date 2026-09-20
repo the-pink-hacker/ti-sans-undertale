@@ -25,6 +25,7 @@ void sans_heart_set_position(vec24_t position);
 
 void sans_heart_set_position_default(void);
 
+// Marks the soul for being thrown
 void sans_heart_throw(sans_direction_t direction);
 
 sans_heart_state_t sans_heart_get_state(void);

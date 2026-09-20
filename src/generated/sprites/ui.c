@@ -1,4 +1,4 @@
-#include <graphx.h>
+#include "ui.h"
 
 const gfx_sprite_t sprite_attack_meter_left = {
     .width = 137,

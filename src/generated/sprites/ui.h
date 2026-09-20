@@ -1,3 +1,5 @@
+#pragma once
+
 #include <graphx.h>
 
 #define SPRITE_ATTACK_METER_LEFT_WIDTH 137

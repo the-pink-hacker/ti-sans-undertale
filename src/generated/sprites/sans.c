@@ -1,4 +1,4 @@
-#include <graphx.h>
+#include "sans.h"
 
 const gfx_sprite_t sprite_sans = {
     .width = 50,

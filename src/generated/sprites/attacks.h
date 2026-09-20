@@ -1,3 +1,5 @@
+#pragma once
+
 #include <graphx.h>
 
 #define SPRITE_BONE_BOTTOM_WIDTH 5

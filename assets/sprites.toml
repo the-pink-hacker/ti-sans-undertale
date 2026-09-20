@@ -1,6 +1,18 @@
 [heart]
-heart_blue = "sprites/player/heart_blue"
-heart_red = "sprites/player/heart_red"
+heart_blue = "sprites/soul/heart_blue"
+heart_red = "sprites/soul/heart_red"
+
+[heart.heart_blue_90]
+path = "sprites/soul/heart_blue"
+rotation = 90
+
+[heart.heart_blue_180]
+path = "sprites/soul/heart_blue"
+rotation = 180
+
+[heart.heart_blue_270]
+path = "sprites/soul/heart_blue"
+rotation = 270
 
 [sans]
 sans = "sprites/sans/sans"

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <graphx.h>
 
 #define SPRITE_SANS_WIDTH 50

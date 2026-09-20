@@ -77,7 +77,7 @@ void sans_ui_speach_box_draw(void) {
     g_draw_box(position);
 }
 
-void sans_ui_speach_box_set_message(sans_message_t *message) {
+void sans_ui_speach_box_set_message(const sans_message_t *message) {
     g_state.status = SANS_MESSAGE_PRINTING;
     g_state.message = message;
     g_state.print_index = 0;

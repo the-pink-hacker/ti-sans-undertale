@@ -3,7 +3,7 @@
 #include "../battle.h"
 #include "../ui/speach_box.h"
 
-static sans_message_t g_message = {
+static const sans_message_t g_message = {
     .text = "here we go.",
     .frame_delay = 1,
     .allow_skip = true,

@@ -4,4 +4,10 @@
 
 // Is fully within a box
 // Returns true if position was changed
-void sans_physics_clamp_within_box(vec24_t *position, vec2_t size, vec24_t box_position, vec24_t box_size, bool *grounded);
+void sans_physics_clamp_within_box(
+    vec24_t *position,
+    vec2_t size,
+    vec24_t box_position,
+    vec24_t box_size,
+    bool *grounded
+);

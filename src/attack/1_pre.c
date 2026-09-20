@@ -5,7 +5,7 @@
 #include "../ui/speach_box.h"
 #include "../heart.h"
 
-static sans_message_t g_message = {
+static const sans_message_t g_message = {
     .text = "ready?",
     .frame_delay = 1,
     .allow_skip = true,

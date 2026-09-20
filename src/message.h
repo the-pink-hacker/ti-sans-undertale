@@ -20,7 +20,7 @@ typedef struct {
 } sans_message_t;
 
 typedef struct {
-    sans_message_t *message;
+    const sans_message_t *message;
     sans_message_status_t status;
     uint8_t print_index;
     uint8_t advance_in_frames;
