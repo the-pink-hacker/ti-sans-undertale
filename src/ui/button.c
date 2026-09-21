@@ -4,13 +4,13 @@
 #include <stdint.h>
 #include <fontlibc.h>
 
-#define G_BUTTON_WIDTH 57
-#define G_BUTTON_HEIGHT 23
-#define G_BUTTON_Y 214
-#define G_BUTTON_FIGHT_X 15
-#define G_BUTTON_ACT_X 92
-#define G_BUTTON_ITEM_X 172
-#define G_BUTTON_MERCY_X 249
+#define G_BUTTON_WIDTH 55
+#define G_BUTTON_HEIGHT 21
+#define G_BUTTON_Y 215
+#define G_BUTTON_FIGHT_X 16
+#define G_BUTTON_ACT_X 93
+#define G_BUTTON_ITEM_X 173
+#define G_BUTTON_MERCY_X 250
 
 #define G_BUTTON_COUNT 4
 
@@ -85,15 +85,15 @@ static void g_draw_button(
             sans_ui_font_set_color_yellow();
             gfx_SetColor(SANS_COLOR_YELLOW);
             icon = &sprite_heart_red;
-            icon_offset_x = 5;
-            icon_offset_y = 8;
+            icon_offset_x = 4;
+            icon_offset_y = 7;
             break;
         case SANS_BUTTON_BLUE:
             sans_ui_font_set_color_yellow();
             gfx_SetColor(SANS_COLOR_YELLOW);
             icon = &sprite_heart_blue;
-            icon_offset_x = 5;
-            icon_offset_y = 8;
+            icon_offset_x = 4;
+            icon_offset_y = 7;
             break;
     }
 
@@ -102,13 +102,12 @@ static void g_draw_button(
 
     // Box
     gfx_Rectangle_NoClip(x, y, G_BUTTON_WIDTH, G_BUTTON_HEIGHT);
-    gfx_Rectangle_NoClip(x + 1, y + 1, G_BUTTON_WIDTH - 2, G_BUTTON_HEIGHT - 2);
 
     // icon
     gfx_Sprite_NoClip(icon, x + icon_offset_x, y + icon_offset_y);
 
     // Text
-    fontlib_SetCursorPosition(x + text_offset_x, y + 5);
+    fontlib_SetCursorPosition(x + text_offset_x, y + 4);
     fontlib_DrawGlyph(text_index);
     fontlib_DrawGlyph(text_index + 1);
 }
@@ -141,9 +140,9 @@ void sans_ui_button_draw(void) {
         &position,
         &sprite_button_fight_icon,
         '0',
-        16,
-        5,
-        5
+        15,
+        4,
+        4
     );
     position.x = G_BUTTON_ACT_X;
     g_draw_button(
@@ -151,9 +150,9 @@ void sans_ui_button_draw(void) {
         &position,
         &sprite_button_act_icon,
         '2',
-        18,
-        7,
-        7
+        17,
+        6,
+        6
     );
     position.x = G_BUTTON_ITEM_X;
     g_draw_button(
@@ -161,9 +160,9 @@ void sans_ui_button_draw(void) {
         &position,
         &sprite_button_item_icon,
         '4',
-        16,
-        5,
-        5
+        15,
+        4,
+        4
     );
     position.x = G_BUTTON_MERCY_X;
     g_draw_button(
@@ -171,8 +170,8 @@ void sans_ui_button_draw(void) {
         &position,
         &sprite_button_mercy_icon,
         '6',
-        16,
-        6,
-        7
+        15,
+        5,
+        6
     );
 }

@@ -6,6 +6,7 @@
 #include "ui.h"
 #include "character.h"
 #include "entity.h"
+#include "warning.h"
 
 void sans_draw_pre(void) {
     gfx_SwapDraw();
@@ -29,6 +30,7 @@ void sans_draw(void) {
 
     sans_character_draw();
     sans_ui_draw();
+    sans_warning_draw();
     sans_entity_draw();
     sans_heart_draw();
 }
