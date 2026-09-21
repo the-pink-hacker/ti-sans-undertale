@@ -8,6 +8,7 @@
 #include "character.h"
 #include "init.h"
 #include "health.h"
+#include "entity.h"
 
 static void g_pre_update(void) {
     sans_draw_pre();
@@ -16,6 +17,7 @@ static void g_pre_update(void) {
 
 static void g_update(void) {
     sans_battle_update();
+    sans_entity_update();
     sans_health_update();
     sans_heart_update();
     sans_ui_update();

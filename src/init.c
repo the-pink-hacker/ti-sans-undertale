@@ -5,6 +5,7 @@
 
 #include "ui.h"
 #include "input.h"
+#include "entity.h"
 
 sans_result_t sans_init(void) {
     EARLY_EXIT(sans_ui_init());
@@ -19,6 +20,7 @@ sans_result_t sans_init(void) {
 
 void sans_exit(void) {
     sans_input_exit();
+    sans_entity_exit();
     gfx_End();
     os_ClrHomeFull();
     os_HomeUp();
