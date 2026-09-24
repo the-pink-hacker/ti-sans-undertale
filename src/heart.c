@@ -12,17 +12,17 @@
 // Amount of speed added per frame when red
 #define G_SPEED 2.5
 // Amount of speed added per frame when falling
-#define G_GRAVITY 0.5
+#define G_GRAVITY 0.25
 // Max downwards speed
 #define G_GRAVITY_MAX 2.5
 // The amount of velocity added on jump
-#define G_JUMP 2.5
+#define G_JUMP 2.25
 // How many frames to jump
 #define G_JUMP_FRAMES 12
 
-#define G_BOX_X 120
-#define G_BOX_Y 112
-#define G_BOX_SIZE 80
+#define G_BOX_X 122
+#define G_BOX_Y 114
+#define G_BOX_SIZE 78
 #define G_POSITION_DEFAULT_X (G_BOX_X + (G_BOX_SIZE / 2) - (SPRITE_HEART_RED_WIDTH / 2))
 #define G_POSITION_DEFAULT_Y (G_BOX_Y + (G_BOX_SIZE / 2) - (SPRITE_HEART_RED_HEIGHT / 2))
 

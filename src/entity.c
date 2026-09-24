@@ -54,7 +54,7 @@ static sans_entity_t *g_malloc_entity() {
     return malloc(sizeof(sans_entity_t));
 }
 
-void sans_entity_push(void (*update)(uint8_t), void (*draw)(uint8_t), uint8_t id) {
+sans_entity_handle_t sans_entity_push(void (*update)(uint8_t), void (*draw)(uint8_t), uint8_t id) {
     sans_entity_t **last = g_find_last(&g_first_entity);
 
     sans_entity_t *entity = g_malloc_entity();
@@ -63,6 +63,10 @@ void sans_entity_push(void (*update)(uint8_t), void (*draw)(uint8_t), uint8_t id
     entity->draw = draw;
     entity->next = NULL;
     entity->id = id;
+    sans_entity_handle_t handle = {
+        .g_value = (void **)last,
+    };
+    return handle;
 }
 
 void sans_entity_pop_all(void) {
@@ -76,6 +80,12 @@ void sans_entity_pop_all(void) {
         free(*search_entity);
         *search_entity = NULL;
     }
+}
+
+void sans_entity_remove(sans_entity_handle_t handle) {
+    sans_entity_t **next = (sans_entity_t **)handle.g_value;
+    free(*next);
+    *next = (*next)->next;
 }
 
 void sans_entity_exit(void) {

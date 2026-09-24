@@ -29,6 +29,5 @@ speach_box_left = "sprites/ui/speach_box_left"
 speach_box_right = "sprites/ui/speach_box_right"
 
 [attacks]
-bones_horizontal = "sprites/attacks/bones_horizontal"
 bone_top = "sprites/attacks/bone_top"
 bone_bottom = "sprites/attacks/bone_bottom"
