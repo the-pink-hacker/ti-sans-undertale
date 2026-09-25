@@ -19,11 +19,11 @@
     "cemu-ti": {
       "flake": false,
       "locked": {
-        "lastModified": 1788133081,
-        "narHash": "sha256-FhCZNV439/Lr8dBwscJ/sGqto7heOFcDy5SOMmF3ROA=",
+        "lastModified": 1789148716,
+        "narHash": "sha256-Es2OqdzXYA+ZtiwP0es2/SXGpcT5PSXzVwPjkn63IFU=",
         "ref": "refs/heads/master",
-        "rev": "4a945888bca7af1a5cf4b1d2c86426bc3637feea",
-        "revCount": 2698,
+        "rev": "fb10bfea6f5557a9d3696db6f822a72806b60cc8",
+        "revCount": 2700,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/CE-Programming/CEmu"
@@ -106,11 +106,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1788404924,
-        "narHash": "sha256-lhEhY8X5EgkQ/eg6IFz4cc8jRuSYSvnxx1al7d1dvZ0=",
+        "lastModified": 1790185690,
+        "narHash": "sha256-xJ+X4hBtOcAFGBOe5nAMyMUeF9foJBmIOu3NjBqBycU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0968519e14f7aa7d3e9b389682bd74d2b51c8ce8",
+        "rev": "4975466d324710c576dc11ad614684e6bd8cad8e",
         "type": "github"
       },
       "original": {
@@ -219,11 +219,11 @@
         "toolchain": "toolchain_2"
       },
       "locked": {
-        "lastModified": 1788575048,
-        "narHash": "sha256-FDbrR2rU8Oa36SWb/uePvACuxv/Ki9/P1A8qW+WGufE=",
+        "lastModified": 1790321952,
+        "narHash": "sha256-abXk/Te71IyeFiM/ZaaodYQ89eVR5SeDXtQPf9gQUIw=",
         "owner": "the-pink-hacker",
         "repo": "ce-toolchain-nix",
-        "rev": "6afaa3f948cb311d53523d1e4d8af9fa315396a8",
+        "rev": "0af921e381fc0d7cd7a9fe25d0c38c9115abbb7c",
         "type": "github"
       },
       "original": {
@@ -235,11 +235,11 @@
     "toolchain_2": {
       "flake": false,
       "locked": {
-        "lastModified": 1784834814,
-        "narHash": "sha256-XTnrt8+9kQYwlPjwGKcG6Lc+j+3R4aZti5qDq2U85IU=",
+        "lastModified": 1789499868,
+        "narHash": "sha256-EHFNcz5VsMV6D8AbS3GvERtjeiyH/S0rBIH+uD4ye8w=",
         "ref": "refs/heads/master",
-        "rev": "ca0936c9ddedfe1fed96a0769a42aebf4fa4aedd",
-        "revCount": 3345,
+        "rev": "a4076a64af9f02d12b2b3b9f232b382de4204b40",
+        "revCount": 3347,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/CE-Programming/toolchain"
