@@ -6,6 +6,7 @@
 
 #include "input.h"
 #include "physics.h"
+#include "health.h"
 #include "ui/box.h"
 #include "generated/sprites/heart.h"
 
@@ -186,6 +187,54 @@ static void g_handle_box_collision(void) {
     }
 }
 
+static uint8_t g_get_kr(sans_physics_damage_t type) {
+    switch (type) {
+        case SANS_PHYSCIS_DAMAGE_BONE_LOOP:
+            return 5;
+        case SANS_PHYSCIS_DAMAGE_BLASTER:
+            return 10;
+        case SANS_PHYSCIS_DAMAGE_BONE_MENU_TOP:
+            return 2;
+        case SANS_PHYSCIS_DAMAGE_BONE_MENU_BOTTOM:
+            return 1;
+        case SANS_PHYSCIS_DAMAGE_MISC:
+            return 6;
+    }
+}
+
+static void g_handle_collision_list(void) {
+    sans_physics_list_t list = *sans_physics_get_list();
+
+    for (uint8_t i = 0; i < list.count; i++) {
+        sans_physics_list_element_t *element = &list.elements[i];
+        bool collided = false;
+
+        switch (element->shape) {
+            case SANS_PHYSCIS_SHAPE_Y_DOWN:
+                uint8_t bottom = g_heart_int_position.y + g_heart_size.y;
+                if (bottom >= *element->value.plane_horizontal.y) {
+                    collided = true;
+                }
+                break;
+        }
+
+        bool collided_last_frame = element->collided;
+        element->collided = collided;
+
+        if (!collided) {
+            continue;
+        }
+
+        if (collided_last_frame) {
+            sans_health_add_kr(1);
+        } else {
+            sans_health_add_kr(g_get_kr(element->damage));
+        }
+
+        sans_health_damage();
+    }
+}
+
 void sans_heart_update(void) {
     if (g_disable) {
         return;
@@ -216,6 +265,7 @@ void sans_heart_update(void) {
     g_update_int_position();
 
     g_handle_box_collision();
+    g_handle_collision_list();
 }
 
 void sans_heart_draw(void) {

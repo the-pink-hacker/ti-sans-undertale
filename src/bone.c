@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "vec.h"
 #include "color.h"
+#include "physics.h"
 #include "generated/sprites/attacks.h"
 
 #define G_BOTTOM_RISE_SPEED_UP 8
@@ -14,6 +15,8 @@
 static sans_entity_handle_t g_bottom_rise;
 static uint8_t g_bottom_rise_height = 0;
 static uint8_t g_bottom_rise_frames = 0;
+static uint8_t g_bottom_rise_collider_id;
+static uint8_t g_bottom_rise_collider_y;
 
 #define G_BOTTOM 192
 #define G_LEFT 122
@@ -34,20 +37,37 @@ static void g_draw_bone_top(vec24_t position, uint8_t height) {
     );
 }
 
+static void g_bottom_rise_update_collider(void) {
+    g_bottom_rise_collider_y = G_BOTTOM - g_bottom_rise_height - SPRITE_BONE_TOP_HEIGHT;
+}
+
 static void g_bottom_rise_update(uint8_t id) {
     (void)id;
 
     switch (g_bottom_rise_frames) {
         case 0:
+            // Also move the bones on frame zero
+            g_bottom_rise_collider_id = sans_physics_list_push_y_down(
+                &g_bottom_rise_collider_y
+            );
+
+            // Continue here
         case 1:
         case 2:
             g_bottom_rise_height += G_BOTTOM_RISE_SPEED_UP;
+            g_bottom_rise_update_collider();
             break;
+        case 42:
+            // Move down and remove collider
+            // Doesn't matter because the player cannot collide anyways
+            sans_physics_list_remove(g_bottom_rise_collider_id);
+
+            // Continue here
         case 39:
         case 40:
         case 41:
-        case 42:
             g_bottom_rise_height -= G_BOTTOM_RISE_SPEED_DOWN;
+            g_bottom_rise_update_collider();
             break;
     }
 

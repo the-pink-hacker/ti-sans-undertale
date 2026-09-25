@@ -1,6 +1,7 @@
 #include "health.h"
 
 #define G_MAX_HEALTH 92
+#define G_MAX_KARMA 40
 
 static uint8_t g_hp = G_MAX_HEALTH;
 
@@ -41,4 +42,36 @@ uint8_t sans_health_get_kr(void) {
 
 float sans_health_get_kr_percent(void) {
     return (float)g_kr / (float)G_MAX_HEALTH;
+}
+
+void sans_health_damage(void) {
+    if (g_hp > 0) {
+        g_hp--;
+    }
+
+    if (g_hp == 0) {
+        // DEBUG: Keep player alive
+        g_hp = 1;
+    }
+}
+
+void sans_health_add_kr(uint8_t amount) {
+    uint8_t kr_max_increase = G_MAX_KARMA - g_kr;
+    uint8_t kr_increase = 0;
+
+    // Clamp karma increase
+    if (amount > kr_max_increase) {
+        kr_increase = kr_max_increase;
+    } else {
+        kr_increase = amount;
+    }
+
+    // Keep health above 1
+    if (g_hp <= kr_increase) {
+        g_kr += g_hp - 1;
+        g_hp = 1;
+    } else {
+        g_kr += kr_increase;
+        g_hp -= kr_increase;
+    }
 }

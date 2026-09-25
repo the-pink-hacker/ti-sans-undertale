@@ -3,8 +3,6 @@
 #include "direction.h"
 #include "vec.h"
 
-#include <stdint.h>
-
 typedef enum __attribute__((packed)) {
     SANS_HEART_STATE_RED,
     SANS_HEART_STATE_BLUE,
