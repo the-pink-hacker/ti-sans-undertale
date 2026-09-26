@@ -12,7 +12,7 @@ COMPRESSED = NO
 #CFLAGS = -Wall -Wextra -Oz -std=c2x
 # TODO: Probably caused some udb somewhere; enable optimizations
 # Or maybe it's a compiler bug (I lie to myself)
-CFLAGS = -Wall -Wextra -std=c2x
+CFLAGS = -Wall -Wextra -std=c23
 CXXFLAGS = -Wall -Wextra -Oz
 
 DEPS = $(BINDIR)/SANSFNT.8xv
