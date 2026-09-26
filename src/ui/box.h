@@ -2,6 +2,13 @@
 
 #include "../vec.h"
 
+#define SANS_UI_BOX_BOTTOM 192
+#define SANS_UI_BOX_DEFAULT_WIDTH 78
+#define SANS_UI_BOX_DEFAULT_HEIGHT 78
+#define SANS_UI_BOX_DEFAULT_TOP (SANS_UI_BOX_BOTTOM - SANS_UI_BOX_DEFAULT_HEIGHT)
+#define SANS_UI_BOX_DEFAULT_LEFT 122
+#define SANS_UI_BOX_DEFAULT_RIGHT (SANS_UI_BOX_DEFAULT_LEFT + SANS_UI_BOX_DEFAULT_WIDTH)
+
 void sans_ui_box_update(void);
 
 void sans_ui_box_draw(void);

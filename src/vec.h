@@ -21,3 +21,9 @@ typedef struct {
     float x;
     float y;
 } vec2f_t;
+
+// A 2d 24-bit signed vector
+typedef struct {
+    int24_t x;
+    int24_t y;
+} vec24i_t;

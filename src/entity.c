@@ -1,6 +1,9 @@
 #include "entity.h"
 
-#include "stdlib.h"
+#include <stdlib.h>
+#include <graphx.h>
+
+#include "color.h"
 
 typedef struct sans_entity sans_entity_t;
 
@@ -35,6 +38,8 @@ static void g_draw(sans_entity_t *entity) {
 }
 
 void sans_entity_draw(void) {
+    // Most entities are white
+    gfx_SetColor(SANS_COLOR_WHITE);
     g_for_each(g_draw);
 }
 

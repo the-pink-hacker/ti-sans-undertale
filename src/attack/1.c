@@ -7,7 +7,8 @@
 #include "../input.h"
 #include "../entity.h"
 #include "../warning.h"
-#include "../bone.h"
+#include "../bone/rise.h"
+#include "../bone/wave.h"
 #include "../ui/box.h"
 
 void sans_attack_1_update(void) {
@@ -34,13 +35,19 @@ void sans_attack_1_update(void) {
             sans_warning_disable();
             break;
         case 28:
-            sans_bone_spawn_bottom_rise();
+            sans_bone_rise_spawn_bottom();
             break;
         case 42:
             sans_heart_set_red();
             break;
+        case 54:
+            sans_bone_wave_spawn();
+            break;
         case 71:
-            sans_bone_remove_bottom_rise();
+            sans_bone_rise_remove_bottom();
+            break;
+        case 106:
+            sans_bone_wave_remove();
             break;
         case 30 * 7:
             sans_entity_pop_all();
