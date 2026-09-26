@@ -7,12 +7,7 @@ NAME = SANS
 DESCRIPTION = "Sans Undertale Boss Fight"
 COMPRESSED = NO
 
-# Give me my booleans
-# God ez80 clang is getting out of date
-#CFLAGS = -Wall -Wextra -Oz -std=c2x
-# TODO: Probably caused some udb somewhere; enable optimizations
-# Or maybe it's a compiler bug (I lie to myself)
-CFLAGS = -Wall -Wextra -std=c23
+CFLAGS = -Wall -Wextra -Oz -std=c23
 CXXFLAGS = -Wall -Wextra -Oz
 
 DEPS = $(BINDIR)/SANSFNT.8xv

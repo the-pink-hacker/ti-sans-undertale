@@ -203,10 +203,10 @@ static uint8_t g_get_kr(sans_physics_damage_t type) {
 }
 
 static void g_handle_collision_list(void) {
-    sans_physics_list_t list = *sans_physics_get_list();
+    sans_physics_list_t *list = sans_physics_get_list();
 
-    for (uint8_t i = 0; i < list.count; i++) {
-        sans_physics_list_element_t *element = &list.elements[i];
+    for (uint8_t i = 0; i < list->count; i++) {
+        sans_physics_list_element_t *element = &list->elements[i];
         bool collided = false;
 
         switch (element->shape) {

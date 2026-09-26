@@ -2,10 +2,9 @@
 
 #include <string.h>
 
-sans_physics_list_t g_list = {
+static sans_physics_list_t g_list = {
     .count = 0,
 };
-uint8_t g_next_id = 0;
 
 static uint24_t g_clamp_24(uint24_t x, uint24_t min, uint24_t max) {
     if (x < min) {
@@ -38,13 +37,14 @@ void sans_physics_clamp_within_box(vec24_t *position, vec2_t size, vec24_t box_p
 }
 
 uint8_t sans_physics_list_push_y_down(uint8_t *y) {
+    static uint8_t next_id = 0;
     sans_physics_list_element_t *element = &g_list.elements[g_list.count];
     element->damage = SANS_PHYSCIS_DAMAGE_MISC;
     element->shape = SANS_PHYSCIS_SHAPE_Y_DOWN;
     element->value.plane_horizontal.y = y;
     g_list.count++;
-    element->id = g_next_id;
-    g_next_id++;
+    element->id = next_id;
+    next_id++;
     return element->id;
 }
 
@@ -55,9 +55,9 @@ sans_physics_list_t *sans_physics_get_list(void) {
 // Swap remove
 void sans_physics_list_remove(uint8_t id) {
     for (uint8_t i = 0; i < g_list.count; i++) {
-        sans_physics_list_element_t element = g_list.elements[i];
+        sans_physics_list_element_t *element = &g_list.elements[i];
 
-        if (element.id != id) {
+        if (element->id != id) {
             continue;
         }
 
@@ -69,7 +69,7 @@ void sans_physics_list_remove(uint8_t id) {
         }
 
         memcpy(
-            &element,
+            element,
             &g_list.elements[g_list.count],
             sizeof(sans_physics_list_element_t)
         );
