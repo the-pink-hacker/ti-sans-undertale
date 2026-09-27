@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 typedef struct {
-    void **g_value;
+    void *g_value;
 } sans_entity_handle_t;
 
 void sans_entity_exit(void);

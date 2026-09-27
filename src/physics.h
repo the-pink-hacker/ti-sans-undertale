@@ -15,16 +15,26 @@ typedef enum __attribute__((packed)) {
 typedef enum __attribute__((packed)) {
     // All space below and equal to the y value
     SANS_PHYSCIS_SHAPE_Y_DOWN,
+    // A column without the center
+    SANS_PHYSCIS_SHAPE_COLUMN_GAP,
 } sans_physics_shape_type_t;
 
 typedef union {
     struct {
         uint8_t *y;
     } plane_horizontal;
+    struct {
+        vec24i_t *position;
+        vec2_t size;
+    } transform;
 } sans_physics_shape_value_t;
 
 typedef struct {
-    uint8_t id;
+    uint8_t g_id;
+} sans_physics_collider_id_t;
+
+typedef struct {
+    sans_physics_collider_id_t id;
     // Collided last frame
     bool collided;
     sans_physics_damage_t damage;
@@ -47,12 +57,19 @@ void sans_physics_clamp_within_box(
     bool *grounded
 );
 
-uint8_t sans_physics_list_push_y_down(uint8_t *y);
+sans_physics_collider_id_t sans_physics_list_push_y_down(
+    uint8_t *y
+);
+
+sans_physics_collider_id_t sans_physics_list_push_column_gap(
+    vec24i_t *position,
+    vec2_t size
+);
 
 sans_physics_list_t *sans_physics_get_list(void);
 
 // Linear time
-void sans_physics_list_remove(uint8_t id);
+void sans_physics_list_remove(sans_physics_collider_id_t id);
 
 // Constant time
 void sans_physics_list_reset(void);

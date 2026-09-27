@@ -49,8 +49,7 @@ void sans_attack_1_update(void) {
         case 106:
             sans_bone_wave_remove();
             break;
-        case 30 * 7:
-            sans_entity_pop_all();
+        case 247:
             sans_battle_set_attack(SANS_BATTLE_ATTACK_1_POST);
             break;
     }

@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #define vec2(x_val, y_val) {.x = x_val, .y = y_val}
+#define vec2_splat(val) vec2(val, val)
 
 // A 2d vector with a 24-bit x and 8-bit y
 typedef struct {
@@ -22,8 +23,7 @@ typedef struct {
     float y;
 } vec2f_t;
 
-// A 2d 24-bit signed vector
 typedef struct {
     int24_t x;
-    int24_t y;
+    uint8_t y;
 } vec24i_t;

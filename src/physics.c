@@ -2,6 +2,10 @@
 
 #include <string.h>
 
+static sans_physics_collider_id_t g_next_id = {
+    .g_id = 0,
+};
+
 static sans_physics_list_t g_list = {
     .count = 0,
 };
@@ -36,15 +40,31 @@ void sans_physics_clamp_within_box(vec24_t *position, vec2_t size, vec24_t box_p
     position->y = g_clamp_8(y, box_position.y, y_max);
 }
 
-uint8_t sans_physics_list_push_y_down(uint8_t *y) {
-    static uint8_t next_id = 0;
+sans_physics_collider_id_t sans_physics_list_push_y_down(
+    uint8_t *y
+) {
     sans_physics_list_element_t *element = &g_list.elements[g_list.count];
     element->damage = SANS_PHYSCIS_DAMAGE_MISC;
     element->shape = SANS_PHYSCIS_SHAPE_Y_DOWN;
     element->value.plane_horizontal.y = y;
     g_list.count++;
-    element->id = next_id;
-    next_id++;
+    element->id = g_next_id;
+    g_next_id.g_id++;
+    return element->id;
+}
+
+sans_physics_collider_id_t sans_physics_list_push_column_gap(
+    vec24i_t *position,
+    vec2_t size
+) {
+    sans_physics_list_element_t *element = &g_list.elements[g_list.count];
+    element->damage = SANS_PHYSCIS_DAMAGE_MISC;
+    element->shape = SANS_PHYSCIS_SHAPE_COLUMN_GAP;
+    element->value.transform.position = position;
+    element->value.transform.size = size;
+    g_list.count++;
+    element->id = g_next_id;
+    g_next_id.g_id++;
     return element->id;
 }
 
@@ -53,20 +73,21 @@ sans_physics_list_t *sans_physics_get_list(void) {
 }
 
 // Swap remove
-void sans_physics_list_remove(uint8_t id) {
+void sans_physics_list_remove(sans_physics_collider_id_t id) {
     for (uint8_t i = 0; i < g_list.count; i++) {
         sans_physics_list_element_t *element = &g_list.elements[i];
 
-        if (element->id != id) {
+        if (element->id.g_id != id.g_id) {
             continue;
         }
 
         g_list.count--;
 
-        if (i == g_list.count) {
-            // Element was at end; no shifting needed
+        if (g_list.count == 0 || i == g_list.count) {
+            // Element was at end or there are no more elements; no shifting needed
             break;
         }
+
 
         memcpy(
             element,

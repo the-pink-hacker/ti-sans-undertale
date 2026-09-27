@@ -11,13 +11,15 @@ struct sans_entity {
     void (*update)(uint8_t);
     void (*draw)(uint8_t);
     sans_entity_t *next;
+    sans_entity_t *prev;
     uint8_t id;
 };
 
-static sans_entity_t *g_first_entity = NULL;
+static sans_entity_t *g_first = NULL;
+static sans_entity_t *g_last = NULL;
 
 static void g_for_each(void (*callback)(sans_entity_t *)) {
-    sans_entity_t *next = g_first_entity;
+    sans_entity_t *next = g_first;
 
     while(next != NULL) {
         callback(next);
@@ -43,54 +45,66 @@ void sans_entity_draw(void) {
     g_for_each(g_draw);
 }
 
-// Returns the pointer to the first null next field
-static sans_entity_t **g_find_last(sans_entity_t **entity) {
-    sans_entity_t **search_entity = entity;
-
-    while (*search_entity != NULL) {
-        search_entity = &(*search_entity)->next;
-    }
-
-    return search_entity;
-}
-
 static sans_entity_t *g_malloc_entity() {
     // TODO: Handle possible error
     return malloc(sizeof(sans_entity_t));
 }
 
-sans_entity_handle_t sans_entity_push(void (*update)(uint8_t), void (*draw)(uint8_t), uint8_t id) {
-    sans_entity_t **last = g_find_last(&g_first_entity);
-
+sans_entity_handle_t sans_entity_push(
+    void (*update)(uint8_t),
+    void (*draw)(uint8_t),
+    uint8_t id
+) {
     sans_entity_t *entity = g_malloc_entity();
-    *last = entity;
     entity->update = update;
     entity->draw = draw;
-    entity->next = NULL;
     entity->id = id;
     sans_entity_handle_t handle = {
-        .g_value = (void **)last,
+        .g_value = (void *)entity,
     };
+
+    if (g_first == NULL) {
+        entity->prev = NULL;
+        g_first = entity;
+    } else {
+        entity->prev = g_last;
+        g_last->next = entity;
+    }
+
+    entity->next = NULL;
+
+    g_last = entity;
     return handle;
 }
 
+static void g_free_entity(sans_entity_t *entity) {
+    free(entity);
+}
+
 void sans_entity_pop_all(void) {
-    while (g_first_entity != NULL) {
-        sans_entity_t **search_entity = &g_first_entity;
-
-        while ((*search_entity)->next != NULL) {
-            search_entity = &(*search_entity)->next;
-        }
-
-        free(*search_entity);
-        *search_entity = NULL;
-    }
+    g_for_each(g_free_entity);
+    g_first = NULL;
+    g_last = NULL;
 }
 
 void sans_entity_remove(sans_entity_handle_t handle) {
-    sans_entity_t **next = (sans_entity_t **)handle.g_value;
-    free(*next);
-    *next = (*next)->next;
+    sans_entity_t *entity = (sans_entity_t *)handle.g_value;
+
+    // Entity was the last
+    if (entity == g_last) {
+        g_last = entity->prev;
+    } else {
+        entity->next->prev = entity->prev;
+    }
+
+    // Entity was the first
+    if (entity == g_first) {
+        g_first = entity->next;
+    } else {
+        entity->prev->next = entity->next;
+    }
+
+    free(entity);
 }
 
 void sans_entity_exit(void) {

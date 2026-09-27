@@ -32,8 +32,8 @@
 
 static vec2f_t g_heart_position = vec2(G_POSITION_DEFAULT_X, G_POSITION_DEFAULT_Y);
 // Updated based on the float position. Used for rendering.
-static vec24_t g_heart_int_position = vec2(0.0, 0.0);
-static vec2f_t g_heart_velocity = vec2(0.0, 0.0);
+static vec24_t g_heart_int_position = vec2_splat(0.0);
+static vec2f_t g_heart_velocity = vec2_splat(0.0);
 static const vec2_t g_heart_size = vec2(SPRITE_HEART_RED_WIDTH, SPRITE_HEART_RED_HEIGHT);
 static sans_heart_state_t g_state = SANS_HEART_STATE_RED;
 static const gfx_sprite_t *g_sprite = &sprite_heart_red;
@@ -208,11 +208,30 @@ static void g_handle_collision_list(void) {
     for (uint8_t i = 0; i < list->count; i++) {
         sans_physics_list_element_t *element = &list->elements[i];
         bool collided = false;
+        
+        uint24_t x = g_heart_int_position.x;
+        uint8_t y = g_heart_int_position.y;
+        uint8_t size = g_heart_size.x;
 
         switch (element->shape) {
             case SANS_PHYSCIS_SHAPE_Y_DOWN:
-                uint8_t bottom = g_heart_int_position.y + g_heart_size.y;
-                if (bottom >= *element->value.plane_horizontal.y) {
+                if (y + size > *element->value.plane_horizontal.y) {
+                    collided = true;
+                }
+                break;
+            case SANS_PHYSCIS_SHAPE_COLUMN_GAP:
+                // Is signed but shouldn't cause issues
+                vec24i_t gap_position = *element->value.transform.position;
+                uint24_t gap_x = gap_position.x;
+                uint8_t gap_y = gap_position.y;
+                vec2_t gap_size = element->value.transform.size;
+
+                bool within_left = x + size >= gap_x;
+                bool within_right = x < gap_x + gap_size.x;
+                bool within_top = y < gap_y;
+                bool within_bottom = y + size > gap_y + gap_size.y;
+
+                if (within_left && within_right && (within_top || within_bottom)) {
                     collided = true;
                 }
                 break;

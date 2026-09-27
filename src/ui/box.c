@@ -17,10 +17,10 @@
 // How fast the box changes in size
 #define G_SPEED 10
 
-static vec24_t g_position = vec2(0, 0);
-static vec24_t g_size = vec2(0, 0);
-static vec24_t g_target_position = vec2(0, 0);
-static vec24_t g_target_size = vec2(0, 0);
+static vec24_t g_position = vec2_splat(0);
+static vec24_t g_size = vec2_splat(0);
+static vec24_t g_target_position = vec2_splat(0);
+static vec24_t g_target_size = vec2_splat(0);
 static bool g_transition = false;
 
 static bool g_lerp_24(uint24_t *original, uint24_t target, uint8_t speed) {
