@@ -6,6 +6,7 @@
 #include "../physics.h"
 #include "../ui/box.h"
 #include "../generated/sprites/attacks.h"
+#include "../generated/lookup/bone_wave.h"
 
 #define G_COUNT 20
 #define G_GAP_X 7
@@ -27,7 +28,7 @@ void sans_bone_wave_init(void) {
     for (uint8_t i = 0; i < G_COUNT; i++) {
         vec24i_t *position = &g_positions[i];
         position->x = x;
-        uint8_t height = 10 + i;
+        uint8_t height = SANS_LOOKUP_BONE_RISE_TABLE[i];
         position->y = SANS_UI_BOX_DEFAULT_TOP + height + G_BONE_ENDS;
         x -= SPRITE_BONE_TOP_WIDTH + G_GAP_X;
     }

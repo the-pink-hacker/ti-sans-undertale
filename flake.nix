@@ -42,8 +42,9 @@
                     pname = "sans-ti";
                     version = "0.0.1";
                     src = self;
-                    nativeBuildInputs = with pkgs; [
+                    buildInputs = with pkgs; [
                         ti-asset-builder
+                        python3
                     ];
                 };
                 default = pkgsSelf.sans-ti;

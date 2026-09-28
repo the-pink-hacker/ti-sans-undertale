@@ -88,7 +88,6 @@ void sans_physics_list_remove(sans_physics_collider_id_t id) {
             break;
         }
 
-
         memcpy(
             element,
             &g_list.elements[g_list.count],

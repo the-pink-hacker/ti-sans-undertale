@@ -17,6 +17,7 @@ DEPS = $(BINDIR)/SANSFNT.8xv
 include $(shell cedev-config --makefile)
 
 ASSET_BUILDER := ti-asset-builder$(EXE_SUFFIX)
+PYTHON := python$(EXE_SUFFIX)
 
 GENERATED_DIR := $(call NATIVEPATH,src/generated)
 SPRITE_OUT_DIR := $(call NATIVEPATH,$(GENERATED_DIR)/sprites)
@@ -35,6 +36,9 @@ FONTPACK_IMAGES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/font/*/*.png))
 FONTPACK_FONTS := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/font/*.toml))
 FONTPACK_FILES := $(FONTPACK_FILE) $(FONTPACK_IMAGES) $(FONTPACK_FONTS)
 
+GENERATE_SCRIPT := generate.py
+LOOKUP_DIR := $(call NATIVEPATH,$(GENERATED_DIR)/lookup)
+
 # Creates the sprites in the generated directory
 $(SPRITE_OUT_DIR): $(SPRITE_FILES)
 	$(call RMDIR,$@)
@@ -48,8 +52,13 @@ $(FONTPACK_OUT): $(FONTPACK_BIN_OUT)
 	$(call MKDIR,bin)
 	$(CONVBIN) -j bin -k 8xv -i $(FONTPACK_BIN_OUT) -o $@ -n $(FONTPACK_NAME)
 
+.PHONY: bone_wave
+bone_wave:
+	$(call MKDIR,$(LOOKUP_DIR))
+	$(PYTHON) $(GENERATE_SCRIPT) bone_wave $(LOOKUP_DIR)
+
 .PHONY: generated_files
-generated_files: $(SPRITE_OUT_DIR)
+generated_files: $(SPRITE_OUT_DIR) bone_wave
 
 .PHONY: clean_generated
 clean_generated:
