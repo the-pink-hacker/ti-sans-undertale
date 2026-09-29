@@ -17,7 +17,7 @@ A WIP recration of the Sans boss fight from Undertale for the TI-84+CE.
 First, build the project:
 
 ```sh
-make
+make all
 ```
 
 Next, copy all the `.8xv` and `.8xp` files in the `./bin/` folder to the calculator.
