@@ -1,8 +1,7 @@
 #include "1.h"
 
-#include <stdint.h>
-
 #include "../battle.h"
+#include "../blaster.h"
 #include "../heart.h"
 #include "../input.h"
 #include "../entity.h"
@@ -20,6 +19,7 @@ void sans_attack_1_update(void) {
             sans_heart_set_position_default();
             sans_heart_set_red();
             sans_ui_box_set_size_default();
+            sans_blaster_spawn();
             break;
         case 8:
             sans_heart_set_blue();

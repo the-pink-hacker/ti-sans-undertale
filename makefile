@@ -43,7 +43,7 @@ BLASTER_SPRITE_PREFIX := $(call NATIVEPATH,$(BINDIR)/$(BLASTER_NAME))
 BLASTER_SPRITE_BIN_FILES := $(patsubst $(BLASTER_SPRITE_TABLE_PREFIX)%.toml,$(BLASTER_SPRITE_PREFIX)%.bin,$(BLASTER_SPRITE_TABLES))
 BLASTER_SPRITE_FILES := $(patsubst $(BLASTER_SPRITE_TABLE_PREFIX)%.toml,$(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_SPRITE_TABLES))
 
-MAIN_BIN := $(call NATIVEPATH,$(BINDIR)/$(TARGETOBJ))
+MAIN_BIN := $(call NATIVEPATH,$(BINDIR)/$(TARGET))
 
 # Creates the sprites in the generated directory
 $(SPRITE_OUT_DIR): $(SPRITE_FILES) $(SPRITE_TABLE)
@@ -54,13 +54,13 @@ $(FONTPACK_BIN_OUT): $(FONTPACK_FILES)
 	$(ASSET_BUILDER) fontpack -d $(FONTPACK) -o $@ -t binary
 
 $(FONTPACK_OUT): $(FONTPACK_BIN_OUT)
-	$(CONVBIN) -j bin -k 8xv -i $(FONTPACK_BIN_OUT) -o $@ -n $(FONTPACK_NAME)
+	$(CONVBIN) -j bin -k 8xv -i $(FONTPACK_BIN_OUT) -o $@ -n $(FONTPACK_NAME) -r
 
 $(BLASTER_SPRITE_BIN_FILES): $(BLASTER_SPRITE_TABLES) $(SPRITE_FILES)
 	$(ASSET_BUILDER) sprite -d $(patsubst $(BLASTER_SPRITE_PREFIX)%.bin,$(BLASTER_SPRITE_TABLE_PREFIX)%.toml,$@) -o $(BINDIR) -t binary
 
 $(BLASTER_SPRITE_FILES): $(BLASTER_SPRITE_BIN_FILES)
-	$(CONVBIN) -j bin -k 8xv -i $(subst .8xv,.bin,$@) -o $@ -n $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_NAME)%,$@)
+	$(CONVBIN) -j bin -k 8xv -i $(subst .8xv,.bin,$@) -o $@ -n $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_NAME)%,$@) -r
 
 .PHONY: bone_wave
 bone_wave:
@@ -75,4 +75,4 @@ clean_generated:
 	$(call RMDIR,$(GENERATED_DIR))
 
 .PHONY: all
-all: $(MAIN_BIN) $(FONTPACK_BIN_OUT) $(BLASTER_SPRITE_FILES)
+all: $(MAIN_BIN) $(FONTPACK_OUT) $(BLASTER_SPRITE_FILES)

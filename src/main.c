@@ -15,6 +15,9 @@ static int sans_handle_errors(sans_result_t result) {
         case SANS_FONT_INVALID:
             sans_error_print("Font invalid");
             break;
+        case SANS_BLASTER_MISSING:
+            sans_error_print("Missing one or more blaster files");
+            break;
     }
 
     while (!os_GetKey());

@@ -7,6 +7,7 @@ typedef enum [[nodiscard]] __attribute__((packed)) {
     SANS_USER_EXIT,
     SANS_FONT_MISSING,
     SANS_FONT_INVALID,
+    SANS_BLASTER_MISSING,
 } sans_result_t;
 
 void sans_error_print(char *text);

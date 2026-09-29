@@ -6,6 +6,7 @@
 #include "ui.h"
 #include "input.h"
 #include "entity.h"
+#include "blaster.h"
 #include "bone/wave.h"
 
 sans_result_t sans_init(void) {
@@ -17,6 +18,7 @@ sans_result_t sans_init(void) {
     gfx_ZeroScreen();
 
     EARLY_EXIT(sans_ui_init());
+    EARLY_EXIT(sans_blaster_init());
     sans_bone_wave_init();
     
     return SANS_SUCCESS;

@@ -5,7 +5,6 @@
 #include <fontlibc.h>
 
 #include "../color.h"
-#include "../error.h"
 
 static fontlib_font_t *g_hud;
 static fontlib_font_t *g_comic;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "error.h"
+#include "../error.h"
 
 sans_result_t sans_ui_font_init(void);
 
