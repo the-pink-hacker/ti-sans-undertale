@@ -14,3 +14,7 @@ void sans_clip_box(void) {
         box_position.y + box_size.y
     );
 }
+
+void sans_clip_screen(void) {
+    gfx_SetClipRegion(0, 0, GFX_LCD_WIDTH, GFX_LCD_HEIGHT);
+}

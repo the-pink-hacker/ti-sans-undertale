@@ -27,3 +27,8 @@ typedef struct {
     int24_t x;
     uint8_t y;
 } vec24i_t;
+
+typedef struct {
+    int24_t x;
+    int24_t y;
+} vec2i_t;

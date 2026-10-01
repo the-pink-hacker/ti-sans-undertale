@@ -34,6 +34,9 @@ FONTPACK_FILES := $(FONTPACK_FILE) $(FONTPACK_IMAGES) $(FONTPACK_FONTS)
 
 GENERATE_SCRIPT := generate.py
 LOOKUP_DIR := $(call NATIVEPATH,$(GENERATED_DIR)/lookup)
+LOOKUP_BONE_WAVE := $(call NATIVEPATH,$(LOOKUP_DIR)/bone_wave.h)
+LOOKUP_BLASTER_4A := $(call NATIVEPATH,$(LOOKUP_DIR)/blaster_4a.h)
+LOOKUP_TARGETS := $(LOOKUP_BONE_WAVE) $(LOOKUP_BLASTER_4A)
 
 BLASTER_SPRITE_TABLE_PREFIX := $(call NATIVEPATH,$(ASSET_DIR)/gaster_blaster_sprites_)
 BLASTER_SPRITE_TABLES := $(wildcard $(BLASTER_SPRITE_TABLE_PREFIX)*.toml)
@@ -62,13 +65,14 @@ $(BLASTER_SPRITE_BIN_FILES): $(BLASTER_SPRITE_TABLES) $(SPRITE_FILES)
 $(BLASTER_SPRITE_FILES): $(BLASTER_SPRITE_BIN_FILES)
 	$(CONVBIN) -j bin -k 8xv -i $(subst .8xv,.bin,$@) -o $@ -n $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_NAME)%,$@) -r
 
-.PHONY: bone_wave
-bone_wave:
-	$(call MKDIR,$(LOOKUP_DIR))
+$(LOOKUP_BONE_WAVE): $(GENERATE_SCRIPT)
 	$(PYTHON) $(GENERATE_SCRIPT) bone_wave $(LOOKUP_DIR)
 
+$(LOOKUP_BLASTER_4A): $(GENERATE_SCRIPT)
+	$(PYTHON) $(GENERATE_SCRIPT) blaster_4a $(LOOKUP_DIR)
+
 .PHONY: generated_files
-generated_files: $(SPRITE_OUT_DIR) bone_wave
+generated_files: $(SPRITE_OUT_DIR) $(LOOKUP_TARGETS)
 
 .PHONY: clean_generated
 clean_generated:

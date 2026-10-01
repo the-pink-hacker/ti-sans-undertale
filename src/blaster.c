@@ -1,16 +1,16 @@
 #include "blaster.h"
 
 #include <fileioc.h>
-#include <debug.h>
 #include <graphx.h>
+#include <debug.h>
+#include <string.h>
 
 #include "entity.h"
+#include "clip.h"
+#include "generated/lookup/blaster_4a.h"
 
 #define G_FILE_COUNT 6
 #define G_SIZE 56
-
-static uint8_t g_f = 5;
-static uint8_t g_i = 19;
 
 typedef struct {
     uint8_t width;
@@ -21,6 +21,10 @@ typedef struct {
 typedef struct {
     sans_blaster_sprite_t sprites[20];
 } sans_blaster_file_t;
+
+static sans_entity_handle_t g_entities_4a[4];
+static sans_blaster_position_t *g_positions_4a;
+static uint8_t g_frames_4a = 0;
 
 static sans_blaster_file_t *g_files[G_FILE_COUNT];
 
@@ -53,29 +57,65 @@ const gfx_sprite_t *sans_blaster_get_sprite(uint8_t frame, uint8_t rotation_inde
     return sprite;
 }
 
+static sans_blaster_position_t *g_alloc_position_list(uint8_t length) {
+    // TODO: Handle malloc error
+    return (sans_blaster_position_t *)malloc(sizeof(sans_blaster_position_t) * length);
+}
+
 static void g_update(uint8_t id) {
     (void)id;
-    
-    if (g_i < 19) {
-        g_i++;
-    } else {
-        g_i = 0;
 
-        if (g_f < 5) {
-            g_f++;
-        } else {
-            g_f = 0;
-        }
+    if (g_frames_4a >= SANS_LOOKUP_BLASTER_4A_FRAMES) {
+        return;
     }
-    dbg_Debugger();
-    dbg_printf("%i: %i\n", (int)g_f, (int)g_i);
+
+    memcpy(
+        g_positions_4a,
+        &SANS_LOOKUP_BLASTER_4A_TABLE[g_frames_4a],
+        sizeof(sans_blaster_position_t) * 4
+    );
+
+    g_frames_4a++;
+}
+
+static void g_draw_blaster(sans_blaster_position_t *position, uint8_t frame) {
+    gfx_TransparentSprite(
+        sans_blaster_get_sprite(frame, position->rotation_index),
+        position->position.x,
+        position->position.y
+    );
 }
 
 static void g_draw(uint8_t id) {
     (void)id;
-    gfx_TransparentSprite_NoClip(sans_blaster_get_sprite(g_f, g_i), 0, 0);
+
+    sans_clip_screen();
+
+    for (uint8_t i = 0; i < 4; i++) {
+        g_draw_blaster(&g_positions_4a[i], 0);
+    }
 }
 
-void sans_blaster_spawn(void) {
-    sans_entity_push(g_update, g_draw, 0);
+void sans_blaster_spawn_4a(void) {
+    g_positions_4a = g_alloc_position_list(4);
+
+    for (uint8_t i = 0; i < 4; i++) {
+        g_entities_4a[i] = sans_entity_push(g_update, g_draw, 0);
+    }
 }
+
+void sans_blaster_remove_4a(void) {
+    free(g_positions_4a);
+
+    for (uint8_t i = 0; i < 4; i++) {
+        sans_entity_remove(g_entities_4a[i]);
+    }
+}
+
+void sans_blaster_spawn_4b(void) {}
+
+void sans_blaster_remove_4b(void) {}
+
+void sans_blaster_spawn_2(void) {}
+
+void sans_blaster_remove_2(void) {}

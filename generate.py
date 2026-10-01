@@ -3,6 +3,8 @@ from pathlib import Path
 from typing import Optional
 from math import sin, tau, ceil
 
+INDENT = "    "
+
 class CValue:
     def eval(self) -> str:
         raise NotImplementedError
@@ -49,8 +51,9 @@ class CVariable(CValue):
     name: str
     type_name: str
     array: bool
-    array_length: Optional[int]
+    array_length: Optional[int | list[int]]
     extern: bool
+    const: bool
     value: Optional[any]
 
     def __init__(
@@ -58,8 +61,9 @@ class CVariable(CValue):
         name: str,
         type_name: str,
         array: bool = False,
-        array_length: Optional[int] = None,
+        array_length: Optional[int | list[int]] = None,
         extern: bool = False,
+        const: bool = False,
         value: Optional[any] = None,
     ):
         self.name = name
@@ -67,6 +71,7 @@ class CVariable(CValue):
         self.array = array
         self.extern = extern
         self.array_length = array_length
+        self.const = const
         self.value = value
 
     def eval(self) -> str:
@@ -75,11 +80,17 @@ class CVariable(CValue):
         if self.extern:
             out += "extern "
 
+        if self.const:
+            out += "const "
+
         out += f"{self.type_name} {self.name}"
 
         if self.array:
             if self.array_length is None:
                 out += "[]"
+            elif isinstance(self.array_length, list):
+                for length in self.array_length:
+                    out += f"[{length}]"
             else:
                 out += f"[{self.array_length}]"
 
@@ -135,7 +146,10 @@ class CHeader(CFileAbstract):
 class CFile(CFileAbstract):
     def __init__(self, name: str):
         super().__init__(name)
-        self.add_value(CIncludeMacro(name))
+        self.add_values([
+            CIncludeMacro(name),
+            CFormatGap(),
+        ])
 
     def get_out_file(self, out_path: Path) -> Path:
         return out_path / (self.name + ".c")
@@ -144,8 +158,58 @@ class CFile(CFileAbstract):
 def get_out_path(arg: str) -> Path:
     return Path(arg).resolve()
 
-def list_to_c_array(values: list[any]) -> str:
-    return "{" + ",".join(map(str, values)) + "}"
+def list_to_c_array(values: list[any], indent: int = 1) -> str:
+    out = "{"
+    current_indent = INDENT * indent
+
+    last_index = len(values) - 1
+
+    for (i, raw_value) in enumerate(values):
+        newline = False
+
+        if isinstance(raw_value, dict):
+            newline = True
+            out += "\n"
+            out += current_indent
+            out += dict_to_c_value(raw_value, indent + 1)
+        elif isinstance(raw_value, list):
+            newline = True
+            out += "\n"
+            out += current_indent
+            out += list_to_c_array(raw_value, indent + 1)
+        else:
+            out += str(raw_value)
+
+        if i != last_index:
+            out += ","
+        elif newline:
+            out += "\n"
+
+    out += INDENT * (indent - 1)
+    out += "}"
+
+    return out
+
+def dict_to_c_value(value: dict[str, dict], indent: int = 1) -> str:
+    out = "{\n"
+
+    for (key, raw_value) in value.items():
+        value: str
+
+        if isinstance(raw_value, dict):
+            value = dict_to_c_value(raw_value, indent + 1)
+        elif isinstance(raw_value, list):
+            value = list_to_c_array(value, indent + 1)
+        else:
+            value = str(raw_value)
+
+        out += INDENT * indent
+        out += f".{key} = {value},\n"
+
+    out += INDENT * (indent - 1)
+    out += "}"
+
+    return out
 
 BONE_WAVE_COUNT = 20
 
@@ -167,31 +231,101 @@ def bone_wave(out: Path):
     header.add_values([
         CIncludeMacro("stdint", dynamic = True),
         CFormatGap(),
-        CDefineMacro("SANS_LOOKUP_BONE_RISE_COUNT", 20),
+        CDefineMacro("SANS_LOOKUP_BONE_RISE_COUNT", BONE_WAVE_COUNT),
         CVariable(
             name = table_name,
             type_name = table_type_name,
             array = True,
             array_length = BONE_WAVE_COUNT,
             extern = True,
+            const = True,
         ),
     ])
 
     values = map(bone_wave_get_value, range(BONE_WAVE_COUNT))
 
-    file.add_values([
+    file.add_value(CVariable(
+        name = table_name,
+        type_name = table_type_name,
+        array = True,
+        array_length = BONE_WAVE_COUNT,
+        value = list_to_c_array(list(values)),
+        const = True,
+    ))
+
+    header.write_to_path(out)
+    file.write_to_path(out)
+
+BLASTER_4A_START_FRAME = 86
+BLASTER_4A_END_FRAME = 97
+BLASTER_4A_FRAMES = BLASTER_4A_END_FRAME - BLASTER_4A_START_FRAME + 1
+
+def blaster_position(x: int, y: int, rotation_index: int) -> dict:
+    return {
+        "position": {
+            "x": x,
+            "y": y,
+        },
+        "rotation_index": rotation_index
+    }
+
+def blaster_4a_get_value(i: int) -> tuple[
+    dict[str, any],
+    dict[str, any],
+    dict[str, any],
+    dict[str, any],
+]:
+    return [
+        blaster_position(0, 0, 0),
+        blaster_position(60, 0, 0),
+        blaster_position(0, 60, 0),
+        blaster_position(60, 60, 0),
+    ]
+
+def blaster_4a(out: Path):
+    name = "blaster_4a"
+    header = CHeader(name)
+    file = CFile(name)
+
+    table_name = "SANS_LOOKUP_BLASTER_4A_TABLE"
+    table_type_name = "sans_blaster_position_t"
+    table_array_lengths = [BLASTER_4A_FRAMES, 4]
+
+    header.add_values([
+        CIncludeMacro("stdint", dynamic = True),
         CFormatGap(),
+        CIncludeMacro("../../blaster"),
+        CFormatGap(),
+        CDefineMacro("SANS_LOOKUP_BLASTER_4A_FRAMES", BLASTER_4A_FRAMES),
         CVariable(
             name = table_name,
             type_name = table_type_name,
             array = True,
-            array_length = BONE_WAVE_COUNT,
-            value = list_to_c_array(values),
+            array_length = table_array_lengths,
+            extern = True,
+            const = True,
         ),
-    ]);
+    ])
+
+    values = map(blaster_4a_get_value, range(BLASTER_4A_FRAMES))
+
+    file.add_value(CVariable(
+        name = table_name,
+        type_name = table_type_name,
+        array = True,
+        array_length = table_array_lengths,
+        const = True,
+        value = list_to_c_array(list(values)),
+    ))
 
     header.write_to_path(out)
     file.write_to_path(out)
+
+def make_out_path(out: Path):
+    if out.exists():
+        return
+
+    out.mkdir()
 
 def main():
     args = sys.argv
@@ -204,11 +338,15 @@ def main():
 
     command = args[1]
 
-    out = get_out_path(args[2]);
+    out = get_out_path(args[2])
+
+    make_out_path(out)
 
     match command:
         case "bone_wave":
             bone_wave(out)
+        case "blaster_4a":
+            blaster_4a(out)
         case _:
             raise NotImplementedError(f"Unknown command {command}")
 
