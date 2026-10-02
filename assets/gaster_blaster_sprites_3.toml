@@ -1,78 +1,78 @@
-[SANSGB3.gaster_blaster_3_00]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_00]
+path = "sprites/gaster_blaster_3"
 
-[SANSGB3.gaster_blaster_3_01]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_01]
+path = "sprites/gaster_blaster_3"
 rotation = 18
 
-[SANSGB3.gaster_blaster_3_02]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_02]
+path = "sprites/gaster_blaster_3"
 rotation = 36
 
-[SANSGB3.gaster_blaster_3_03]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_03]
+path = "sprites/gaster_blaster_3"
 rotation = 54
 
-[SANSGB3.gaster_blaster_3_04]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_04]
+path = "sprites/gaster_blaster_3"
 rotation = 72
 
-[SANSGB3.gaster_blaster_3_05]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_05]
+path = "sprites/gaster_blaster_3"
 rotation = 90
 
-[SANSGB3.gaster_blaster_3_06]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_06]
+path = "sprites/gaster_blaster_3"
 rotation = 108
 
-[SANSGB3.gaster_blaster_3_07]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_07]
+path = "sprites/gaster_blaster_3"
 rotation = 126
 
-[SANSGB3.gaster_blaster_3_08]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_08]
+path = "sprites/gaster_blaster_3"
 rotation = 144
 
-[SANSGB3.gaster_blaster_3_09]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_09]
+path = "sprites/gaster_blaster_3"
 rotation = 162
 
-[SANSGB3.gaster_blaster_3_10]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_10]
+path = "sprites/gaster_blaster_3"
 rotation = 180
 
-[SANSGB3.gaster_blaster_3_11]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_11]
+path = "sprites/gaster_blaster_3"
 rotation = 198
 
-[SANSGB3.gaster_blaster_3_12]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_12]
+path = "sprites/gaster_blaster_3"
 rotation = 216
 
-[SANSGB3.gaster_blaster_3_13]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_13]
+path = "sprites/gaster_blaster_3"
 rotation = 234
 
-[SANSGB3.gaster_blaster_3_14]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_14]
+path = "sprites/gaster_blaster_3"
 rotation = 252
 
-[SANSGB3.gaster_blaster_3_15]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_15]
+path = "sprites/gaster_blaster_3"
 rotation = 270
 
-[SANSGB3.gaster_blaster_3_16]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_16]
+path = "sprites/gaster_blaster_3"
 rotation = 288
 
-[SANSGB3.gaster_blaster_3_17]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_17]
+path = "sprites/gaster_blaster_3"
 rotation = 306
 
-[SANSGB3.gaster_blaster_3_18]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_18]
+path = "sprites/gaster_blaster_3"
 rotation = 324
 
-[SANSGB3.gaster_blaster_3_19]
-path = "sprites/sans/gaster_blaster_3"
+[sprites.gaster_blaster_3_19]
+path = "sprites/gaster_blaster_3"
 rotation = 342

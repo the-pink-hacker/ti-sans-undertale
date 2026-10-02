@@ -6,7 +6,7 @@
 
 #include "font.h"
 #include "../vec.h"
-#include "../generated/sprites/ui.h"
+#include "../generated/sprites.h"
 
 // Width of the white middle
 #define G_WIDTH 90
@@ -41,12 +41,12 @@ void sans_ui_speach_box_update(void) {
 
 static void g_draw_box(vec24_t position) {
     gfx_Sprite_NoClip(
-        &sprite_speach_box_left,
+        &SPRITE_SPEACH_BOX_LEFT,
         position.x,
         position.y
     );
     gfx_Sprite_NoClip(
-        &sprite_speach_box_right,
+        &SPRITE_SPEACH_BOX_RIGHT,
         position.x + G_LEFT_WIDTH + G_WIDTH,
         position.y
     );

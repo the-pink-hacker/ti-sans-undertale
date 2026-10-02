@@ -5,7 +5,7 @@
 #include "../clip.h"
 #include "../physics.h"
 #include "../ui/box.h"
-#include "../generated/sprites/attacks.h"
+#include "../generated/sprites.h"
 #include "../generated/lookup/bone_wave.h"
 
 #define G_COUNT 20

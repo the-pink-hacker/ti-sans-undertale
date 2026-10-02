@@ -18,10 +18,10 @@ ASSET_BUILDER := ti-asset-builder$(EXE_SUFFIX)
 PYTHON := python$(EXE_SUFFIX)
 
 GENERATED_DIR := $(call NATIVEPATH,src/generated)
-SPRITE_OUT_DIR := $(call NATIVEPATH,$(GENERATED_DIR)/sprites)
+SPRITE_OUT_DIR := $(call NATIVEPATH,$(GENERATED_DIR)/sprites.h)
 ASSET_DIR := assets
 SPRITE_TABLE := $(call NATIVEPATH,$(ASSET_DIR)/sprites.toml)
-SPRITE_FILES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/sprites/*/*.png))
+SPRITE_FILES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/sprites/*.png))
 
 FONTPACK := $(call NATIVEPATH,$(ASSET_DIR)/fontpack.toml)
 FONTPACK_NAME := SANSFNT
@@ -39,19 +39,19 @@ LOOKUP_BLASTER_4A := $(call NATIVEPATH,$(LOOKUP_DIR)/blaster_4a.h)
 LOOKUP_TARGETS := $(LOOKUP_BONE_WAVE) $(LOOKUP_BLASTER_4A)
 
 BLASTER_SPRITE_TABLE_PREFIX := $(call NATIVEPATH,$(ASSET_DIR)/gaster_blaster_sprites_)
+BLASTER_SPRITE_BIN_PREFIX := $(call NATIVEPATH,$(BINDIR)/gaster_blaster_sprites_)
 BLASTER_SPRITE_TABLES := $(wildcard $(BLASTER_SPRITE_TABLE_PREFIX)*.toml)
 BLASTER_NAME := SANSGB
 BLASTER_SPRITE_PREFIX := $(call NATIVEPATH,$(BINDIR)/$(BLASTER_NAME))
 # I hate make; there's probably a better way...but this works
-BLASTER_SPRITE_BIN_FILES := $(patsubst $(BLASTER_SPRITE_TABLE_PREFIX)%.toml,$(BLASTER_SPRITE_PREFIX)%.bin,$(BLASTER_SPRITE_TABLES))
+BLASTER_SPRITE_BIN_FILES := $(subst .toml,.bin,$(BLASTER_SPRITE_TABLES))
 BLASTER_SPRITE_FILES := $(patsubst $(BLASTER_SPRITE_TABLE_PREFIX)%.toml,$(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_SPRITE_TABLES))
 
 MAIN_BIN := $(call NATIVEPATH,$(BINDIR)/$(TARGET))
 
 # Creates the sprites in the generated directory
 $(SPRITE_OUT_DIR): $(SPRITE_FILES) $(SPRITE_TABLE)
-	$(call RMDIR,$@)
-	$(ASSET_BUILDER) sprite -d $(SPRITE_TABLE) -o $@ -t c
+	$(ASSET_BUILDER) sprite -d $(SPRITE_TABLE) -o $(GENERATED_DIR) -t c
 
 $(FONTPACK_BIN_OUT): $(FONTPACK_FILES)
 	$(ASSET_BUILDER) fontpack -d $(FONTPACK) -o $@ -t binary
@@ -60,10 +60,10 @@ $(FONTPACK_OUT): $(FONTPACK_BIN_OUT)
 	$(CONVBIN) -j bin -k 8xv -i $(FONTPACK_BIN_OUT) -o $@ -n $(FONTPACK_NAME) -r
 
 $(BLASTER_SPRITE_BIN_FILES): $(BLASTER_SPRITE_TABLES) $(SPRITE_FILES)
-	$(ASSET_BUILDER) sprite -d $(patsubst $(BLASTER_SPRITE_PREFIX)%.bin,$(BLASTER_SPRITE_TABLE_PREFIX)%.toml,$@) -o $(BINDIR) -t binary
+	$(ASSET_BUILDER) sprite -d $(subst .bin,.toml,$@) -o $(BINDIR) -t binary
 
 $(BLASTER_SPRITE_FILES): $(BLASTER_SPRITE_BIN_FILES)
-	$(CONVBIN) -j bin -k 8xv -i $(subst .8xv,.bin,$@) -o $@ -n $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_NAME)%,$@) -r
+	$(CONVBIN) -j bin -k 8xv -i $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_SPRITE_BIN_PREFIX)%.bin,$@) -o $@ -n $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_NAME)%,$@) -r
 
 $(LOOKUP_BONE_WAVE): $(GENERATE_SCRIPT)
 	$(PYTHON) $(GENERATE_SCRIPT) bone_wave $(LOOKUP_DIR)

@@ -8,7 +8,7 @@
 #include "physics.h"
 #include "health.h"
 #include "ui/box.h"
-#include "generated/sprites/heart.h"
+#include "generated/sprites.h"
 
 // Amount of speed added per frame when red
 #define G_SPEED 2.5
@@ -24,8 +24,8 @@
 #define G_BOX_X 122
 #define G_BOX_Y 114
 #define G_BOX_SIZE 78
-#define G_POSITION_DEFAULT_X (G_BOX_X + (G_BOX_SIZE / 2) - (SPRITE_HEART_RED_WIDTH / 2))
-#define G_POSITION_DEFAULT_Y (G_BOX_Y + (G_BOX_SIZE / 2) - (SPRITE_HEART_RED_HEIGHT / 2))
+#define G_POSITION_DEFAULT_X (G_BOX_X + (G_BOX_SIZE / 2) - (SPRITE_SOUL_RED_WIDTH / 2))
+#define G_POSITION_DEFAULT_Y (G_BOX_Y + (G_BOX_SIZE / 2) - (SPRITE_SOUL_RED_HEIGHT / 2))
 
 #define G_THROW_FRAMES 9
 #define G_THROW_SPEED 10
@@ -34,9 +34,9 @@ static vec2f_t g_heart_position = vec2(G_POSITION_DEFAULT_X, G_POSITION_DEFAULT_
 // Updated based on the float position. Used for rendering.
 static vec24_t g_heart_int_position = vec2_splat(0.0);
 static vec2f_t g_heart_velocity = vec2_splat(0.0);
-static const vec2_t g_heart_size = vec2(SPRITE_HEART_RED_WIDTH, SPRITE_HEART_RED_HEIGHT);
+static const vec2_t g_heart_size = vec2(SPRITE_SOUL_RED_WIDTH, SPRITE_SOUL_RED_HEIGHT);
 static sans_heart_state_t g_state = SANS_HEART_STATE_RED;
-static const gfx_sprite_t *g_sprite = &sprite_heart_red;
+static const gfx_sprite_t *g_sprite = &SPRITE_SOUL_RED;
 
 static bool g_grounded = false;
 // How many frames of jumping are left
@@ -296,13 +296,13 @@ void sans_heart_draw(void) {
 }
 
 void sans_heart_set_red(void) {
-    g_sprite = &sprite_heart_red;
+    g_sprite = &SPRITE_SOUL_RED;
     g_state = SANS_HEART_STATE_RED;
     g_disable = false;
 }
 
 void sans_heart_set_blue(void) {
-    g_sprite = &sprite_heart_blue;
+    g_sprite = &SPRITE_SOUL_BLUE;
     g_state = SANS_HEART_STATE_BLUE;
     g_disable = false;
 }
@@ -317,16 +317,16 @@ void sans_heart_throw(sans_direction_t direction) {
 
     switch (g_throw_direction) {
         case SANS_DIRECTION_DOWN:
-            g_sprite = &sprite_heart_blue;
+            g_sprite = &SPRITE_SOUL_BLUE;
             break;
         case SANS_DIRECTION_LEFT:
-            g_sprite = &sprite_heart_blue_90;
+            g_sprite = &SPRITE_SOUL_BLUE_090;
             break;
         case SANS_DIRECTION_UP:
-            g_sprite = &sprite_heart_blue_180;
+            g_sprite = &SPRITE_SOUL_BLUE_180;
             break;
         case SANS_DIRECTION_RIGHT:
-            g_sprite = &sprite_heart_blue_270;
+            g_sprite = &SPRITE_SOUL_BLUE_270;
             break;
     }
 }

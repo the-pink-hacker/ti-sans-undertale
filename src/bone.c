@@ -1,11 +1,11 @@
 #include "bone.h"
 
-#include "generated/sprites/attacks.h"
+#include "generated/sprites.h"
 
 void sans_bone_draw_top(vec24_t position, uint8_t height) {
     // Top
     gfx_TransparentSprite_NoClip(
-        &sprite_bone_top,
+        &SPRITE_BONE_TOP,
         position.x,
         position.y - height - SPRITE_BONE_TOP_HEIGHT
     );
@@ -21,13 +21,13 @@ void sans_bone_draw_top(vec24_t position, uint8_t height) {
 void sans_bone_draw_clip(vec24i_t position, uint8_t height) {
     // Bottom
     gfx_TransparentSprite(
-        &sprite_bone_bottom,
+        &SPRITE_BONE_BOTTOM,
         position.x,
         position.y - (SPRITE_BONE_BOTTOM_HEIGHT)
     );
     // Top
     gfx_TransparentSprite(
-        &sprite_bone_top,
+        &SPRITE_BONE_TOP,
         position.x,
         position.y - height - (SPRITE_BONE_TOP_HEIGHT * 2)
     );

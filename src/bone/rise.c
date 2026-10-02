@@ -4,7 +4,7 @@
 #include "../entity.h"
 #include "../physics.h"
 #include "../ui/box.h"
-#include "../generated/sprites/attacks.h"
+#include "../generated/sprites.h"
 
 #define G_SPEED_UP 8
 #define G_SPEED_DOWN 6

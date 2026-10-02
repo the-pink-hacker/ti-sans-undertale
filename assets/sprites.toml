@@ -1,33 +1,30 @@
-[heart]
-heart_blue = "sprites/soul/heart_blue"
-heart_red = "sprites/soul/heart_red"
+[sprites]
+soul_blue = "sprites/soul_blue"
+soul_red = "sprites/soul_red"
+sans = "sprites/sans"
+button_fight_icon = "sprites/button_fight_icon"
+button_act_icon = "sprites/button_act_icon"
+button_item_icon = "sprites/button_item_icon"
+button_mercy_icon = "sprites/button_mercy_icon"
+attack_meter_left = "sprites/attack_meter_left"
+attack_meter_right = "sprites/attack_meter_right"
+game_over = "sprites/game_over"
+speach_box_left = "sprites/speach_box_left"
+speach_box_right = "sprites/speach_box_right"
+bone_top = "sprites/bone_end"
 
-[heart.heart_blue_90]
-path = "sprites/soul/heart_blue"
-rotation = 90
-
-[heart.heart_blue_180]
-path = "sprites/soul/heart_blue"
+[sprites.bone_bottom]
+path = "sprites/bone_end"
 rotation = 180
 
-[heart.heart_blue_270]
-path = "sprites/soul/heart_blue"
+[sprites.soul_blue_090]
+path = "sprites/soul_blue"
+rotation = 90
+
+[sprites.soul_blue_180]
+path = "sprites/soul_blue"
+rotation = 180
+
+[sprites.soul_blue_270]
+path = "sprites/soul_blue"
 rotation = 270
-
-[sans]
-sans = "sprites/sans/sans"
-
-[ui]
-button_fight_icon = "sprites/ui/button_fight_icon"
-button_act_icon = "sprites/ui/button_act_icon"
-button_item_icon = "sprites/ui/button_item_icon"
-button_mercy_icon = "sprites/ui/button_mercy_icon"
-attack_meter_left = "sprites/ui/attack_meter_left"
-attack_meter_right = "sprites/ui/attack_meter_right"
-game_over = "sprites/ui/game_over"
-speach_box_left = "sprites/ui/speach_box_left"
-speach_box_right = "sprites/ui/speach_box_right"
-
-[attacks]
-bone_top = "sprites/attacks/bone_top"
-bone_bottom = "sprites/attacks/bone_bottom"

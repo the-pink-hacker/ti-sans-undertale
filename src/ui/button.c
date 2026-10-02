@@ -19,8 +19,7 @@
 #include "../color.h"
 #include "../heart.h"
 #include "../input.h"
-#include "../generated/sprites/ui.h"
-#include "../generated/sprites/heart.h"
+#include "../generated/sprites.h"
 
 typedef enum __attribute__((packed)) {
     SANS_BUTTON_UNSELECTED,
@@ -84,14 +83,14 @@ static void g_draw_button(
         case SANS_BUTTON_RED:
             sans_ui_font_set_color_yellow();
             gfx_SetColor(SANS_COLOR_YELLOW);
-            icon = &sprite_heart_red;
+            icon = &SPRITE_SOUL_RED;
             icon_offset_x = 4;
             icon_offset_y = 7;
             break;
         case SANS_BUTTON_BLUE:
             sans_ui_font_set_color_yellow();
             gfx_SetColor(SANS_COLOR_YELLOW);
-            icon = &sprite_heart_blue;
+            icon = &SPRITE_SOUL_BLUE;
             icon_offset_x = 4;
             icon_offset_y = 7;
             break;
@@ -138,7 +137,7 @@ void sans_ui_button_draw(void) {
     g_draw_button(
         g_get_state(state, 0),
         &position,
-        &sprite_button_fight_icon,
+        &SPRITE_BUTTON_FIGHT_ICON,
         '0',
         15,
         4,
@@ -148,7 +147,7 @@ void sans_ui_button_draw(void) {
     g_draw_button(
         g_get_state(state, 1),
         &position,
-        &sprite_button_act_icon,
+        &SPRITE_BUTTON_ACT_ICON,
         '2',
         17,
         6,
@@ -158,7 +157,7 @@ void sans_ui_button_draw(void) {
     g_draw_button(
         g_get_state(state, 2),
         &position,
-        &sprite_button_item_icon,
+        &SPRITE_BUTTON_ITEM_ICON,
         '4',
         15,
         4,
@@ -168,7 +167,7 @@ void sans_ui_button_draw(void) {
     g_draw_button(
         g_get_state(state, 3),
         &position,
-        &sprite_button_mercy_icon,
+        &SPRITE_BUTTON_MERCY_ICON,
         '6',
         15,
         5,
