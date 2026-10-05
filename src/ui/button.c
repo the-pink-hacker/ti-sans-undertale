@@ -17,14 +17,12 @@
 #include "font.h"
 #include "../vec.h"
 #include "../color.h"
-#include "../heart.h"
 #include "../input.h"
 #include "../generated/sprites.h"
 
 typedef enum __attribute__((packed)) {
     SANS_BUTTON_UNSELECTED,
-    SANS_BUTTON_RED,
-    SANS_BUTTON_BLUE,
+    SANS_BUTTON_SELECTED,
 } sans_ui_button_state_t;
 
 static uint8_t g_selected_index = 0;
@@ -67,7 +65,7 @@ void sans_ui_button_update(void) {
 }
 
 static void g_draw_button(
-    sans_ui_button_state_t state,
+    bool selected,
     const vec24_t *position,
     const gfx_sprite_t *icon,
     char text_index,
@@ -75,25 +73,15 @@ static void g_draw_button(
     uint8_t icon_offset_x,
     uint8_t icon_offset_y
 ) {
-    switch (state) {
-        case SANS_BUTTON_UNSELECTED:
-            sans_ui_font_set_color_orange();
-            gfx_SetColor(SANS_COLOR_ORANGE);
-            break;
-        case SANS_BUTTON_RED:
-            sans_ui_font_set_color_yellow();
-            gfx_SetColor(SANS_COLOR_YELLOW);
-            icon = &SPRITE_SOUL_RED;
-            icon_offset_x = 4;
-            icon_offset_y = 7;
-            break;
-        case SANS_BUTTON_BLUE:
-            sans_ui_font_set_color_yellow();
-            gfx_SetColor(SANS_COLOR_YELLOW);
-            icon = &SPRITE_SOUL_BLUE;
-            icon_offset_x = 4;
-            icon_offset_y = 7;
-            break;
+    if (selected) {
+        sans_ui_font_set_color_yellow();
+        gfx_SetColor(SANS_COLOR_YELLOW);
+        icon = &SPRITE_SOUL;
+        icon_offset_x = 4;
+        icon_offset_y = 7;
+    } else {
+        sans_ui_font_set_color_orange();
+        gfx_SetColor(SANS_COLOR_BUTTON);
     }
 
     uint24_t x = position->x;
@@ -111,31 +99,16 @@ static void g_draw_button(
     fontlib_DrawGlyph(text_index + 1);
 }
 
-static sans_ui_button_state_t g_get_selected_state(void) {
-    switch (sans_heart_get_state()) {
-        case SANS_HEART_STATE_RED:
-            return SANS_BUTTON_RED;
-        case SANS_HEART_STATE_BLUE:
-            return SANS_BUTTON_BLUE;
-    }
-}
-
-static sans_ui_button_state_t g_get_state(sans_ui_button_state_t selected_state, uint8_t index) {
-    if (index == g_selected_index
-            && sans_input_get_focus() == SANS_INPUT_FOCUS_BUTTON
-    ) {
-        return selected_state;
-    } else {
-        return SANS_BUTTON_UNSELECTED;
-    }
+static bool g_get_state(uint8_t index) {
+    return index == g_selected_index
+        && sans_input_get_focus() == SANS_INPUT_FOCUS_BUTTON;
 }
 
 void sans_ui_button_draw(void) {
     sans_ui_font_set_button();
     vec24_t position = vec2(G_BUTTON_FIGHT_X, G_BUTTON_Y);
-    sans_ui_button_state_t state = g_get_selected_state();
     g_draw_button(
-        g_get_state(state, 0),
+        g_get_state(0),
         &position,
         &SPRITE_BUTTON_FIGHT_ICON,
         '0',
@@ -145,7 +118,7 @@ void sans_ui_button_draw(void) {
     );
     position.x = G_BUTTON_ACT_X;
     g_draw_button(
-        g_get_state(state, 1),
+        g_get_state(1),
         &position,
         &SPRITE_BUTTON_ACT_ICON,
         '2',
@@ -155,7 +128,7 @@ void sans_ui_button_draw(void) {
     );
     position.x = G_BUTTON_ITEM_X;
     g_draw_button(
-        g_get_state(state, 2),
+        g_get_state(2),
         &position,
         &SPRITE_BUTTON_ITEM_ICON,
         '4',
@@ -165,7 +138,7 @@ void sans_ui_button_draw(void) {
     );
     position.x = G_BUTTON_MERCY_X;
     g_draw_button(
-        g_get_state(state, 3),
+        g_get_state(3),
         &position,
         &SPRITE_BUTTON_MERCY_ICON,
         '6',

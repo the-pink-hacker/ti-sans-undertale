@@ -42,25 +42,21 @@ extern const gfx_sprite_t SPRITE_GAME_OVER;
 #define SPRITE_SANS_HEIGHT 70
 extern const gfx_sprite_t SPRITE_SANS;
 
-#define SPRITE_SOUL_BLUE_WIDTH 8
-#define SPRITE_SOUL_BLUE_HEIGHT 8
-extern const gfx_sprite_t SPRITE_SOUL_BLUE;
+#define SPRITE_SOUL_WIDTH 8
+#define SPRITE_SOUL_HEIGHT 8
+extern const gfx_sprite_t SPRITE_SOUL;
 
-#define SPRITE_SOUL_BLUE_090_WIDTH 8
-#define SPRITE_SOUL_BLUE_090_HEIGHT 8
-extern const gfx_sprite_t SPRITE_SOUL_BLUE_090;
+#define SPRITE_SOUL_090_WIDTH 8
+#define SPRITE_SOUL_090_HEIGHT 8
+extern const gfx_sprite_t SPRITE_SOUL_090;
 
-#define SPRITE_SOUL_BLUE_180_WIDTH 8
-#define SPRITE_SOUL_BLUE_180_HEIGHT 8
-extern const gfx_sprite_t SPRITE_SOUL_BLUE_180;
+#define SPRITE_SOUL_180_WIDTH 8
+#define SPRITE_SOUL_180_HEIGHT 8
+extern const gfx_sprite_t SPRITE_SOUL_180;
 
-#define SPRITE_SOUL_BLUE_270_WIDTH 8
-#define SPRITE_SOUL_BLUE_270_HEIGHT 8
-extern const gfx_sprite_t SPRITE_SOUL_BLUE_270;
-
-#define SPRITE_SOUL_RED_WIDTH 8
-#define SPRITE_SOUL_RED_HEIGHT 8
-extern const gfx_sprite_t SPRITE_SOUL_RED;
+#define SPRITE_SOUL_270_WIDTH 8
+#define SPRITE_SOUL_270_HEIGHT 8
+extern const gfx_sprite_t SPRITE_SOUL_270;
 
 #define SPRITE_SPEACH_BOX_LEFT_WIDTH 19
 #define SPRITE_SPEACH_BOX_LEFT_HEIGHT 49

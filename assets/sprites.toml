@@ -1,11 +1,40 @@
 [palette.reserve.soul]
+red = 254
+green = 0
+blue = 0
+
+[palette.reserve.white]
+red = 255
+green = 255
+blue = 255
+
+[palette.reserve.black]
+red = 0
+green = 0
+blue = 0
+
+[palette.reserve.yellow]
+red = 255
+green = 255
+blue = 0
+
+[palette.reserve.red]
 red = 255
 green = 0
 blue = 0
 
+[palette.reserve.karma]
+red = 255
+green = 0
+blue = 255
+
+[palette.reserve.button]
+red = 255
+green = 127
+blue = 39
+
 [sprites]
-soul_blue = "sprites/soul_blue"
-soul_red = "sprites/soul"
+soul = "sprites/soul"
 sans = "sprites/sans"
 button_fight_icon = "sprites/button_fight_icon"
 button_act_icon = "sprites/button_act_icon"
@@ -22,14 +51,14 @@ bone_top = "sprites/bone_end"
 path = "sprites/bone_end"
 rotation = 180
 
-[sprites.soul_blue_090]
-path = "sprites/soul_blue"
+[sprites.soul_090]
+path = "sprites/soul"
 rotation = 90
 
-[sprites.soul_blue_180]
-path = "sprites/soul_blue"
+[sprites.soul_180]
+path = "sprites/soul"
 rotation = 180
 
-[sprites.soul_blue_270]
-path = "sprites/soul_blue"
+[sprites.soul_270]
+path = "sprites/soul"
 rotation = 270

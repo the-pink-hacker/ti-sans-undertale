@@ -322,10 +322,7 @@ def blaster_4a(out: Path):
     file.write_to_path(out)
 
 def make_out_path(out: Path):
-    if out.exists():
-        return
-
-    out.mkdir(parents = True)
+    out.mkdir(parents = True, exist_ok = True)
 
 def main():
     args = sys.argv

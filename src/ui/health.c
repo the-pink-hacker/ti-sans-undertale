@@ -28,7 +28,7 @@ void sans_ui_health_draw(void) {
     }
 
     if (g_kr_width > 0) {
-        gfx_SetColor(SANS_COLOR_MAGENTA);
+        gfx_SetColor(SANS_COLOR_KARMA);
         gfx_FillRectangle_NoClip(G_BAR_X + g_hp_width, G_BAR_Y, g_kr_width, G_BAR_HEIGHT);
     }
 

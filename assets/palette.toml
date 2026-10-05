@@ -1,6 +1,36 @@
-colors = "AAAEAAgACgBAAEIAggCEAMQAxgAKAUgBiAGKAYwBzgEMApYCGAOmBDIGvgdCCFIIVgiQCpQK0ArSCtgLoAx4D4QQphAWFBgUWhScFN4UYhXkFa4YxhgCGqgb0hscHfAdZh7qHiwf+iAIIY4j/iOyJOYmKidKKUQroC6MMVo2njbOORY+EELORVJKiE2UUtZaGGNaa5xz3nsghGKMpJTmnCilaq2ste69MMZyzrTW9t4453rvvPcA+P7/"
+colors = "AAAgACAEIQRABAMFAAhACEIIYAilCWAMYwwAEIQQoBDAEMkSABSAFKUUwBTAGMYYABngHOccxB3oHgghQSFhISEkKSVhJeMlQSlKKSEsQC1rLQIuBy+AMYwx4TECMq01IjYmN845QjqDOu89Yj5GPxBCQUJFQzFGokZSSuJKQkxATnNOI09kT8NRlFK1VmNXhFfWWoNbQ1z3XuNiGGNEZgBnOWdaa3tvnHOhc2R0vXfee8B//38="
 
-[reserve.soul]
+[reserve.black]
+red = 0
+green = 0
+blue = 0
+
+[reserve.button]
+red = 255
+green = 127
+blue = 39
+
+[reserve.karma]
 red = 255
 green = 0
+blue = 255
+
+[reserve.red]
+red = 255
+green = 0
+blue = 0
+
+[reserve.soul]
+red = 254
+green = 0
+blue = 0
+
+[reserve.white]
+red = 255
+green = 255
+blue = 255
+
+[reserve.yellow]
+red = 255
+green = 255
 blue = 0

@@ -56,11 +56,11 @@ void sans_ui_font_set_color_white(void) {
 }
 
 void sans_ui_font_set_color_magenta(void) {
-    fontlib_SetForegroundColor(SANS_COLOR_MAGENTA);
+    fontlib_SetForegroundColor(SANS_COLOR_KARMA);
 }
 
 void sans_ui_font_set_color_orange(void) {
-    fontlib_SetForegroundColor(SANS_COLOR_ORANGE);
+    fontlib_SetForegroundColor(SANS_COLOR_BUTTON);
 }
 
 void sans_ui_font_set_color_yellow(void) {
