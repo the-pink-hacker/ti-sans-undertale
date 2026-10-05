@@ -325,7 +325,7 @@ def make_out_path(out: Path):
     if out.exists():
         return
 
-    out.mkdir()
+    out.mkdir(parents = True)
 
 def main():
     args = sys.argv

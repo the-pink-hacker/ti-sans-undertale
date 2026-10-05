@@ -1,6 +1,11 @@
+[palette.reserve.soul]
+red = 255
+green = 0
+blue = 0
+
 [sprites]
 soul_blue = "sprites/soul_blue"
-soul_red = "sprites/soul_red"
+soul_red = "sprites/soul"
 sans = "sprites/sans"
 button_fight_icon = "sprites/button_fight_icon"
 button_act_icon = "sprites/button_act_icon"

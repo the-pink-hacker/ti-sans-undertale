@@ -18,7 +18,7 @@ ASSET_BUILDER := ti-asset-builder$(EXE_SUFFIX)
 PYTHON := python$(EXE_SUFFIX)
 
 GENERATED_DIR := $(call NATIVEPATH,src/generated)
-SPRITE_OUT_DIR := $(call NATIVEPATH,$(GENERATED_DIR)/sprites.h)
+SPRITE_OUT := $(call NATIVEPATH,$(GENERATED_DIR)/sprites.h)
 ASSET_DIR := assets
 SPRITE_TABLE := $(call NATIVEPATH,$(ASSET_DIR)/sprites.toml)
 SPRITE_FILES := $(wildcard $(call NATIVEPATH,$(ASSET_DIR)/sprites/*.png))
@@ -47,11 +47,16 @@ BLASTER_SPRITE_PREFIX := $(call NATIVEPATH,$(BINDIR)/$(BLASTER_NAME))
 BLASTER_SPRITE_BIN_FILES := $(subst .toml,.bin,$(BLASTER_SPRITE_TABLES))
 BLASTER_SPRITE_FILES := $(patsubst $(BLASTER_SPRITE_TABLE_PREFIX)%.toml,$(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_SPRITE_TABLES))
 
+PALETTE_FILE := $(call NATIVEPATH,$(ASSET_DIR)/palette.toml)
+SPRITE_TABLES := $(SPRITE_TABLE) $(BLASTER_SPRITE_TABLES)
+
 MAIN_BIN := $(call NATIVEPATH,$(BINDIR)/$(TARGET))
 
-# Creates the sprites in the generated directory
-$(SPRITE_OUT_DIR): $(SPRITE_FILES) $(SPRITE_TABLE)
-	$(ASSET_BUILDER) sprite -d $(SPRITE_TABLE) -o $(GENERATED_DIR) -t c
+$(PALETTE_FILE):
+	$(ASSET_BUILDER) palette -o $@ -c $(GENERATED_DIR) -d $(SPRITE_TABLES)
+
+$(SPRITE_OUT): $(PALETTE_FILE) $(SPRITE_FILES) $(SPRITE_TABLE)
+	$(ASSET_BUILDER) sprite -d $(SPRITE_TABLE) -o $(GENERATED_DIR) -t c -p $(PALETTE_FILE)
 
 $(FONTPACK_BIN_OUT): $(FONTPACK_FILES)
 	$(ASSET_BUILDER) fontpack -d $(FONTPACK) -o $@ -t binary
@@ -59,11 +64,13 @@ $(FONTPACK_BIN_OUT): $(FONTPACK_FILES)
 $(FONTPACK_OUT): $(FONTPACK_BIN_OUT)
 	$(CONVBIN) -j bin -k 8xv -i $(FONTPACK_BIN_OUT) -o $@ -n $(FONTPACK_NAME) -r
 
-$(BLASTER_SPRITE_BIN_FILES): $(BLASTER_SPRITE_TABLES) $(SPRITE_FILES)
-	$(ASSET_BUILDER) sprite -d $(subst .bin,.toml,$@) -o $(BINDIR) -t binary
+$(BLASTER_SPRITE_BIN_FILES): $(PALETTE_FILE) $(BLASTER_SPRITE_TABLES) $(SPRITE_FILES)
+	$(ASSET_BUILDER) sprite -d $(subst .bin,.toml,$@) -o $(BINDIR) -t binary -p $(PALETTE_FILE)
 
 $(BLASTER_SPRITE_FILES): $(BLASTER_SPRITE_BIN_FILES)
-	$(CONVBIN) -j bin -k 8xv -i $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_SPRITE_BIN_PREFIX)%.bin,$@) -o $@ -n $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_NAME)%,$@) -r
+	$(CONVBIN) -j bin -k 8xv -r -o $@\
+		-i $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_SPRITE_BIN_PREFIX)%.bin,$@)\
+		-n $(patsubst $(BLASTER_SPRITE_PREFIX)%.8xv,$(BLASTER_NAME)%,$@)
 
 $(LOOKUP_BONE_WAVE): $(GENERATE_SCRIPT)
 	$(PYTHON) $(GENERATE_SCRIPT) bone_wave $(LOOKUP_DIR)
@@ -72,11 +79,12 @@ $(LOOKUP_BLASTER_4A): $(GENERATE_SCRIPT)
 	$(PYTHON) $(GENERATE_SCRIPT) blaster_4a $(LOOKUP_DIR)
 
 .PHONY: generated_files
-generated_files: $(SPRITE_OUT_DIR) $(LOOKUP_TARGETS)
+generated_files: $(SPRITE_OUT) $(LOOKUP_TARGETS)
 
 .PHONY: clean_generated
 clean_generated:
 	$(call RMDIR,$(GENERATED_DIR))
+	$(call RM,$(PALETTE_FILE))
 
 .PHONY: all
 all: $(MAIN_BIN) $(FONTPACK_OUT) $(BLASTER_SPRITE_FILES)
