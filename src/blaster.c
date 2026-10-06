@@ -7,6 +7,7 @@
 
 #include "entity.h"
 #include "clip.h"
+#include "sprite.h"
 #include "generated/lookup/blaster_4a.h"
 
 #define G_FILE_COUNT 6
@@ -53,8 +54,8 @@ sans_result_t sans_blaster_init(void) {
 }
 
 const gfx_sprite_t *sans_blaster_get_sprite(uint8_t frame, uint8_t rotation_index) {
-    gfx_sprite_t *sprite = (gfx_sprite_t *)&g_files[frame]->sprites[rotation_index];
-    return sprite;
+    //gfx_sprite_t *sprite = (gfx_sprite_t *)&g_files[frame]->sprites[rotation_index];
+    return (gfx_sprite_t *)&g_files[frame]->sprites[0];
 }
 
 static sans_blaster_position_t *g_alloc_position_list(uint8_t length) {
@@ -79,28 +80,23 @@ static void g_update(uint8_t id) {
 }
 
 static void g_draw_blaster(sans_blaster_position_t *position, uint8_t frame) {
-    gfx_TransparentSprite(
+    sans_sprite_run_length_draw(
         sans_blaster_get_sprite(frame, position->rotation_index),
-        position->position.x,
-        position->position.y
+        position->position
     );
 }
 
 static void g_draw(uint8_t id) {
     (void)id;
 
-    sans_clip_screen();
-
-    for (uint8_t i = 0; i < 4; i++) {
-        g_draw_blaster(&g_positions_4a[i], 0);
-    }
+    g_draw_blaster(&g_positions_4a[id], 0);
 }
 
 void sans_blaster_spawn_4a(void) {
     g_positions_4a = g_alloc_position_list(4);
 
     for (uint8_t i = 0; i < 4; i++) {
-        g_entities_4a[i] = sans_entity_push(g_update, g_draw, 0);
+        g_entities_4a[i] = sans_entity_push(g_update, g_draw, i);
     }
 }
 

@@ -1,3 +1,6 @@
+[encoding]
+format = "run_length"
+
 [sprites.gaster_blaster_5_00]
 path = "sprites/gaster_blaster_5"
 
