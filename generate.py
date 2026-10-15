@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 from typing import Optional
-from math import sin, tau, ceil
+from math import sin, tau, ceil, sqrt
 
 INDENT = "    "
 
@@ -259,15 +259,38 @@ def bone_wave(out: Path):
 BLASTER_4A_START_FRAME = 86
 BLASTER_4A_END_FRAME = 97
 BLASTER_4A_FRAMES = BLASTER_4A_END_FRAME - BLASTER_4A_START_FRAME + 1
+BLASTER_4A_START_TOP = (-33, -34)
+BLASTER_4A_START_BOTTOM = (287, 206)
+BLASTER_4A_END_TOP = (97, 49)
+BLASTER_4A_END_LEFT = (62, 87)
+BLASTER_4A_END_BOTTOM = (155, 187)
+BLASTER_4A_END_RIGHT = (190, 149)
 
-def blaster_position(x: int, y: int, rotation_index: int) -> dict:
+BLASTER_ROTATIONS = 20
+BLASTER_90 = BLASTER_ROTATIONS / 4
+BLASTER_180 = (BLASTER_ROTATIONS / 4) * 2
+BLASTER_270 = (BLASTER_ROTATIONS / 4) * 3
+
+def blaster_position(position: (int, int), rotation_index: int) -> dict:
     return {
         "position": {
-            "x": x,
-            "y": y,
+            "x": position[0],
+            "y": position[1],
         },
         "rotation_index": rotation_index
     }
+
+def ease_out(src: int, dest: int, time: float) -> int:
+    delta_total = dest - src
+    time_scaled = -(time * (time - 2))
+    delta = time_scaled * delta_total
+    return round(src + delta)
+
+def ease_out_2d(src: (int, int), dest: (int, int), time: float) -> (int, int):
+    return (
+        ease_out(src[0], dest[0], time),
+        ease_out(src[1], dest[1], time),
+    )
 
 def blaster_4a_get_value(i: int) -> tuple[
     dict[str, any],
@@ -275,11 +298,29 @@ def blaster_4a_get_value(i: int) -> tuple[
     dict[str, any],
     dict[str, any],
 ]:
+    time = i / (BLASTER_4A_FRAMES - 1)
+
     return [
-        blaster_position(0, 0, 0),
-        blaster_position(60, 0, 0),
-        blaster_position(0, 60, 0),
-        blaster_position(60, 60, 0),
+        # Top
+        blaster_position(
+            ease_out_2d(BLASTER_4A_START_TOP, BLASTER_4A_END_TOP, time),
+            0,
+        ),
+        # Left
+        blaster_position(
+            ease_out_2d(BLASTER_4A_START_TOP, BLASTER_4A_END_LEFT, time),
+            ease_out(BLASTER_ROTATIONS, BLASTER_270, time) % 20,
+        ),
+        # Bottom
+        blaster_position(
+            ease_out_2d(BLASTER_4A_START_BOTTOM, BLASTER_4A_END_BOTTOM, time),
+            ease_out(BLASTER_ROTATIONS, BLASTER_180, time) % 20,
+        ),
+        # Right
+        blaster_position(
+            ease_out_2d(BLASTER_4A_START_BOTTOM, BLASTER_4A_END_RIGHT, time),
+            ease_out(0, BLASTER_90, time),
+        ),
     ]
 
 def blaster_4a(out: Path):

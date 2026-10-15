@@ -11,16 +11,12 @@
 #include "generated/lookup/blaster_4a.h"
 
 #define G_FILE_COUNT 6
-#define G_SIZE 56
+#define G_SIZE 68
+// How many rotations in 180 degrees
+#define G_ROTATIONS 10
 
 typedef struct {
-    uint8_t width;
-    uint8_t height;
-    uint8_t pixels[G_SIZE * G_SIZE];
-} sans_blaster_sprite_t;
-
-typedef struct {
-    sans_blaster_sprite_t sprites[20];
+    gfx_rletsprite_t *sprites[20];
 } sans_blaster_file_t;
 
 static sans_entity_handle_t g_entities_4a[4];
@@ -29,9 +25,9 @@ static uint8_t g_frames_4a = 0;
 
 static sans_blaster_file_t *g_files[G_FILE_COUNT];
 
-sans_result_t g_load_file(uint8_t index) {
-    static char name[8] = "SANSGB0";
-    name[6] = '0' + index;
+static sans_result_t g_load_file(uint8_t index) {
+    static char name[9] = "SANSGB0?";
+    name[7] = '0' + index;
     dbg_printf("Attempting to load: %s\n", name);
     uint8_t file = ti_Open(name, "r");
 
@@ -53,9 +49,11 @@ sans_result_t sans_blaster_init(void) {
     return SANS_SUCCESS;
 }
 
-const gfx_sprite_t *sans_blaster_get_sprite(uint8_t frame, uint8_t rotation_index) {
-    //gfx_sprite_t *sprite = (gfx_sprite_t *)&g_files[frame]->sprites[rotation_index];
-    return (gfx_sprite_t *)&g_files[frame]->sprites[0];
+const gfx_rletsprite_t *g_get_sprite(uint8_t frame, uint8_t rotation_index) {
+    uint24_t offset = (uint24_t)g_files[frame]->sprites[rotation_index];
+    uint24_t file_offset = (uint24_t)g_files[frame];
+
+    return (gfx_rletsprite_t *)(offset + file_offset);
 }
 
 static sans_blaster_position_t *g_alloc_position_list(uint8_t length) {
@@ -66,6 +64,13 @@ static sans_blaster_position_t *g_alloc_position_list(uint8_t length) {
 static void g_update(uint8_t id) {
     (void)id;
 
+    // Update for all blasters
+    // Only run for first
+    if (id != 0) {
+        return;
+    }
+
+    // Stop updating position from lookup when reaching the end
     if (g_frames_4a >= SANS_LOOKUP_BLASTER_4A_FRAMES) {
         return;
     }
@@ -80,19 +85,23 @@ static void g_update(uint8_t id) {
 }
 
 static void g_draw_blaster(sans_blaster_position_t *position, uint8_t frame) {
-    sans_sprite_run_length_draw(
-        sans_blaster_get_sprite(frame, position->rotation_index),
-        position->position
+    gfx_RLETSprite(
+        g_get_sprite(frame, position->rotation_index),
+        position->position.x,
+        position->position.y
     );
 }
 
 static void g_draw(uint8_t id) {
     (void)id;
 
+    sans_clip_screen();
+
     g_draw_blaster(&g_positions_4a[id], 0);
 }
 
 void sans_blaster_spawn_4a(void) {
+    g_frames_4a = 0;
     g_positions_4a = g_alloc_position_list(4);
 
     for (uint8_t i = 0; i < 4; i++) {

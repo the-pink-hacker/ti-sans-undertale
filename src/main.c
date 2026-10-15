@@ -18,6 +18,9 @@ static int sans_handle_errors(sans_result_t result) {
         case SANS_BLASTER_MISSING:
             sans_error_print("Missing one or more blaster files");
             break;
+        case SANS_MEMORY_FULL:
+            sans_error_print("Memory full.");
+            break;
     }
 
     while (!os_GetKey());

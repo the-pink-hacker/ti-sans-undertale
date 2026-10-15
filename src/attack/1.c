@@ -59,17 +59,17 @@ void sans_attack_1_update(void) {
             sans_blaster_spawn_4b();
             break;
         case 132:
-            //sans_blaster_remove_4a();
+            sans_blaster_remove_4a();
             break;
         case 136:
-            //sans_blaster_spawn_4a();
+            sans_blaster_spawn_4a();
             break;
         case 156:
             sans_blaster_remove_4b();
             sans_blaster_spawn_2();
             break;
         case 182:
-            //sans_blaster_remove_4a();
+            sans_blaster_remove_4a();
             break;
         case 217:
             sans_blaster_remove_2();

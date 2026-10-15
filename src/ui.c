@@ -47,7 +47,6 @@ static void g_draw_hud_text(void) {
 
 void sans_ui_draw(void) {
     gfx_SetColor(SANS_COLOR_WHITE);
-    sans_ui_box_draw();
     sans_ui_speach_box_draw();
 
     fontlib_SetWindowFullScreen();

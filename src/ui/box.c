@@ -2,6 +2,8 @@
 
 #include <graphx.h>
 
+#include "color.h"
+
 #define G_THICKNESS 3
 
 #define G_POSITION_DEFAULT_X SANS_UI_BOX_DEFAULT_LEFT
@@ -75,6 +77,8 @@ void sans_ui_box_draw(void) {
     if (g_size.x == 0 && g_size.y == 0) {
         return;
     }
+
+    gfx_SetColor(SANS_COLOR_WHITE);
 
     vec24_t position = g_position;
     vec24_t size = g_size;

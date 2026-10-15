@@ -1,5 +1,6 @@
 [encoding]
-format = "run_length"
+format = "run_length_transparent"
+lookup_table = true
 
 [sprites.gaster_blaster_2_00]
 path = "sprites/gaster_blaster_2"
