@@ -12,8 +12,7 @@
 
 #define G_FILE_COUNT 6
 #define G_SIZE 68
-// How many rotations in 180 degrees
-#define G_ROTATIONS 10
+#define G_SPEED_OUT 10
 
 typedef struct {
     gfx_rletsprite_t *sprites[20];
@@ -21,7 +20,8 @@ typedef struct {
 
 static sans_entity_handle_t g_entities_4a[4];
 static sans_blaster_position_t *g_positions_4a;
-static uint8_t g_frames_4a = 0;
+static uint8_t g_animation_frames_4a[4];
+static uint8_t g_frames_4a;
 
 static sans_blaster_file_t *g_files[G_FILE_COUNT];
 
@@ -61,27 +61,79 @@ static sans_blaster_position_t *g_alloc_position_list(uint8_t length) {
     return (sans_blaster_position_t *)malloc(sizeof(sans_blaster_position_t) * length);
 }
 
-static void g_update(uint8_t id) {
-    (void)id;
-
-    // Update for all blasters
-    // Only run for first
-    if (id != 0) {
-        return;
-    }
-
-    // Stop updating position from lookup when reaching the end
-    if (g_frames_4a >= SANS_LOOKUP_BLASTER_4A_FRAMES) {
-        return;
-    }
-
+static void g_4a_update_slide_in(void) {
     memcpy(
         g_positions_4a,
         &SANS_LOOKUP_BLASTER_4A_TABLE[g_frames_4a],
         sizeof(sans_blaster_position_t) * 4
     );
+}
 
-    g_frames_4a++;
+static void g_animate(uint8_t *frame) {
+    if (*frame <= 4) {
+        (*frame)++;
+    } else {
+        // Toggle betweeen 4 and 5
+        *frame ^= (4 ^ 5);
+    }
+}
+
+static void g_4a_update(uint8_t id) {
+    if (g_frames_4a < SANS_LOOKUP_BLASTER_4A_FRAMES) {
+        if (id == 0) {
+            // Updates all the blasters
+            g_4a_update_slide_in();
+            // No other blasters ran, so update frame
+            g_frames_4a++;
+        }
+    } else {
+        switch (id) {
+            // Top
+            case 0:
+                if (g_frames_4a >= 22) {
+                    g_animate(&g_animation_frames_4a[id]);
+                }
+
+                if (g_frames_4a >= 28) {
+                    g_positions_4a[id].position.y -= G_SPEED_OUT;
+                }
+                break;
+            // Left
+            case 1:
+                if (g_frames_4a >= 22) {
+                    g_animate(&g_animation_frames_4a[id]);
+                }
+
+                if (g_frames_4a >= 28) {
+                    g_positions_4a[id].position.x -= G_SPEED_OUT;
+                }
+                break;
+            // Bottom
+            case 2:
+                if (g_frames_4a >= 21) {
+                    g_animate(&g_animation_frames_4a[id]);
+                }
+
+                if (g_frames_4a >= 27) {
+                    g_positions_4a[id].position.y += G_SPEED_OUT;
+                }
+                break;
+            // Right
+            case 3:
+                if (g_frames_4a >= 20) {
+                    g_animate(&g_animation_frames_4a[id]);
+                }
+
+                if (g_frames_4a >= 26) {
+                    g_positions_4a[id].position.x += G_SPEED_OUT;
+                }
+
+                // Last blaster ran, so update frame
+                g_frames_4a++;
+                break;
+        }
+    }
+
 }
 
 static void g_draw_blaster(sans_blaster_position_t *position, uint8_t frame) {
@@ -92,20 +144,22 @@ static void g_draw_blaster(sans_blaster_position_t *position, uint8_t frame) {
     );
 }
 
-static void g_draw(uint8_t id) {
-    (void)id;
+static void g_4a_draw(uint8_t id) {
+    // Blasters should be rendered back to back
+    if (id == 0) {
+        sans_clip_screen();
+    }
 
-    sans_clip_screen();
-
-    g_draw_blaster(&g_positions_4a[id], 0);
+    g_draw_blaster(&g_positions_4a[id], g_animation_frames_4a[id]);
 }
 
 void sans_blaster_spawn_4a(void) {
     g_frames_4a = 0;
     g_positions_4a = g_alloc_position_list(4);
+    memset(&g_animation_frames_4a, 0, sizeof(g_animation_frames_4a));
 
     for (uint8_t i = 0; i < 4; i++) {
-        g_entities_4a[i] = sans_entity_push(g_update, g_draw, i);
+        g_entities_4a[i] = sans_entity_push(g_4a_update, g_4a_draw, i);
     }
 }
 

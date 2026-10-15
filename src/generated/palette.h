@@ -2,8 +2,8 @@
 
 #include <stdint.h>
 
-#define PALETTE_COUNT 99
-#define PALETTE_SIZE 198
+#define PALETTE_COUNT 68
+#define PALETTE_SIZE 136
 
 #define PALETTE_RESERVE_BLACK 1
 #define PALETTE_RESERVE_BUTTON 2
@@ -12,4 +12,4 @@
 #define PALETTE_RESERVE_SOUL 5
 #define PALETTE_RESERVE_WHITE 6
 #define PALETTE_RESERVE_YELLOW 7
-extern const uint16_t PALETTE_TABLE[99];
+extern const uint16_t PALETTE_TABLE[68];
