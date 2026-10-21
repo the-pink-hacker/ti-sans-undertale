@@ -8,11 +8,15 @@
 #include "entity.h"
 #include "clip.h"
 #include "sprite.h"
+#include "color.h"
 #include "generated/lookup/blaster_4a.h"
 
 #define G_FILE_COUNT 6
 #define G_SIZE 68
 #define G_SPEED_OUT 10
+// How much should the blast be shifted into the sprite
+#define G_BLAST_OFFSET 10
+#define G_BLAST_THICKNESS 20
 
 typedef struct {
     gfx_rletsprite_t *sprites[20];
@@ -144,10 +148,99 @@ static void g_draw_blaster(sans_blaster_position_t *position, uint8_t frame) {
     );
 }
 
+static uint24_t g_clamp_left(int24_t x) {
+    if (x > 0) {
+        return (uint24_t)x;
+    } else {
+        return 0;
+    }
+}
+
+static uint8_t g_clamp_top(int24_t y) {
+    if (y > 0) {
+        return (uint8_t)y;
+    } else {
+        return 0;
+    }
+}
+
+static uint24_t g_clamp_right(int24_t x) {
+    if (x >= GFX_LCD_WIDTH - 1) {
+        return GFX_LCD_WIDTH - 1;
+    } else {
+        return x;
+    }
+}
+
+static uint8_t g_clamp_bottom(int24_t y) {
+    if (y >= GFX_LCD_HEIGHT - 1) {
+        return GFX_LCD_HEIGHT - 1;
+    } else {
+        return y;
+    }
+}
+
 static void g_4a_draw(uint8_t id) {
-    // Blasters should be rendered back to back
-    if (id == 0) {
-        sans_clip_screen();
+    switch (id) {
+        // Top
+        case 0:
+            // Blasters should be rendered back to back
+            sans_clip_screen();
+            gfx_SetColor(SANS_COLOR_WHITE);
+            if (g_frames_4a >= 25) {
+                int24_t current_y = g_positions_4a[id].position.y - G_BLAST_OFFSET + G_SIZE;
+                uint8_t clamped_y = g_clamp_top(current_y);
+
+                gfx_FillRectangle_NoClip(
+                    97 + ((G_SIZE - G_BLAST_THICKNESS) / 2),
+                    clamped_y,
+                    G_BLAST_THICKNESS,
+                    GFX_LCD_HEIGHT - clamped_y
+                );
+            }
+            break;
+        // Left
+        case 1:
+            if (g_frames_4a >= 25) {
+                int24_t current_x = g_positions_4a[id].position.x - G_BLAST_OFFSET + G_SIZE;
+                uint24_t clamped_x = g_clamp_left(current_x);
+
+                gfx_FillRectangle_NoClip(
+                    clamped_x,
+                    87 + ((G_SIZE - G_BLAST_THICKNESS) / 2),
+                    GFX_LCD_WIDTH - clamped_x,
+                    G_BLAST_THICKNESS
+                );
+            }
+            break;
+        // Bottom
+        case 2:
+            if (g_frames_4a >= 24) {
+                int24_t current_y = g_positions_4a[id].position.y + G_BLAST_OFFSET;
+                uint8_t clamped_y = g_clamp_bottom(current_y);
+
+                gfx_FillRectangle_NoClip(
+                    155 + ((G_SIZE - G_BLAST_THICKNESS) / 2),
+                    0,
+                    G_BLAST_THICKNESS,
+                    clamped_y
+                );
+            }
+            break;
+        // Right
+        case 3:
+            if (g_frames_4a >= 23) {
+                int24_t current_x = g_positions_4a[id].position.x + G_BLAST_OFFSET;
+                uint24_t clamped_x = g_clamp_right(current_x);
+
+                gfx_FillRectangle_NoClip(
+                    0,
+                    149 + ((G_SIZE - G_BLAST_THICKNESS) / 2),
+                    clamped_x,
+                    G_BLAST_THICKNESS
+                );
+            }
+            break;
     }
 
     g_draw_blaster(&g_positions_4a[id], g_animation_frames_4a[id]);
